@@ -22,8 +22,8 @@ A premium personal brand and business ecosystem website connecting opportunities
 
 ## Where things live
 
-- `artifacts/ahmed-el-sayed-platform/src/App.tsx` — single-page brand experience, navigation, language controls, consultation interaction, and WhatsApp CTA.
-- `artifacts/ahmed-el-sayed-platform/src/index.css` — shared brand tokens, responsive layout styles, motion, and reduced-motion support.
+- `artifacts/ahmed-el-sayed-platform/src/App.tsx` — single-page brand experience, real Arabic/RTL content, integration marquee, social channel slots, social templates, video-catalog slots, consultation interaction, and WhatsApp CTA.
+- `artifacts/ahmed-el-sayed-platform/src/index.css` — shared brand tokens, Arabic font rules, responsive layout styles, scroll reveals, marquee motion, social template styling, and reduced-motion support.
 - `artifacts/ahmed-el-sayed-platform/.replit-artifact/artifact.toml` — artifact routing and web workflow configuration.
 - `attached_assets/Pasted-MASTER-PROMPT-Build-a-Premium-Personal-Brand-Growth-Tec_1789753094766.txt` — source product and brand brief.
 
@@ -39,6 +39,7 @@ A premium personal brand and business ecosystem website connecting opportunities
 - Executive personal brand homepage for Ahmed El Sayed.
 - Service ecosystem spanning real estate, investment, growth, marketing, automation, technology, SaaS, AI, education, and consulting.
 - In-page navigation, responsive mobile navigation, Arabic/English/Russian language controls, reduced-motion support, and a presentation-only consultation request modal.
+- Dedicated integrations, social studio, channel-link, template, and future video-catalog surfaces ready for supplied assets.
 - Conversion paths for exploring the ecosystem, requesting a growth system, booking a conversation, and contacting WhatsApp.
 
 ## User preferences
