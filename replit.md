@@ -1,6 +1,6 @@
-# [Project name]
+# Ahmed El Sayed Platform
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A premium personal brand and business ecosystem website connecting opportunities, growth systems, digital products, education, and consulting.
 
 ## Run & Operate
 
@@ -22,23 +22,34 @@ _Replace the heading above with the project's name, and this line with one sente
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/ahmed-el-sayed-platform/src/App.tsx` — single-page brand experience, navigation, language controls, consultation interaction, and WhatsApp CTA.
+- `artifacts/ahmed-el-sayed-platform/src/index.css` — shared brand tokens, responsive layout styles, motion, and reduced-motion support.
+- `artifacts/ahmed-el-sayed-platform/.replit-artifact/artifact.toml` — artifact routing and web workflow configuration.
+- `attached_assets/Pasted-MASTER-PROMPT-Build-a-Premium-Personal-Brand-Growth-Tec_1789753094766.txt` — source product and brand brief.
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- The first release is presentation-first and frontend-only; backend-backed CRM, bookings, courses, and marketplace capabilities can be added behind the same brand surface later.
+- Trust-critical business claims remain capability-oriented or configurable; no credentials, clients, metrics, prices, property details, or partnerships are fabricated.
+- The visual language uses a bespoke ecosystem/orbit motif rather than stock photography to communicate connected systems and long-term platform scope.
+- WhatsApp configuration is client-side through `VITE_WHATSAPP_NUMBER`; if it is absent, the CTA routes visitors to the contact flow instead of using an invented number.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Executive personal brand homepage for Ahmed El Sayed.
+- Service ecosystem spanning real estate, investment, growth, marketing, automation, technology, SaaS, AI, education, and consulting.
+- In-page navigation, responsive mobile navigation, Arabic/English/Russian language controls, reduced-motion support, and a presentation-only consultation request modal.
+- Conversion paths for exploring the ecosystem, requesting a growth system, booking a conversation, and contacting WhatsApp.
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+- Keep the brand premium, strategic, intelligent, modern, international, and scalable.
+- Avoid generic CV, broker, agency, freelancer, cheap gradients, neon, excessive glassmorphism, stock photography, and invented claims.
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- The web artifact workflow provides `PORT` and `BASE_PATH`; direct Vite builds outside the workflow need those environment variables.
+- Keep all prices, dates, property availability, integrations, and verified outcomes configurable until real source data is supplied.
 
 ## Pointers
 
