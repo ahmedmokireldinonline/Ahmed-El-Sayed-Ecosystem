@@ -165,6 +165,10 @@
     align-items: center;
     animation: marquee 34s linear infinite;
   }
+  .platform-track--reverse {
+    animation-direction: reverse;
+    animation-duration: 42s;
+  }
   .platform-chip {
     display: inline-flex;
     align-items: center;

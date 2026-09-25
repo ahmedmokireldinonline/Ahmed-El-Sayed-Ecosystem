@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Pause, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
-import { RiDatabase2Fill, RiLinkedinFill, RiOpenaiFill, RiWebhookFill } from 'react-icons/ri';
-import { SiGoogleanalytics, SiHubspot, SiMake, SiMeta, SiN8N, SiWhatsapp } from 'react-icons/si';
+import { RiDatabase2Fill, RiLinkedinFill, RiOpenaiFill, RiSlackFill, RiWebhookFill } from 'react-icons/ri';
+import { SiBuffer, SiFacebook, SiFigma, SiGoogleads, SiGoogleanalytics, SiGooglesearchconsole, SiHootsuite, SiHotjar, SiHubspot, SiMailchimp, SiMake, SiMeta, SiN8N, SiNotion, SiSemrush, SiShopify, SiTiktok, SiWhatsapp, SiWordpress, SiZapier } from 'react-icons/si';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -54,6 +54,24 @@ const platforms = [
   { name: 'OpenAI', Icon: RiOpenaiFill },
   { name: 'CRM', Icon: RiDatabase2Fill },
   { name: 'Webhooks', Icon: RiWebhookFill },
+];
+
+const professionalMarketingStack = [
+  { name: 'Google Ads', Icon: SiGoogleads },
+  { name: 'Search Console', Icon: SiGooglesearchconsole },
+  { name: 'Mailchimp', Icon: SiMailchimp },
+  { name: 'Semrush', Icon: SiSemrush },
+  { name: 'Hotjar', Icon: SiHotjar },
+  { name: 'WordPress', Icon: SiWordpress },
+  { name: 'Shopify', Icon: SiShopify },
+  { name: 'Zapier', Icon: SiZapier },
+  { name: 'Notion', Icon: SiNotion },
+  { name: 'Figma', Icon: SiFigma },
+  { name: 'Buffer', Icon: SiBuffer },
+  { name: 'Hootsuite', Icon: SiHootsuite },
+  { name: 'TikTok', Icon: SiTiktok },
+  { name: 'Facebook', Icon: SiFacebook },
+  { name: 'Slack', Icon: RiSlackFill },
 ];
 
 const socialChannels = [
@@ -447,6 +465,19 @@ function Home() {
         <div className="platform-marquee border-y border-primary-foreground/15" aria-label={isArabic ? 'منصات وتكاملات محتملة' : isRussian ? 'Возможные платформы и интеграции' : 'Possible platforms and integrations'}>
           <div className="platform-track">
             {[...platforms, ...platforms].map((platform, index) => {
+              const Icon = platform.Icon;
+              return (
+                <span key={`${platform.name}-${index}`} className="platform-chip">
+                  <Icon aria-hidden="true" className="platform-icon" size={19} />
+                  <span>{platform.name}</span>
+                </span>
+              );
+            })}
+          </div>
+        </div>
+        <div className="platform-marquee border-b border-primary-foreground/15" aria-label={isArabic ? 'أدوات المسوقين المحترفين' : isRussian ? 'Инструменты профессиональных маркетологов' : 'Professional marketing tools'}>
+          <div className="platform-track platform-track--reverse">
+            {[...professionalMarketingStack, ...professionalMarketingStack].map((platform, index) => {
               const Icon = platform.Icon;
               return (
                 <span key={`${platform.name}-${index}`} className="platform-chip">
