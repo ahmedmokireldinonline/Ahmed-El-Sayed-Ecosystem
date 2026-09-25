@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Pause, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -10,6 +10,7 @@ import { Route as WouterRoute, Switch, useLocation, Router as WouterRouter } fro
 const queryClient = new QueryClient();
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined;
 const whatsappHref = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}` : '#connect';
+const PRIMARY_HANDLE = 'ahmedmokireldin';
 
 const navItems = [
   { label: 'Ecosystem', ar: 'المنظومة', href: '#ecosystem' },
@@ -17,6 +18,7 @@ const navItems = [
   { label: 'Integrations', ar: 'التكاملات', href: '#integrations' },
   { label: 'Social studio', ar: 'استوديو السوشيال', href: '#social' },
   { label: 'Knowledge', ar: 'المعرفة', href: '#knowledge' },
+  { label: 'Reviews', ar: 'التقييمات', href: '#reviews' },
   { label: 'About Ahmed', ar: 'عن أحمد', href: '#about' },
 ];
 
@@ -42,13 +44,76 @@ const knowledgeItems = [
 const platforms = ['WhatsApp Business', 'Meta', 'Google Analytics', 'LinkedIn', 'HubSpot', 'n8n', 'Make', 'OpenAI', 'CRM', 'Webhooks'];
 
 const socialChannels = [
-  { name: 'Instagram', ar: 'إنستغرام', ru: 'Instagram', icon: Instagram, detail: 'Visual stories / reels / carousels', arDetail: 'قصص بصرية / ريلز / كاروسيل', ruDetail: 'Визуальные истории / reels / карусели', href: import.meta.env.VITE_INSTAGRAM_URL as string | undefined },
-  { name: 'YouTube', ar: 'يوتيوب', ru: 'YouTube', icon: Youtube, detail: 'Video catalog / long-form', arDetail: 'كتالوج فيديو / محتوى طويل', ruDetail: 'Каталог видео / длинный формат', href: import.meta.env.VITE_YOUTUBE_URL as string | undefined },
-  { name: 'LinkedIn', ar: 'لينكدإن', ru: 'LinkedIn', icon: Linkedin, detail: 'B2B insights / systems', arDetail: 'رؤى B2B / أنظمة', ruDetail: 'B2B-идеи / системы', href: import.meta.env.VITE_LINKEDIN_URL as string | undefined },
-  { name: 'TikTok', ar: 'تيك توك', ru: 'TikTok', icon: Music2, detail: 'Short-form education', arDetail: 'تعليم سريع', ruDetail: 'Короткое образовательное видео', href: import.meta.env.VITE_TIKTOK_URL as string | undefined },
+  { name: 'Instagram', ar: 'إنستغرام', ru: 'Instagram', icon: Instagram, detail: 'Visual stories / reels / carousels', arDetail: 'قصص بصرية / ريلز / كاروسيل', ruDetail: 'Визуальные истории / reels / карусели', href: (import.meta.env.VITE_INSTAGRAM_URL as string | undefined) || `https://www.instagram.com/${PRIMARY_HANDLE}/` },
+  { name: 'YouTube', ar: 'يوتيوب', ru: 'YouTube', icon: Youtube, detail: 'Video catalog / long-form', arDetail: 'كتالوج فيديو / محتوى طويل', ruDetail: 'Каталог видео / длинный формат', href: (import.meta.env.VITE_YOUTUBE_URL as string | undefined) || `https://www.youtube.com/@${PRIMARY_HANDLE}` },
+  { name: 'LinkedIn', ar: 'لينكدإن', ru: 'LinkedIn', icon: Linkedin, detail: 'B2B insights / systems', arDetail: 'رؤى B2B / أنظمة', ruDetail: 'B2B-идеи / системы', href: (import.meta.env.VITE_LINKEDIN_URL as string | undefined) || `https://www.linkedin.com/in/${PRIMARY_HANDLE}/` },
+  { name: 'TikTok', ar: 'تيك توك', ru: 'TikTok', icon: Music2, detail: 'Short-form education', arDetail: 'تعليم سريع', ruDetail: 'Короткое образовательное видео', href: (import.meta.env.VITE_TIKTOK_URL as string | undefined) || `https://www.tiktok.com/@${PRIMARY_HANDLE}` },
 ];
 
 const videoCatalogUrl = import.meta.env.VITE_VIDEO_CATALOG_URL as string | undefined;
+
+const demoReviewCopy = [
+  { en: 'Demo feedback: the first step feels clearer and easier to act on.', ar: 'تقييم تجريبي: الخطوة الأولى أصبحت أوضح وأسهل في التنفيذ.', ru: 'Демо-отзыв: первый шаг стал понятнее и проще для действия.' },
+  { en: 'Demo feedback: a useful bridge between the idea and the operating system.', ar: 'تقييم تجريبي: جسر عملي بين الفكرة ونظام التشغيل.', ru: 'Демо-отзыв: полезный мост между идеей и рабочей системой.' },
+  { en: 'Demo feedback: the message is easier to understand without losing depth.', ar: 'تقييم تجريبي: الرسالة أسهل في الفهم من دون فقدان العمق.', ru: 'Демо-отзыв: сообщение стало понятнее без потери глубины.' },
+  { en: 'Demo feedback: the conversation moves from interest to a useful next step.', ar: 'تقييم تجريبي: تنتقل المحادثة من الاهتمام إلى خطوة تالية مفيدة.', ru: 'Демо-отзыв: разговор переходит от интереса к полезному следующему шагу.' },
+  { en: 'Demo feedback: the structure makes a complex opportunity feel more manageable.', ar: 'تقييم تجريبي: التنظيم يجعل الفرصة المعقدة أسهل في التعامل.', ru: 'Демо-отзыв: структура делает сложную возможность более управляемой.' },
+  { en: 'Demo feedback: the system connects people, tools, and decisions in one view.', ar: 'تقييم تجريبي: النظام يربط الأشخاص والأدوات والقرارات في رؤية واحدة.', ru: 'Демо-отзыв: система объединяет людей, инструменты и решения в одном представлении.' },
+  { en: 'Demo feedback: practical language turns the strategy into something usable.', ar: 'تقييم تجريبي: اللغة العملية تحول الاستراتيجية إلى شيء قابل للاستخدام.', ru: 'Демо-отзыв: практичный язык превращает стратегию в рабочий инструмент.' },
+  { en: 'Demo feedback: the framework leaves room for context instead of forcing a template.', ar: 'تقييم تجريبي: الإطار يترك مساحة للسياق بدلاً من فرض قالب واحد.', ru: 'Демо-отзыв: фреймворк учитывает контекст, а не навязывает один шаблон.' },
+  { en: 'Demo feedback: the digital layer supports the human conversation instead of replacing it.', ar: 'تقييم تجريبي: الطبقة الرقمية تدعم الحوار الإنساني ولا تستبدله.', ru: 'Демо-отзыв: цифровой слой поддерживает человеческий разговор, а не заменяет его.' },
+  { en: 'Demo feedback: the next action is visible, measurable, and easier to share with a team.', ar: 'تقييم تجريبي: الإجراء التالي واضح وقابل للقياس وأسهل في المشاركة مع الفريق.', ru: 'Демо-отзыв: следующий шаг виден, измерим и им проще поделиться с командой.' },
+  { en: 'Demo feedback: the system makes room for better questions before bigger promises.', ar: 'تقييم تجريبي: النظام يتيح أسئلة أفضل قبل الوعود الكبيرة.', ru: 'Демо-отзыв: система оставляет место для лучших вопросов до больших обещаний.' },
+  { en: 'Demo feedback: the experience feels focused, calm, and ready to evolve.', ar: 'تقييم تجريبي: التجربة مركزة وهادئة وجاهزة للتطور.', ru: 'Демо-отзыв: опыт выглядит сфокусированным, спокойным и готовым к развитию.' },
+];
+
+const demoReviewAuthors = [
+  ['Olivia Carter', '🇺🇸', 'United States', 'women/44.jpg'],
+  ['Youssef Hassan', '🇪🇬', 'Egypt', 'men/32.jpg'],
+  ['Sofia Rossi', '🇮🇹', 'Italy', 'women/65.jpg'],
+  ['Daniel Kim', '🇰🇷', 'South Korea', 'men/75.jpg'],
+  ['Maya Patel', '🇮🇳', 'India', 'women/47.jpg'],
+  ['Liam Wilson', '🇬🇧', 'United Kingdom', 'men/41.jpg'],
+  ['Nour El Din', '🇦🇪', 'United Arab Emirates', 'men/22.jpg'],
+  ['Amelia Garcia', '🇪🇸', 'Spain', 'women/68.jpg'],
+  ['Alexander Petrov', '🇷🇺', 'Russia', 'men/52.jpg'],
+  ['Hana Suzuki', '🇯🇵', 'Japan', 'women/24.jpg'],
+  ['Marcus Brown', '🇨🇦', 'Canada', 'men/11.jpg'],
+  ['Layla Haddad', '🇱🇧', 'Lebanon', 'women/12.jpg'],
+  ['Ethan Miller', '🇦🇺', 'Australia', 'men/14.jpg'],
+  ['Clara Müller', '🇩🇪', 'Germany', 'women/32.jpg'],
+  ['Omar Rahman', '🇶🇦', 'Qatar', 'men/29.jpg'],
+  ['Ines Martins', '🇵🇹', 'Portugal', 'women/43.jpg'],
+  ['Noah Cohen', '🇮🇱', 'Israel', 'men/36.jpg'],
+  ['Amina Okafor', '🇳🇬', 'Nigeria', 'women/79.jpg'],
+  ['Lucas Silva', '🇧🇷', 'Brazil', 'men/63.jpg'],
+  ['Emma Johnson', '🇺🇸', 'United States', 'women/50.jpg'],
+  ['Karim Adel', '🇪🇬', 'Egypt', 'men/45.jpg'],
+  ['Giulia Bianchi', '🇮🇹', 'Italy', 'women/9.jpg'],
+  ['Min-jun Lee', '🇰🇷', 'South Korea', 'men/3.jpg'],
+  ['Ananya Shah', '🇮🇳', 'India', 'women/26.jpg'],
+  ['James Taylor', '🇬🇧', 'United Kingdom', 'men/68.jpg'],
+  ['Salma Nasser', '🇦🇪', 'United Arab Emirates', 'women/72.jpg'],
+  ['Mateo Torres', '🇪🇸', 'Spain', 'men/19.jpg'],
+  ['Daria Volkova', '🇷🇺', 'Russia', 'women/49.jpg'],
+  ['Kenji Ito', '🇯🇵', 'Japan', 'men/61.jpg'],
+  ['Ava Smith', '🇨🇦', 'Canada', 'women/57.jpg'],
+  ['Rami Khoury', '🇱🇧', 'Lebanon', 'men/80.jpg'],
+  ['Chloe Martin', '🇦🇺', 'Australia', 'women/21.jpg'],
+  ['Jonas Weber', '🇩🇪', 'Germany', 'men/25.jpg'],
+  ['Huda Al Mansoori', '🇶🇦', 'Qatar', 'women/90.jpg'],
+  ['Tiago Costa', '🇵🇹', 'Portugal', 'men/71.jpg'],
+  ['Fatima Bello', '🇳🇬', 'Nigeria', 'women/85.jpg'],
+].map(([name, flag, country, photo], index) => ({
+  id: `demo-review-${index + 1}`,
+  name,
+  flag,
+  country,
+  photo: `https://randomuser.me/api/portraits/${photo}`,
+  copyIndex: index % demoReviewCopy.length,
+}));
+
+const reviewSlides = Array.from({ length: Math.ceil(demoReviewAuthors.length / 3) }, (_, index) => demoReviewAuthors.slice(index * 3, index * 3 + 3));
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -58,6 +123,8 @@ function Home() {
   });
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [reviewSlide, setReviewSlide] = useState(0);
+  const [reviewsPaused, setReviewsPaused] = useState(false);
   const isArabic = language === 'AR';
   const isRussian = language === 'RU';
 
@@ -92,6 +159,14 @@ function Home() {
     return () => observer.disconnect();
   }, [language]);
 
+  useEffect(() => {
+    if (reviewsPaused) return;
+    const interval = window.setInterval(() => {
+      setReviewSlide((current) => (current + 1) % reviewSlides.length);
+    }, 5200);
+    return () => window.clearInterval(interval);
+  }, [reviewsPaused]);
+
   const openConsultation = () => {
     setSubmitted(false);
     setConsultationOpen(true);
@@ -119,7 +194,7 @@ function Home() {
           <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary navigation">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} className="text-[11px] font-bold uppercase tracking-[.14em] text-muted-foreground transition-colors hover:text-primary" data-testid={`link-nav-${item.label.toLowerCase().replaceAll(' ', '-')}`}>
-                {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : 'Об Ахмеде' : item.label}
+                {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : item.label === 'Reviews' ? 'Отзывы' : 'Об Ахмеде' : item.label}
               </a>
             ))}
           </nav>
@@ -146,7 +221,7 @@ function Home() {
             <nav className="flex flex-col gap-4" aria-label="Mobile navigation">
               {navItems.map((item) => (
                 <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-primary" data-testid={`link-mobile-${item.label.toLowerCase().replaceAll(' ', '-')}`}>
-                  {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : 'Об Ахмеде' : item.label}<ArrowUpRight size={14} className="text-secondary" />
+                  {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : item.label === 'Reviews' ? 'Отзывы' : 'Об Ахмеде' : item.label}<ArrowUpRight size={14} className="text-secondary" />
                 </a>
               ))}
             </nav>
@@ -461,10 +536,83 @@ function Home() {
         </div>
       </section>
 
+      <section id="reviews" className="border-b border-border bg-card">
+        <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+          <div className="reveal-on-scroll flex flex-col justify-between gap-8 md:flex-row md:items-end">
+            <div>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / تقييمات تجريبية' : isRussian ? '07 / ДЕМО-ОТЗЫВЫ' : '07 / DEMO REVIEWS'}</span>
+              <h2 className="display mt-5 max-w-[700px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">
+                {isArabic ? <>انطباعات<br /><span className="text-accent">تتحرك معك.</span></> : isRussian ? <>Впечатления,<br /><span className="text-accent">которые движутся вместе с вами.</span></> : <>Feedback<br /><span className="text-accent">that moves with you.</span></>}
+              </h2>
+            </div>
+            <div className="max-w-[360px]">
+              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'هذه 36 بطاقة تجريبية لتوضيح شكل القسم والحركة. سيتم استبدالها بتقييمات موثقة عند تزويد النصوص والصور الأصلية.' : isRussian ? 'Это 36 демонстрационных карточек для показа структуры и движения. После получения оригинальных текстов и фотографий они будут заменены подтверждёнными отзывами.' : 'These 36 cards are clearly marked demo content to show the section structure and motion. They should be replaced with confirmed reviews and original photos before publishing.'}</p>
+              <span className="mono mt-5 inline-flex border border-secondary/50 px-2.5 py-1.5 text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'بيانات تجريبية / ليست شهادات عملاء' : isRussian ? 'ДЕМО-ДАННЫЕ / НЕ ОТЗЫВЫ КЛИЕНТОВ' : 'DEMO DATA / NOT CLIENT TESTIMONIALS'}</span>
+            </div>
+          </div>
+
+          <div
+            className="mt-14 overflow-hidden"
+            onMouseEnter={() => setReviewsPaused(true)}
+            onMouseLeave={() => setReviewsPaused(false)}
+            onFocus={() => setReviewsPaused(true)}
+            onBlur={() => setReviewsPaused(false)}
+          >
+            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${reviewSlide * 100}%)` }}>
+              {reviewSlides.map((slide, slideIndex) => (
+                <div key={`review-slide-${slideIndex}`} className="grid min-w-full grid-cols-1 gap-4 md:grid-cols-3" aria-hidden={reviewSlide !== slideIndex}>
+                  {slide.map((review) => {
+                    const copy = demoReviewCopy[review.copyIndex];
+                    return (
+                      <article key={review.id} className="group flex min-h-[285px] flex-col border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:shadow-[0_16px_35px_hsl(var(--primary)/.08)]">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <img src={review.photo} alt={`${review.name} demo profile`} className="h-12 w-12 rounded-full border border-border object-cover grayscale transition-all duration-300 group-hover:grayscale-0" loading="lazy" />
+                            <div>
+                              <h3 className="text-sm font-bold text-primary">{review.name}</h3>
+                              <p className="mt-1 text-[11px] text-muted-foreground">{review.flag} {review.country}</p>
+                            </div>
+                          </div>
+                          <span className="mono shrink-0 text-[9px] tracking-[.12em] text-secondary">DEMO</span>
+                        </div>
+                        <div className="mt-7 flex items-center gap-1 text-secondary" aria-label={isArabic ? 'تقييم تجريبي من خمس نجوم' : isRussian ? 'Демонстрационная оценка пять из пяти' : 'Demo rating five out of five'}>
+                          {Array.from({ length: 5 }).map((_, index) => <span key={index} className="text-sm">★</span>)}
+                        </div>
+                        <blockquote className="mt-4 text-[15px] leading-7 text-primary">{isArabic ? copy.ar : isRussian ? copy.ru : copy.en}</blockquote>
+                        <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
+                          <span className="mono text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'هوية تجريبية' : isRussian ? 'ДЕМО-ПРОФИЛЬ' : 'DEMO PROFILE'}</span>
+                          <span className="h-px w-8 bg-secondary transition-all duration-300 group-hover:w-16" />
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-5 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => setReviewSlide((current) => (current - 1 + reviewSlides.length) % reviewSlides.length)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={isArabic ? 'التقييمات السابقة' : isRussian ? 'Предыдущие отзывы' : 'Previous reviews'} data-testid="button-reviews-previous"><ChevronLeft size={17} /></button>
+              <button type="button" onClick={() => setReviewSlide((current) => (current + 1) % reviewSlides.length)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={isArabic ? 'التقييمات التالية' : isRussian ? 'Следующие отзывы' : 'Next reviews'} data-testid="button-reviews-next"><ChevronRight size={17} /></button>
+              <button type="button" onClick={() => setReviewsPaused((paused) => !paused)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={reviewsPaused ? (isArabic ? 'تشغيل الحركة' : isRussian ? 'Запустить слайд-шоу' : 'Play slideshow') : (isArabic ? 'إيقاف الحركة' : isRussian ? 'Поставить слайд-шоу на паузу' : 'Pause slideshow')} data-testid="button-reviews-toggle">
+                {reviewsPaused ? <Play size={15} /> : <Pause size={15} />}
+              </button>
+            </div>
+            <div className="flex items-center gap-2" aria-label={isArabic ? 'اختيار شريحة التقييمات' : isRussian ? 'Выбор слайда отзывов' : 'Review slide selector'}>
+              {reviewSlides.map((_, index) => (
+                <button key={`review-dot-${index}`} type="button" onClick={() => setReviewSlide(index)} className={`h-1.5 transition-all ${reviewSlide === index ? 'w-8 bg-secondary' : 'w-3 bg-border hover:bg-secondary/60'}`} aria-label={`${isArabic ? 'الشريحة' : isRussian ? 'Слайд' : 'Slide'} ${index + 1}`} aria-current={reviewSlide === index ? 'true' : undefined} data-testid={`button-reviews-slide-${index + 1}`} />
+              ))}
+            </div>
+            <span className="mono text-[9px] tracking-[.14em] text-muted-foreground">{reviewsPaused ? (isArabic ? 'متوقف مؤقتاً' : isRussian ? 'ПАУЗА' : 'PAUSED') : (isArabic ? 'تشغيل تلقائي / 12 شرائح' : isRussian ? 'АВТОПРОКРУТКА / 12 СЛАЙДОВ' : 'AUTO PLAY / 12 SLIDES')}</span>
+          </div>
+        </div>
+      </section>
+
       <section id="about" className="border-b border-border bg-background">
         <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[.6fr_1.4fr] lg:px-12 lg:py-28">
           <div className="reveal-on-scroll">
-            <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / التوقيع' : isRussian ? '07 / ПОДПИСЬ' : '07 / THE SIGNATURE'}</span>
+            <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '08 / التوقيع' : isRussian ? '08 / ПОДПИСЬ' : '08 / THE SIGNATURE'}</span>
             <div className="mt-8 h-px w-20 bg-secondary" />
           </div>
           <div className="reveal-on-scroll">
@@ -482,7 +630,7 @@ function Home() {
       <section id="connect" className="bg-secondary text-primary">
         <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-20 sm:px-8 md:grid-cols-[1fr_auto] md:items-end lg:px-12 lg:py-24">
           <div className="reveal-on-scroll">
-            <span className="mono text-[10px] tracking-[.2em] text-primary/60">{isArabic ? '08 / الخطوة التالية' : isRussian ? '08 / СЛЕДУЮЩИЙ ШАГ' : '08 / NEXT MOVE'}</span>
+            <span className="mono text-[10px] tracking-[.2em] text-primary/60">{isArabic ? '09 / الخطوة التالية' : isRussian ? '09 / СЛЕДУЮЩИЙ ШАГ' : '09 / NEXT MOVE'}</span>
             <h2 className="display mt-5 max-w-[720px] text-5xl font-extrabold leading-[.9] tracking-[-.065em] sm:text-7xl">{isArabic ? <>أحضر سؤالك.<br />وابنِ النظام التالي.</> : isRussian ? <>Принесите вопрос.<br />Постройте следующую систему.</> : <>Bring the question.<br />Build the next system.</>}</h2>
             <p className="mt-7 max-w-[470px] text-sm leading-6 text-primary/70">{isArabic ? 'أخبرنا بما تحاول ربطه أو توضيحه أو تطويره. الخطوة الأولى محادثة مفيدة — وليست التزاماً.' : isRussian ? 'Расскажите, что вы хотите связать, прояснить или развить. Первый шаг — полезный разговор, а не обязательство.' : 'Tell us what you are trying to connect, clarify, or grow. The first step is a useful conversation — not a commitment.'}</p>
           </div>
