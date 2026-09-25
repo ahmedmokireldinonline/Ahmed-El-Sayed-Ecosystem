@@ -1,5 +1,7 @@
 import { type ReactNode, useEffect, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Pause, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
+import { RiDatabase2Fill, RiLinkedinFill, RiOpenaiFill, RiWebhookFill } from 'react-icons/ri';
+import { SiGoogleanalytics, SiHubspot, SiMake, SiMeta, SiN8N, SiWhatsapp } from 'react-icons/si';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -41,7 +43,18 @@ const knowledgeItems = [
   { type: 'PERSPECTIVE', arType: 'رؤية', ruType: 'ПЕРСПЕКТИВА', title: 'Opportunity is a system of connected decisions', ar: 'الفرصة منظومة من القرارات المترابطة', ru: 'Возможность — это система связанных решений', icon: Globe2 },
 ];
 
-const platforms = ['WhatsApp Business', 'Meta', 'Google Analytics', 'LinkedIn', 'HubSpot', 'n8n', 'Make', 'OpenAI', 'CRM', 'Webhooks'];
+const platforms = [
+  { name: 'WhatsApp Business', Icon: SiWhatsapp },
+  { name: 'Meta', Icon: SiMeta },
+  { name: 'Google Analytics', Icon: SiGoogleanalytics },
+  { name: 'LinkedIn', Icon: RiLinkedinFill },
+  { name: 'HubSpot', Icon: SiHubspot },
+  { name: 'n8n', Icon: SiN8N },
+  { name: 'Make', Icon: SiMake },
+  { name: 'OpenAI', Icon: RiOpenaiFill },
+  { name: 'CRM', Icon: RiDatabase2Fill },
+  { name: 'Webhooks', Icon: RiWebhookFill },
+];
 
 const socialChannels = [
   { name: 'Instagram', ar: 'إنستغرام', ru: 'Instagram', icon: Instagram, detail: 'Visual stories / reels / carousels', arDetail: 'قصص بصرية / ريلز / كاروسيل', ruDetail: 'Визуальные истории / reels / карусели', href: (import.meta.env.VITE_INSTAGRAM_URL as string | undefined) || `https://www.instagram.com/${PRIMARY_HANDLE}/` },
@@ -433,12 +446,15 @@ function Home() {
         </div>
         <div className="platform-marquee border-y border-primary-foreground/15" aria-label={isArabic ? 'منصات وتكاملات محتملة' : isRussian ? 'Возможные платформы и интеграции' : 'Possible platforms and integrations'}>
           <div className="platform-track">
-            {[...platforms, ...platforms].map((platform, index) => (
-              <span key={`${platform}-${index}`} className="platform-chip">
-                <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
-                {platform}
-              </span>
-            ))}
+            {[...platforms, ...platforms].map((platform, index) => {
+              const Icon = platform.Icon;
+              return (
+                <span key={`${platform.name}-${index}`} className="platform-chip">
+                  <Icon aria-hidden="true" className="platform-icon" size={19} />
+                  <span>{platform.name}</span>
+                </span>
+              );
+            })}
           </div>
         </div>
         <div className="mx-auto grid max-w-[1360px] gap-4 px-5 py-12 sm:px-8 md:grid-cols-3 lg:px-12">
