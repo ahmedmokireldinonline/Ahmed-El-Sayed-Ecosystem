@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Pause, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
 import { RiDatabase2Fill, RiLinkedinFill, RiOpenaiFill, RiSlackFill, RiWebhookFill } from 'react-icons/ri';
 import { SiBuffer, SiFacebook, SiFigma, SiGoogleads, SiGoogleanalytics, SiGooglesearchconsole, SiHootsuite, SiHotjar, SiHubspot, SiMailchimp, SiMake, SiMeta, SiN8N, SiNotion, SiSemrush, SiShopify, SiTiktok, SiWhatsapp, SiWordpress, SiZapier } from 'react-icons/si';
@@ -150,27 +150,65 @@ function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'EN' | 'AR' | 'RU'>(() => {
     const requestedLanguage = new URLSearchParams(window.location.search).get('lang')?.toUpperCase();
-    return requestedLanguage === 'AR' || requestedLanguage === 'RU' ? requestedLanguage : 'EN';
+    if (requestedLanguage === 'AR' || requestedLanguage === 'RU') return requestedLanguage;
+    try {
+      const savedLanguage = window.localStorage.getItem('ahmed-platform-language')?.toUpperCase();
+      return savedLanguage === 'AR' || savedLanguage === 'RU' ? savedLanguage : 'EN';
+    } catch {
+      return 'EN';
+    }
   });
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [reviewSlide, setReviewSlide] = useState(0);
   const [reviewsPaused, setReviewsPaused] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const isArabic = language === 'AR';
   const isRussian = language === 'RU';
 
   useEffect(() => {
     document.documentElement.dir = language === 'AR' ? 'rtl' : 'ltr';
     document.documentElement.lang = language === 'AR' ? 'ar' : language === 'RU' ? 'ru' : 'en';
+    try {
+      window.localStorage.setItem('ahmed-platform-language', language);
+    } catch {
+      // Storage can be unavailable in privacy-restricted browsing contexts.
+    }
   }, [language]);
 
   useEffect(() => {
-    const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setConsultationOpen(false);
+    if (!consultationOpen) return;
+    previouslyFocusedRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const getFocusable = () => Array.from(dialog.querySelectorAll<HTMLElement>('button, input, textarea, select, a[href], [tabindex]:not([tabindex="-1"])')).filter((element) => !element.hasAttribute('disabled'));
+    getFocusable()[0]?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setConsultationOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const currentFocusable = getFocusable();
+      if (!currentFocusable.length) return;
+      const first = currentFocusable[0];
+      const last = currentFocusable[currentFocusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
-    window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
-  }, []);
+    dialog.addEventListener('keydown', trapFocus);
+    return () => {
+      dialog.removeEventListener('keydown', trapFocus);
+      previouslyFocusedRef.current?.focus();
+    };
+  }, [consultationOpen]);
 
   useEffect(() => {
     const nodes = Array.from(document.querySelectorAll<HTMLElement>('.reveal-on-scroll'));
@@ -275,7 +313,7 @@ function Home() {
               <span className="h-px w-10 bg-secondary" />
               <span className="mono text-[10px] font-medium tracking-[.2em] text-secondary">{isArabic ? 'منصة رقمية استراتيجية' : isRussian ? 'СТРАТЕГИЧЕСКАЯ ЦИФРОВАЯ ПЛАТФОРМА' : 'A STRATEGIC DIGITAL PLATFORM'}</span>
             </div>
-            <h1 className="display reveal reveal-delay-1 max-w-[820px] text-[clamp(3.8rem,8vw,7.9rem)] font-extrabold leading-[.88] text-primary">
+            <h1 className="hero-title display reveal reveal-delay-1 max-w-full text-[clamp(3.2rem,8vw,7.9rem)] font-extrabold leading-[.88] text-primary">
               {isArabic ? (
                 <>نبني <span className="text-accent">الفرص.</span><br />محركات النمو.<br /><span className="text-secondary">الأنظمة الرقمية.</span><br />والمعرفة.</>
               ) : isRussian ? (
@@ -603,7 +641,9 @@ function Home() {
             onMouseEnter={() => setReviewsPaused(true)}
             onMouseLeave={() => setReviewsPaused(false)}
             onFocus={() => setReviewsPaused(true)}
-            onBlur={() => setReviewsPaused(false)}
+            onBlur={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsPaused(false);
+            }}
           >
             <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${reviewSlide * 100}%)` }}>
               {reviewSlides.map((slide, slideIndex) => (
@@ -617,7 +657,7 @@ function Home() {
                             <img src={review.photo} alt={`${review.name} demo profile`} className="h-12 w-12 rounded-full border border-border object-cover grayscale transition-all duration-300 group-hover:grayscale-0" loading="lazy" />
                             <div>
                               <h3 className="text-sm font-bold text-primary">{review.name}</h3>
-                              <p className="mt-1 text-[11px] text-muted-foreground">{review.flag} {review.country}</p>
+                            <p className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground"><span className="inline-flex h-5 min-w-5 items-center justify-center border border-border px-1 font-mono text-[9px] font-bold text-primary" aria-hidden="true">{review.country.slice(0, 2).toUpperCase()}</span>{review.country}</p>
                             </div>
                           </div>
                           <span className="mono shrink-0 text-[9px] tracking-[.12em] text-secondary">DEMO</span>
@@ -648,7 +688,7 @@ function Home() {
             </div>
             <div className="flex items-center gap-2" aria-label={isArabic ? 'اختيار شريحة التقييمات' : isRussian ? 'Выбор слайда отзывов' : 'Review slide selector'}>
               {reviewSlides.map((_, index) => (
-                <button key={`review-dot-${index}`} type="button" onClick={() => setReviewSlide(index)} className={`h-1.5 transition-all ${reviewSlide === index ? 'w-8 bg-secondary' : 'w-3 bg-border hover:bg-secondary/60'}`} aria-label={`${isArabic ? 'الشريحة' : isRussian ? 'Слайд' : 'Slide'} ${index + 1}`} aria-current={reviewSlide === index ? 'true' : undefined} data-testid={`button-reviews-slide-${index + 1}`} />
+                <button key={`review-dot-${index}`} type="button" onClick={() => setReviewSlide(index)} className={`inline-flex h-11 min-w-11 items-center justify-center transition-all after:block after:h-1.5 ${reviewSlide === index ? 'after:w-8 after:bg-secondary' : 'after:w-3 after:bg-border hover:after:bg-secondary/60'}`} aria-label={`${isArabic ? 'الشريحة' : isRussian ? 'Слайд' : 'Slide'} ${index + 1}`} aria-current={reviewSlide === index ? 'true' : undefined} data-testid={`button-reviews-slide-${index + 1}`} />
               ))}
             </div>
             <span className="mono text-[9px] tracking-[.14em] text-muted-foreground">{reviewsPaused ? (isArabic ? 'متوقف مؤقتاً' : isRussian ? 'ПАУЗА' : 'PAUSED') : (isArabic ? 'تشغيل تلقائي / 12 شرائح' : isRussian ? 'АВТОПРОКРУТКА / 12 СЛАЙДОВ' : 'AUTO PLAY / 12 SLIDES')}</span>
@@ -685,9 +725,15 @@ function Home() {
             <button type="button" onClick={openConsultation} className="group flex items-center justify-between gap-8 bg-primary px-5 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-colors hover:bg-accent" data-testid="button-connect-consultation">
               {isArabic ? 'اطلب استشارة' : isRussian ? 'Запросить консультацию' : 'Request a consultation'} <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </button>
-            <a href={whatsappHref} target={WHATSAPP_NUMBER ? '_blank' : undefined} rel={WHATSAPP_NUMBER ? 'noreferrer' : undefined} className="group flex items-center justify-between gap-8 border border-primary/30 px-5 py-4 text-xs font-bold uppercase tracking-[.12em] transition-colors hover:border-primary" data-testid="link-connect-whatsapp">
-              <span className="flex items-center gap-2"><MessageCircle size={15} /> {isArabic ? 'تواصل عبر واتساب' : isRussian ? 'Связаться в WhatsApp' : 'WhatsApp contact'}</span><ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-            </a>
+            {WHATSAPP_NUMBER ? (
+              <a href={whatsappHref} target="_blank" rel="noreferrer" className="group flex items-center justify-between gap-8 border border-primary/30 px-5 py-4 text-xs font-bold uppercase tracking-[.12em] transition-colors hover:border-primary" data-testid="link-connect-whatsapp">
+                <span className="flex items-center gap-2"><MessageCircle size={15} /> {isArabic ? 'تواصل عبر واتساب' : isRussian ? 'Связаться в WhatsApp' : 'WhatsApp contact'}</span><ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </a>
+            ) : (
+              <button type="button" onClick={openConsultation} className="group flex items-center justify-between gap-8 border border-primary/30 px-5 py-4 text-left text-xs font-bold uppercase tracking-[.12em] transition-colors hover:border-primary" data-testid="button-connect-whatsapp-fallback">
+                <span className="flex items-center gap-2"><MessageCircle size={15} /> {isArabic ? 'اطلب محادثة' : isRussian ? 'Запросить разговор' : 'Request a conversation'}</span><ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </button>
+            )}
           </div>
         </div>
       </section>
@@ -710,7 +756,7 @@ function Home() {
 
       {consultationOpen && (
         <div className="fixed inset-0 z-50 flex items-end justify-center bg-primary/55 p-0 backdrop-blur-sm sm:items-center sm:p-5" role="dialog" aria-modal="true" aria-labelledby="consultation-title">
-          <div className="relative max-h-[92dvh] w-full max-w-[580px] overflow-auto bg-background p-6 shadow-2xl sm:p-9">
+          <div ref={dialogRef} className="relative max-h-[92dvh] w-full max-w-[580px] overflow-auto bg-background p-6 shadow-2xl sm:p-9">
             <button type="button" onClick={() => setConsultationOpen(false)} className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label="Close consultation form" data-testid="button-close-consultation"><X size={17} /></button>
              {!submitted ? (
               <>

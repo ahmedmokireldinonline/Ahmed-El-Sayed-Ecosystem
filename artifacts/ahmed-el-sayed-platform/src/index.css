@@ -123,6 +123,8 @@
   html { scroll-behavior: smooth; }
   body { @apply font-sans antialiased bg-background text-foreground; }
   ::selection { background: hsl(var(--secondary)); color: hsl(var(--primary)); }
+  :focus-visible { outline: 3px solid hsl(var(--secondary)); outline-offset: 3px; }
+  section[id] { scroll-margin-top: 88px; }
 }
 
 @layer utilities {
@@ -193,9 +195,10 @@
     transform: translateY(-5px) rotate(-.5deg);
     box-shadow: 0 18px 36px hsl(var(--primary) / .12);
   }
-  .template-sand { background: hsl(var(--card)); }
+  .template-sand { background: hsl(var(--card)); color: hsl(var(--primary)); }
   .template-navy { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
   .template-gold { background: hsl(var(--secondary)); color: hsl(var(--primary)); }
+  .hero-title { overflow-wrap: anywhere; }
 }
 
 @keyframes reveal {
@@ -239,6 +242,10 @@ html[dir='rtl'] .display {
 
 html[dir='rtl'] .mono {
   letter-spacing: .02em;
+}
+
+@media (min-width: 640px) {
+  .hero-title { overflow-wrap: normal; }
 }
 
 @media (prefers-reduced-motion: reduce) {
