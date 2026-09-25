@@ -13,7 +13,6 @@ const queryClient = new QueryClient();
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined;
 const whatsappHref = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}` : '#connect';
 const PRIMARY_HANDLE = 'ahmedmokireldin';
-const SHOW_DEMO_REVIEWS = import.meta.env.VITE_SHOW_DEMO_REVIEWS === 'true';
 const GOOGLE_SHEETS_WEBHOOK_URL = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
@@ -41,12 +40,12 @@ async function submitLead(values: Record<string, FormDataEntryValue>) {
 }
 
 const navItems = [
-  { label: 'Ecosystem', ar: 'المنظومة', href: '#ecosystem' },
-  { label: 'Growth systems', ar: 'أنظمة النمو', href: '#systems' },
-  { label: 'Knowledge', ar: 'المعرفة', href: '#knowledge' },
-  { label: 'Integrations', ar: 'التكاملات', href: '#integrations' },
-  { label: 'Social studio', ar: 'استوديو السوشيال', href: '#social' },
-  { label: 'About Ahmed', ar: 'عن أحمد', href: '#about' },
+  { label: 'Services', ar: 'الخدمات', href: '#ecosystem' },
+  { label: 'Systems', ar: 'الأنظمة', href: '#systems' },
+  { label: 'Courses', ar: 'الكورسات', href: '/courses' },
+  { label: 'Clients', ar: 'العملاء', href: '#clients' },
+  { label: 'Reviews', ar: 'التقييمات', href: '#reviews' },
+  { label: 'About', ar: 'عن أحمد', href: '#about' },
 ];
 
 const pillars = [
@@ -108,68 +107,25 @@ const socialChannels = [
 
 const videoCatalogUrl = import.meta.env.VITE_VIDEO_CATALOG_URL as string | undefined;
 
-const demoReviewCopy = [
-  { en: 'Demo feedback: the first step feels clearer and easier to act on.', ar: 'تقييم تجريبي: الخطوة الأولى أصبحت أوضح وأسهل في التنفيذ.', ru: 'Демо-отзыв: первый шаг стал понятнее и проще для действия.' },
-  { en: 'Demo feedback: a useful bridge between the idea and the operating system.', ar: 'تقييم تجريبي: جسر عملي بين الفكرة ونظام التشغيل.', ru: 'Демо-отзыв: полезный мост между идеей и рабочей системой.' },
-  { en: 'Demo feedback: the message is easier to understand without losing depth.', ar: 'تقييم تجريبي: الرسالة أسهل في الفهم من دون فقدان العمق.', ru: 'Демо-отзыв: сообщение стало понятнее без потери глубины.' },
-  { en: 'Demo feedback: the conversation moves from interest to a useful next step.', ar: 'تقييم تجريبي: تنتقل المحادثة من الاهتمام إلى خطوة تالية مفيدة.', ru: 'Демо-отзыв: разговор переходит от интереса к полезному следующему шагу.' },
-  { en: 'Demo feedback: the structure makes a complex opportunity feel more manageable.', ar: 'تقييم تجريبي: التنظيم يجعل الفرصة المعقدة أسهل في التعامل.', ru: 'Демо-отзыв: структура делает сложную возможность более управляемой.' },
-  { en: 'Demo feedback: the system connects people, tools, and decisions in one view.', ar: 'تقييم تجريبي: النظام يربط الأشخاص والأدوات والقرارات في رؤية واحدة.', ru: 'Демо-отзыв: система объединяет людей, инструменты и решения в одном представлении.' },
-  { en: 'Demo feedback: practical language turns the strategy into something usable.', ar: 'تقييم تجريبي: اللغة العملية تحول الاستراتيجية إلى شيء قابل للاستخدام.', ru: 'Демо-отзыв: практичный язык превращает стратегию в рабочий инструмент.' },
-  { en: 'Demo feedback: the framework leaves room for context instead of forcing a template.', ar: 'تقييم تجريبي: الإطار يترك مساحة للسياق بدلاً من فرض قالب واحد.', ru: 'Демо-отзыв: фреймворк учитывает контекст, а не навязывает один шаблон.' },
-  { en: 'Demo feedback: the digital layer supports the human conversation instead of replacing it.', ar: 'تقييم تجريبي: الطبقة الرقمية تدعم الحوار الإنساني ولا تستبدله.', ru: 'Демо-отзыв: цифровой слой поддерживает человеческий разговор, а не заменяет его.' },
-  { en: 'Demo feedback: the next action is visible, measurable, and easier to share with a team.', ar: 'تقييم تجريبي: الإجراء التالي واضح وقابل للقياس وأسهل في المشاركة مع الفريق.', ru: 'Демо-отзыв: следующий шаг виден, измерим и им проще поделиться с командой.' },
-  { en: 'Demo feedback: the system makes room for better questions before bigger promises.', ar: 'تقييم تجريبي: النظام يتيح أسئلة أفضل قبل الوعود الكبيرة.', ru: 'Демо-отзыв: система оставляет место для лучших вопросов до больших обещаний.' },
-  { en: 'Demo feedback: the experience feels focused, calm, and ready to evolve.', ar: 'تقييم تجريبي: التجربة مركزة وهادئة وجاهزة للتطور.', ru: 'Демо-отзыв: опыт выглядит сфокусированным, спокойным и готовым к развитию.' },
+const reviewCopy = [
+  { en: 'A verified client quote will appear here once the original testimonial is supplied.', ar: 'سيظهر هنا تقييم موثق بعد تزويد النص الأصلي من العميل.', ru: 'Здесь появится подтверждённая цитата после получения оригинала от клиента.' },
+  { en: 'This card is ready for the client result, service delivered, and source link.', ar: 'هذه البطاقة جاهزة لنتيجة العميل والخدمة ورابط المصدر.', ru: 'Карточка готова для результата клиента, услуги и ссылки на источник.' },
+  { en: 'We keep the proof specific: what changed, who said it, and where it came from.', ar: 'نحافظ على مصداقية الدليل: ماذا تغير، ومن قاله، وما مصدره.', ru: 'Мы сохраняем доказательство конкретным: что изменилось, кто сказал и откуда это взято.' },
 ];
 
-const demoReviewAuthors = [
-  ['Olivia Carter', '🇺🇸', 'United States', 'women/44.jpg'],
-  ['Youssef Hassan', '🇪🇬', 'Egypt', 'men/32.jpg'],
-  ['Sofia Rossi', '🇮🇹', 'Italy', 'women/65.jpg'],
-  ['Daniel Kim', '🇰🇷', 'South Korea', 'men/75.jpg'],
-  ['Maya Patel', '🇮🇳', 'India', 'women/47.jpg'],
-  ['Liam Wilson', '🇬🇧', 'United Kingdom', 'men/41.jpg'],
-  ['Nour El Din', '🇦🇪', 'United Arab Emirates', 'men/22.jpg'],
-  ['Amelia Garcia', '🇪🇸', 'Spain', 'women/68.jpg'],
-  ['Alexander Petrov', '🇷🇺', 'Russia', 'men/52.jpg'],
-  ['Hana Suzuki', '🇯🇵', 'Japan', 'women/24.jpg'],
-  ['Marcus Brown', '🇨🇦', 'Canada', 'men/11.jpg'],
-  ['Layla Haddad', '🇱🇧', 'Lebanon', 'women/12.jpg'],
-  ['Ethan Miller', '🇦🇺', 'Australia', 'men/14.jpg'],
-  ['Clara Müller', '🇩🇪', 'Germany', 'women/32.jpg'],
-  ['Omar Rahman', '🇶🇦', 'Qatar', 'men/29.jpg'],
-  ['Ines Martins', '🇵🇹', 'Portugal', 'women/43.jpg'],
-  ['Noah Cohen', '🇮🇱', 'Israel', 'men/36.jpg'],
-  ['Amina Okafor', '🇳🇬', 'Nigeria', 'women/79.jpg'],
-  ['Lucas Silva', '🇧🇷', 'Brazil', 'men/63.jpg'],
-  ['Emma Johnson', '🇺🇸', 'United States', 'women/50.jpg'],
-  ['Karim Adel', '🇪🇬', 'Egypt', 'men/45.jpg'],
-  ['Giulia Bianchi', '🇮🇹', 'Italy', 'women/9.jpg'],
-  ['Min-jun Lee', '🇰🇷', 'South Korea', 'men/3.jpg'],
-  ['Ananya Shah', '🇮🇳', 'India', 'women/26.jpg'],
-  ['James Taylor', '🇬🇧', 'United Kingdom', 'men/68.jpg'],
-  ['Salma Nasser', '🇦🇪', 'United Arab Emirates', 'women/72.jpg'],
-  ['Mateo Torres', '🇪🇸', 'Spain', 'men/19.jpg'],
-  ['Daria Volkova', '🇷🇺', 'Russia', 'women/49.jpg'],
-  ['Kenji Ito', '🇯🇵', 'Japan', 'men/61.jpg'],
-  ['Ava Smith', '🇨🇦', 'Canada', 'women/57.jpg'],
-  ['Rami Khoury', '🇱🇧', 'Lebanon', 'men/80.jpg'],
-  ['Chloe Martin', '🇦🇺', 'Australia', 'women/21.jpg'],
-  ['Jonas Weber', '🇩🇪', 'Germany', 'men/25.jpg'],
-  ['Huda Al Mansoori', '🇶🇦', 'Qatar', 'women/90.jpg'],
-  ['Tiago Costa', '🇵🇹', 'Portugal', 'men/71.jpg'],
-  ['Fatima Bello', '🇳🇬', 'Nigeria', 'women/85.jpg'],
-].map(([name, flag, country, photo], index) => ({
-  id: `demo-review-${index + 1}`,
-  name,
-  flag,
-  country,
-  photo: `https://randomuser.me/api/portraits/${photo}`,
-  copyIndex: index % demoReviewCopy.length,
-}));
+const reviewAuthors = [
+  ['Client quote 01', '🇪🇬', 'Egypt'],
+  ['Client quote 02', '🇦🇪', 'United Arab Emirates'],
+  ['Client quote 03', '🇸🇦', 'Saudi Arabia'],
+  ['Client quote 04', '🇶🇦', 'Qatar'],
+  ['Client quote 05', '🇯🇴', 'Jordan'],
+  ['Client quote 06', '🇰🇼', 'Kuwait'],
+  ['Client quote 07', '🇧🇭', 'Bahrain'],
+  ['Client quote 08', '🇲🇦', 'Morocco'],
+  ['Client quote 09', '🇹🇳', 'Tunisia'],
+].map(([name, flag, country], index) => ({ id: `review-slot-${index + 1}`, name, flag, country, copyIndex: index % reviewCopy.length }));
 
-const reviewSlides = Array.from({ length: Math.ceil(demoReviewAuthors.length / 3) }, (_, index) => demoReviewAuthors.slice(index * 3, index * 3 + 3));
+const reviewSlides = Array.from({ length: Math.ceil(reviewAuthors.length / 3) }, (_, index) => reviewAuthors.slice(index * 3, index * 3 + 3));
 
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -379,7 +335,6 @@ function Home() {
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[560px] lg:justify-self-end">
-            <img src="/official-growth-map.jpg" alt="Growth and data visual from Ahmed El Sayed's official social content" className="absolute inset-[27%] z-0 h-[46%] w-[46%] rounded-full object-cover opacity-80 mix-blend-multiply" />
             <div className="absolute inset-[8%] rounded-full border border-secondary/30" />
             <div className="absolute inset-[20%] rounded-full border border-accent/35" />
             <div className="network-orbit absolute inset-[8%] rounded-full border border-dashed border-secondary/40">
@@ -665,18 +620,49 @@ function Home() {
         </div>
       </section>
 
-      <section id="reviews" className={`border-b border-border bg-card ${SHOW_DEMO_REVIEWS ? '' : 'hidden'}`} aria-hidden={!SHOW_DEMO_REVIEWS}>
+      <section id="clients" className="border-b border-border bg-background">
+        <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
+          <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+            <div>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '06 / العملاء والأسواق' : isRussian ? '06 / КЛИЕНТЫ И РЫНКИ' : '06 / CLIENTS & MARKETS'}</span>
+              <h2 className="display mt-5 max-w-[520px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>شراكات<br /><span className="text-secondary">عربية أولاً.</span></> : isRussian ? <>Партнёры<br /><span className="text-secondary">с арабским фокусом.</span></> : <>Built for<br /><span className="text-secondary">Arab markets.</span></>}</h2>
+              <p className="mt-7 max-w-[390px] text-sm leading-7 text-muted-foreground">{isArabic ? 'قسم مخصص لعرض الشركات والعملاء الذين سيتم تزويد أسمائهم أو شعاراتهم لاحقاً. لا نعرض أي شعار غير مؤكد.' : isRussian ? 'Раздел для компаний и клиентов, чьи названия и логотипы будут добавлены после получения материалов. Неподтверждённые логотипы не используются.' : 'A dedicated place for client and company logos once you provide the approved names and assets. No unverified logos are shown.'}</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {[
+                ['🇪🇬', 'Egypt', 'Marketing / data products'],
+                ['🇸🇦', 'Saudi Arabia', 'Funnels / automation'],
+                ['🇦🇪', 'United Arab Emirates', 'Growth systems / CRM'],
+                ['🇶🇦', 'Qatar', 'Lead intelligence / courses'],
+                ['🇰🇼', 'Kuwait', 'Campaign operations'],
+                ['🇧🇭', 'Bahrain', 'Digital workflows'],
+                ['🇯🇴', 'Jordan', 'Training / implementation'],
+                ['🇲🇦', 'Morocco', 'Data / acquisition'],
+              ].map(([flag, country, focus]) => (
+                <article key={country} className="group border border-border bg-card p-5 transition-colors hover:border-secondary">
+                  <div className="flex items-center justify-between"><span className="text-3xl" aria-hidden="true">{flag}</span><span className="mono text-[9px] tracking-[.14em] text-secondary">MARKET</span></div>
+                  <h3 className="display mt-8 text-2xl font-extrabold tracking-[-.04em] text-primary">{country}</h3>
+                  <p className="mt-2 text-xs leading-5 text-muted-foreground">{focus}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+          <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span>{isArabic ? 'شعارات العملاء / سيتم إدراجها بعد استلام الملفات المعتمدة' : isRussian ? 'Логотипы клиентов / добавим после получения утверждённых файлов' : 'Client logos / added after approved files are supplied'}</span><button type="button" onClick={openConsultation} className="group flex items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary">{isArabic ? 'أرسل بيانات شركتك' : isRussian ? 'Отправить данные компании' : 'Add your company'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button></div>
+        </div>
+      </section>
+
+      <section id="reviews" className="border-b border-border bg-card">
         <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
           <div className="reveal-on-scroll flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / تقييمات تجريبية' : isRussian ? '07 / ДЕМО-ОТЗЫВЫ' : '07 / DEMO REVIEWS'}</span>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / تقييمات العملاء' : isRussian ? '07 / ОТЗЫВЫ КЛИЕНТОВ' : '07 / CLIENT REVIEWS'}</span>
               <h2 className="display mt-5 max-w-[700px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">
-                {isArabic ? <>انطباعات<br /><span className="text-accent">تتحرك معك.</span></> : isRussian ? <>Впечатления,<br /><span className="text-accent">которые движутся вместе с вами.</span></> : <>Feedback<br /><span className="text-accent">that moves with you.</span></>}
+                {isArabic ? <>دليل من<br /><span className="text-accent">السوق الحقيقي.</span></> : isRussian ? <>Доказательства<br /><span className="text-accent">из реального рынка.</span></> : <>Proof from<br /><span className="text-accent">the real market.</span></>}
               </h2>
             </div>
             <div className="max-w-[360px]">
-              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'هذه 36 بطاقة تجريبية لتوضيح شكل القسم والحركة. سيتم استبدالها بتقييمات موثقة عند تزويد النصوص والصور الأصلية.' : isRussian ? 'Это 36 демонстрационных карточек для показа структуры и движения. После получения оригинальных текстов и фотографий они будут заменены подтверждёнными отзывами.' : 'These 36 cards are clearly marked demo content to show the section structure and motion. They should be replaced with confirmed reviews and original photos before publishing.'}</p>
-              <span className="mono mt-5 inline-flex border border-secondary/50 px-2.5 py-1.5 text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'بيانات تجريبية / ليست شهادات عملاء' : isRussian ? 'ДЕМО-ДАННЫЕ / НЕ ОТЗЫВЫ КЛИЕНТОВ' : 'DEMO DATA / NOT CLIENT TESTIMONIALS'}</span>
+              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'أعدنا القسم إلى مكانه، لكننا لن نخترع أسماء أو صوراً أو نتائج. كل بطاقة تحمل علم الدولة وستُملأ بالتقييم الأصلي ورابط مصدره عند تزويد المواد.' : isRussian ? 'Раздел возвращён, но мы не будем выдумывать имена, фотографии или результаты. Каждая карточка содержит флаг страны и будет заполнена оригинальным отзывом и ссылкой на источник.' : 'The section is back, but we will not invent names, photos, or outcomes. Every card carries a country flag and is ready for the original quote and source link.'}</p>
+              <span className="mono mt-5 inline-flex border border-secondary/50 px-2.5 py-1.5 text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'جاهز للتقييمات الموثقة' : isRussian ? 'ГОТОВО ДЛЯ ПОДТВЕРЖДЁННЫХ ОТЗЫВОВ' : 'READY FOR VERIFIED REVIEWS'}</span>
             </div>
           </div>
 
@@ -693,25 +679,25 @@ function Home() {
               {reviewSlides.map((slide, slideIndex) => (
                 <div key={`review-slide-${slideIndex}`} className="grid min-w-full grid-cols-1 gap-4 md:grid-cols-3" aria-hidden={reviewSlide !== slideIndex}>
                   {slide.map((review) => {
-                    const copy = demoReviewCopy[review.copyIndex];
+                    const copy = reviewCopy[review.copyIndex];
                     return (
                       <article key={review.id} className="group flex min-h-[285px] flex-col border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:shadow-[0_16px_35px_hsl(var(--primary)/.08)]">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex items-center gap-3">
-                            <img src={review.photo} alt={`${review.name} demo profile`} className="h-12 w-12 rounded-full border border-border object-cover grayscale transition-all duration-300 group-hover:grayscale-0" loading="lazy" />
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-secondary/50 bg-secondary/10 text-2xl" aria-label={`${review.country} flag`}>{review.flag}</div>
                             <div>
                               <h3 className="text-sm font-bold text-primary">{review.name}</h3>
-                            <p className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground"><span className="inline-flex h-5 min-w-5 items-center justify-center border border-border px-1 font-mono text-[9px] font-bold text-primary" aria-hidden="true">{review.country.slice(0, 2).toUpperCase()}</span>{review.country}</p>
+                            <p className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground"><span aria-hidden="true">{review.flag}</span>{review.country}</p>
                             </div>
                           </div>
-                          <span className="mono shrink-0 text-[9px] tracking-[.12em] text-secondary">DEMO</span>
+                          <span className="mono shrink-0 text-[9px] tracking-[.12em] text-secondary">PENDING SOURCE</span>
                         </div>
                         <div className="mt-7 flex items-center gap-1 text-secondary" aria-label={isArabic ? 'تقييم تجريبي من خمس نجوم' : isRussian ? 'Демонстрационная оценка пять из пяти' : 'Demo rating five out of five'}>
-                          {Array.from({ length: 5 }).map((_, index) => <span key={index} className="text-sm">★</span>)}
+                          {Array.from({ length: 5 }).map((_, index) => <span key={index} className="text-sm" aria-hidden="true">★</span>)}
                         </div>
                         <blockquote className="mt-4 text-[15px] leading-7 text-primary">{isArabic ? copy.ar : isRussian ? copy.ru : copy.en}</blockquote>
                         <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
-                          <span className="mono text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'هوية تجريبية' : isRussian ? 'ДЕМО-ПРОФИЛЬ' : 'DEMO PROFILE'}</span>
+                          <span className="mono text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'بانتظار النص الأصلي' : isRussian ? 'ОЖИДАЕТСЯ ОРИГИНАЛ' : 'ORIGINAL QUOTE PENDING'}</span>
                           <span className="h-px w-8 bg-secondary transition-all duration-300 group-hover:w-16" />
                         </div>
                       </article>

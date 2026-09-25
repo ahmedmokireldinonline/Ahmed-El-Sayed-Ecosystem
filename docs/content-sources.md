@@ -8,13 +8,9 @@ The current public domain is not serving the brand site at the time of review. I
 - A public Facebook post on the page associated with `ahmedmokireldin` describes data lead packages for US and Canada, including company/contact attributes, and directs prospects to request a sample through WhatsApp.
 - The redesign translates those public signals into four service pillars: marketing systems, data products, automation, and practical courses.
 
-## Visual source
+## Visual source policy
 
-The homepage image `public/official-growth-map.jpg` is a local copy of the public image preview from the official Instagram post:
-
-- https://www.instagram.com/ahmedmokireldin/p/DO_SGl6kYgz/
-
-The image was selected because it communicates the marketing/data positioning without exposing personal contact records. A sampled post containing visible names and phone numbers was intentionally not reused.
+The UI currently uses no externally sourced images. The image previously sampled from a public Instagram post was removed after the user requested that only images they provide be used. A sampled post containing visible names and phone numbers was also intentionally not reused.
 
 ## Sources
 
