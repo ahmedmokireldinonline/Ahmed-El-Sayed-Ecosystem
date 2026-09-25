@@ -2,6 +2,12 @@
 
 A deployment-neutral Vite + React personal brand and business ecosystem website for Ahmed El Sayed.
 
+## Information architecture
+
+- `/` — positioning, ecosystem pillars, growth system, knowledge, integrations, social proof, and the primary conversation CTA.
+- `/courses` — structured learning catalog with three clear offers.
+- `/register` — course-interest and waitlist form with a `formType` field that can support future event, course, or product registrations.
+
 ## Local development
 
 ```bash
@@ -42,6 +48,10 @@ Optional direct Supabase storage uses these public frontend variables:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
+
+### Email marketing
+
+The shared lead pipeline can also notify an email-marketing provider through `VITE_EMAIL_MARKETING_WEBHOOK_URL`. Use a provider automation/webhook adapter (for example Mailchimp, Resend, or an n8n/Make workflow) rather than exposing a private provider API key in the frontend. The payload includes `email`, `formType`, `course`, `source`, and `submittedAt`.
 
 Run `supabase/schema.sql` in the Supabase SQL editor before enabling them. The schema permits anonymous **insert only** and blocks public reads, updates, and deletes. Never put a Supabase service-role key in frontend variables.
 

@@ -17,6 +17,28 @@ const SHOW_DEMO_REVIEWS = import.meta.env.VITE_SHOW_DEMO_REVIEWS === 'true';
 const GOOGLE_SHEETS_WEBHOOK_URL = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
+const EMAIL_MARKETING_WEBHOOK_URL = import.meta.env.VITE_EMAIL_MARKETING_WEBHOOK_URL as string | undefined;
+
+async function submitLead(values: Record<string, FormDataEntryValue>) {
+  const payload: Record<string, string> = { ...Object.fromEntries(Object.entries(values).map(([key, value]) => [key, String(value)])), submittedAt: new Date().toISOString(), source: 'website' };
+  const destinations: Promise<Response>[] = [];
+  if (GOOGLE_SHEETS_WEBHOOK_URL) {
+    destinations.push(fetch(GOOGLE_SHEETS_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) }));
+  }
+  if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+    destinations.push(fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/form_submissions`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify({ form_type: payload.formType || 'general', name: payload.name || null, contact: payload.contact || payload.email || null, question: payload.question || null, course: payload.course || null, message: payload.message || null, submitted_at: payload.submittedAt, source: payload.source, raw_data: payload }),
+    }));
+  }
+  if (EMAIL_MARKETING_WEBHOOK_URL) {
+    destinations.push(fetch(EMAIL_MARKETING_WEBHOOK_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ ...payload, event: 'lead' }) }));
+  }
+  if (!destinations.length) throw new Error('No storage destination is configured');
+  const results = await Promise.allSettled(destinations);
+  if (results.every((result) => result.status === 'rejected')) throw new Error('No storage destination accepted the submission');
+}
 
 const navItems = [
   { label: 'Ecosystem', ar: 'المنظومة', href: '#ecosystem' },
@@ -254,23 +276,7 @@ function Home() {
     const form = event.currentTarget;
     const values = Object.fromEntries(new FormData(form).entries());
     try {
-      if (!GOOGLE_SHEETS_WEBHOOK_URL) throw new Error('Google Sheets webhook is not configured');
-      const payload = { ...values, submittedAt: new Date().toISOString(), source: 'website' };
-      const destinations = [fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload),
-      })];
-      if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-        destinations.push(fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/form_submissions`, {
-          method: 'POST',
-          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-          body: JSON.stringify({ form_type: values.formType || 'general', name: values.name || null, contact: values.contact || null, question: values.question || null, course: values.course || null, message: values.message || null, submitted_at: payload.submittedAt, source: payload.source, raw_data: payload }),
-        }));
-      }
-      const results = await Promise.allSettled(destinations);
-      if (results.every((result) => result.status === 'rejected')) throw new Error('No storage destination accepted the submission');
+      await submitLead(values);
       setSubmitted(true);
     } catch {
       setSubmissionError(isArabic ? 'تعذر حفظ الطلب حالياً. حاول مرة أخرى أو تواصل مباشرة.' : isRussian ? 'Не удалось сохранить запрос. Попробуйте ещё раз или свяжитесь напрямую.' : 'We could not save your request right now. Please try again or contact us directly.');
@@ -299,6 +305,8 @@ function Home() {
                 {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : item.label === 'Reviews' ? 'Отзывы' : 'Об Ахмеде' : item.label}
               </a>
             ))}
+            <a href="/courses" className="text-[11px] font-bold uppercase tracking-[.14em] text-secondary transition-colors hover:text-primary">{isArabic ? 'الكورسات' : isRussian ? 'Курсы' : 'Courses'}</a>
+            <a href="/register" className="text-[11px] font-bold uppercase tracking-[.14em] text-muted-foreground transition-colors hover:text-primary">{isArabic ? 'التسجيل' : isRussian ? 'Регистрация' : 'Register'}</a>
           </nav>
 
           <div className="hidden items-center gap-4 lg:flex">
@@ -326,6 +334,8 @@ function Home() {
                   {isArabic ? item.ar : isRussian ? item.label === 'Ecosystem' ? 'Экосистема' : item.label === 'Growth systems' ? 'Системы роста' : item.label === 'Integrations' ? 'Интеграции' : item.label === 'Social studio' ? 'Социальная студия' : item.label === 'Knowledge' ? 'Знания' : item.label === 'Reviews' ? 'Отзывы' : 'Об Ахмеде' : item.label}<ArrowUpRight size={14} className="text-secondary" />
                 </a>
               ))}
+              <a href="/courses" onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-secondary">{isArabic ? 'الكورسات' : isRussian ? 'Курсы' : 'Courses'}<ArrowUpRight size={14} /></a>
+              <a href="/register" onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-primary">{isArabic ? 'التسجيل' : isRussian ? 'Регистрация' : 'Register'}<ArrowUpRight size={14} /></a>
             </nav>
             <div className="mt-5 flex items-center justify-between">
               <div className="flex gap-2">
@@ -809,7 +819,7 @@ function Home() {
               <div className="py-10">
                 <div className="flex h-12 w-12 items-center justify-center bg-secondary text-primary"><Check size={23} /></div>
                   <h2 className="display mt-7 text-4xl font-extrabold leading-none tracking-[-.06em] text-primary">{isArabic ? 'تم حفظ السؤال.' : isRussian ? 'Вопрос принят.' : 'The question is captured.'}</h2>
-                  <p className="mt-4 max-w-[400px] text-sm leading-6 text-muted-foreground">{isArabic ? 'هذه النسخة التجريبية لا ترسل البيانات. عند تجهيز طبقة الاتصال، يمكن توجيه الخطوة إلى المحادثة المناسبة.' : isRussian ? 'Эта демонстрационная версия никуда не отправляет данные. После настройки слоя связи запрос можно направить в нужный канал.' : 'This demo does not send data anywhere. When the connection layer is configured, this step can be routed to the right conversation.'}</p>
+                  <p className="mt-4 max-w-[400px] text-sm leading-6 text-muted-foreground">{isArabic ? 'تم حفظ طلبك في مساحة المتابعة. سنعود إليك بالخطوة المناسبة.' : isRussian ? 'Ваш запрос сохранён. Мы вернёмся к вам со следующим шагом.' : 'Your request is saved. We will follow up with the right next step.'}</p>
                   <button type="button" onClick={() => setConsultationOpen(false)} className="mt-8 border border-primary px-5 py-3 text-xs font-bold uppercase tracking-[.12em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground" data-testid="button-close-confirmation">{isArabic ? 'العودة إلى المنصة' : isRussian ? 'Вернуться на платформу' : 'Return to platform'}</button>
               </div>
             )}
@@ -820,11 +830,41 @@ function Home() {
   );
 }
 
+const courses = [
+  { slug: 'growth-systems', title: 'Growth Systems', arTitle: 'أنظمة النمو', type: 'Cohort course', arType: 'كورس جماعي', description: 'Build a practical acquisition and conversion system around your real offer.', arDescription: 'ابنِ نظام اكتساب وتحويل عملياً حول عرضك الحقيقي.', modules: ['Offer and audience clarity', 'Content-to-conversation journeys', 'Measurement and iteration'] },
+  { slug: 'digital-infrastructure', title: 'Digital Infrastructure', arTitle: 'البنية الرقمية', type: 'Workshop', arType: 'ورشة عمل', description: 'Connect tools, automation, and human workflows without creating more noise.', arDescription: 'اربط الأدوات والأتمتة وسير العمل الإنساني بدون تعقيد إضافي.', modules: ['Workflow mapping', 'Automation boundaries', 'Operating dashboards'] },
+  { slug: 'opportunity-lab', title: 'Opportunity Lab', arTitle: 'مختبر الفرص', type: 'Advisory lab', arType: 'مختبر استشاري', description: 'Turn a complex opportunity into a sequence of decisions, tests, and next actions.', arDescription: 'حوّل الفرصة المعقدة إلى سلسلة من القرارات والاختبارات والخطوات التالية.', modules: ['Context and timing', 'Decision architecture', 'Action plan'] },
+];
+
+function PageShell({ children }: { children: ReactNode }) {
+  return <main className="min-h-[100dvh] bg-background text-primary"><header className="border-b border-border bg-background"><div className="mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 sm:px-8"><a href="/" className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center border border-secondary bg-primary text-secondary"><span className="display text-lg font-extrabold">A</span></span><span className="text-[13px] font-extrabold tracking-[.18em]">AHMED EL SAYED</span></a><nav className="flex items-center gap-5 text-[11px] font-bold uppercase tracking-[.13em]"><a href="/courses" className="text-secondary">Courses</a><a href="/register" className="text-muted-foreground hover:text-primary">Register</a></nav></div></header>{children}<footer className="border-t border-border bg-primary px-5 py-8 text-[11px] text-primary-foreground/60 sm:px-8"><div className="mx-auto flex max-w-[1180px] justify-between"><span>AHMED EL SAYED</span><a href="/">Back to platform</a></div></footer></main>;
+}
+
+function CoursesPage() {
+  return <PageShell><section className="mx-auto max-w-[1180px] px-5 pb-16 pt-20 sm:px-8 sm:pt-28"><span className="mono text-[10px] tracking-[.2em] text-secondary">LEARNING PATH / مسار التعلم</span><h1 className="display mt-5 max-w-[780px] text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">Learn the mechanism.<br /><span className="text-secondary">Build the system.</span></h1><p className="mt-8 max-w-[620px] text-base leading-7 text-muted-foreground">الكورسات هنا ليست مكتبة وعود؛ كل مسار يحول فكرة أو مشكلة حقيقية إلى نظام قابل للتشغيل والقياس.</p><div className="mt-14 grid gap-5 lg:grid-cols-3">{courses.map((course, index) => <article key={course.slug} className="flex flex-col border border-border bg-card p-6"><span className="mono text-[10px] tracking-[.18em] text-secondary">0{index + 1} / {course.type.toUpperCase()}</span><h2 className="display mt-8 text-3xl font-extrabold leading-none tracking-[-.05em]">{course.title}<span className="mt-2 block text-base font-medium tracking-normal text-muted-foreground">{course.arTitle}</span></h2><p className="mt-5 text-sm leading-6 text-muted-foreground">{course.description}<br />{course.arDescription}</p><ul className="mt-6 space-y-3 border-t border-border pt-5 text-sm">{course.modules.map((module) => <li key={module} className="flex gap-2"><Check size={15} className="mt-0.5 shrink-0 text-secondary" />{module}</li>)}</ul><a href={`/register?course=${course.slug}`} className="mt-8 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">Register interest <ArrowUpRight size={15} /></a></article>)}</div></section></PageShell>;
+}
+
+function RegisterPage() {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const [course, setCourse] = useState(() => new URLSearchParams(window.location.search).get('course') || 'growth-systems');
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitting(true);
+    setError('');
+    try { await submitLead(Object.fromEntries(new FormData(event.currentTarget).entries())); setSubmitted(true); } catch { setError('تعذر حفظ التسجيل حالياً. تحقق من إعدادات الربط وحاول مرة أخرى.'); } finally { setSubmitting(false); }
+  };
+  return <PageShell><section className="mx-auto grid max-w-[1180px] gap-12 px-5 pb-20 pt-20 sm:px-8 sm:pt-28 lg:grid-cols-[.9fr_1.1fr]"><div><span className="mono text-[10px] tracking-[.2em] text-secondary">REGISTRATION / التسجيل</span><h1 className="display mt-5 text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">Choose the next<br /><span className="text-secondary">useful step.</span></h1><p className="mt-8 max-w-[460px] text-base leading-7 text-muted-foreground">سجّل اهتمامك بالكورس أو الورشة. ستصل البيانات إلى فريق المتابعة وقائمة البريد التسويقية عند تفعيل الربط.</p><div className="mt-10 border-l-2 border-secondary pl-5 text-sm leading-6 text-muted-foreground">لا يوجد دفع في هذه المرحلة. التسجيل هنا هو طلب معلومات أو حجز أولوية.</div></div><div className="border border-border bg-card p-6 sm:p-9">{submitted ? <div className="py-10"><div className="flex h-12 w-12 items-center justify-center bg-secondary text-primary"><Check size={23} /></div><h2 className="display mt-7 text-4xl font-extrabold leading-none tracking-[-.06em]">تم استلام التسجيل.</h2><p className="mt-4 text-sm leading-6 text-muted-foreground">سنرسل لك الخطوة التالية على وسيلة التواصل التي أدخلتها.</p><a href="/courses" className="mt-8 inline-flex border border-primary px-5 py-3 text-xs font-bold uppercase tracking-[.12em]">Browse courses</a></div> : <form onSubmit={handleSubmit} className="space-y-5"><input type="hidden" name="formType" value="course_registration" /><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">COURSE / الكورس</span><select name="course" value={course} onChange={(event) => setCourse(event.target.value)} className="w-full border border-border bg-background px-3 py-3 text-sm"><option value="growth-systems">Growth Systems / أنظمة النمو</option><option value="digital-infrastructure">Digital Infrastructure / البنية الرقمية</option><option value="opportunity-lab">Opportunity Lab / مختبر الفرص</option></select></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">NAME / الاسم</span><input required name="name" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">EMAIL / البريد الإلكتروني</span><input required type="email" name="email" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">WHATSAPP / واتساب</span><input name="contact" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">GOAL / الهدف</span><textarea name="message" rows={4} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm" placeholder="What do you want to be able to do after the course?" /></label>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}<button disabled={submitting} className="flex w-full items-center justify-center gap-3 bg-primary px-4 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground disabled:opacity-60">{submitting ? 'Saving...' : 'Register interest / سجّل اهتمامك'} <Send size={15} /></button></form>}</div></section></PageShell>;
+}
+
 function Router() {
   return (
     <RoutedErrorBoundary>
       <Switch>
         <WouterRoute path="/" component={Home} />
+        <WouterRoute path="/courses" component={CoursesPage} />
+        <WouterRoute path="/register" component={RegisterPage} />
         <WouterRoute component={NotFound} />
       </Switch>
     </RoutedErrorBoundary>
