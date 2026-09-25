@@ -2,6 +2,8 @@
 
 A deployment-neutral Vite + React personal brand and business ecosystem website for Ahmed El Sayed.
 
+The source-backed content decisions and visual provenance are recorded in `docs/content-sources.md`.
+
 ## Information architecture
 
 - `/` — positioning, ecosystem pillars, growth system, knowledge, integrations, social proof, and the primary conversation CTA.
