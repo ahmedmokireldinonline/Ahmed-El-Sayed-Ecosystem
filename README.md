@@ -29,6 +29,22 @@ Set these optional environment variables in Vercel when the real links are avail
 - `VITE_TIKTOK_URL`
 - `VITE_VIDEO_CATALOG_URL`
 
+### Form storage without a custom API
+
+The website sends every form submission directly to a Google Apps Script webhook. The generic payload includes `formType`, so the same sheet can receive `consultation`, `course`, and future registration forms.
+
+1. Create a Google Sheet and open **Extensions → Apps Script**.
+2. Copy `integrations/google-sheets/Code.gs` into the script editor.
+3. Deploy it as a **Web app**, execute as you, and allow access to anyone with the link.
+4. Add the deployment URL to Vercel as `VITE_GOOGLE_SHEETS_WEBHOOK_URL`.
+
+Optional direct Supabase storage uses these public frontend variables:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+
+Run `supabase/schema.sql` in the Supabase SQL editor before enabling them. The schema permits anonymous **insert only** and blocks public reads, updates, and deletes. Never put a Supabase service-role key in frontend variables.
+
 ## Optional Modal API
 
 Modal is not a static-site host, so the Vite frontend belongs on Vercel. `modal_app.py` provides a small serverless health endpoint that can later become the backend/API layer.

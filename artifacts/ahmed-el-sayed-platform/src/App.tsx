@@ -13,14 +13,17 @@ const queryClient = new QueryClient();
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined;
 const whatsappHref = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}` : '#connect';
 const PRIMARY_HANDLE = 'ahmedmokireldin';
+const SHOW_DEMO_REVIEWS = import.meta.env.VITE_SHOW_DEMO_REVIEWS === 'true';
+const GOOGLE_SHEETS_WEBHOOK_URL = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
 const navItems = [
   { label: 'Ecosystem', ar: 'المنظومة', href: '#ecosystem' },
   { label: 'Growth systems', ar: 'أنظمة النمو', href: '#systems' },
+  { label: 'Knowledge', ar: 'المعرفة', href: '#knowledge' },
   { label: 'Integrations', ar: 'التكاملات', href: '#integrations' },
   { label: 'Social studio', ar: 'استوديو السوشيال', href: '#social' },
-  { label: 'Knowledge', ar: 'المعرفة', href: '#knowledge' },
-  { label: 'Reviews', ar: 'التقييمات', href: '#reviews' },
   { label: 'About Ahmed', ar: 'عن أحمد', href: '#about' },
 ];
 
@@ -160,6 +163,8 @@ function Home() {
   });
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState('');
   const [reviewSlide, setReviewSlide] = useState(0);
   const [reviewsPaused, setReviewsPaused] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -238,12 +243,40 @@ function Home() {
 
   const openConsultation = () => {
     setSubmitted(false);
+    setSubmissionError('');
     setConsultationOpen(true);
   };
 
-  const handleConsultationSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleConsultationSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setSubmitted(true);
+    setSubmitting(true);
+    setSubmissionError('');
+    const form = event.currentTarget;
+    const values = Object.fromEntries(new FormData(form).entries());
+    try {
+      if (!GOOGLE_SHEETS_WEBHOOK_URL) throw new Error('Google Sheets webhook is not configured');
+      const payload = { ...values, submittedAt: new Date().toISOString(), source: 'website' };
+      const destinations = [fetch(GOOGLE_SHEETS_WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+      })];
+      if (SUPABASE_URL && SUPABASE_ANON_KEY) {
+        destinations.push(fetch(`${SUPABASE_URL.replace(/\/$/, '')}/rest/v1/form_submissions`, {
+          method: 'POST',
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify({ form_type: values.formType || 'general', name: values.name || null, contact: values.contact || null, question: values.question || null, course: values.course || null, message: values.message || null, submitted_at: payload.submittedAt, source: payload.source, raw_data: payload }),
+        }));
+      }
+      const results = await Promise.allSettled(destinations);
+      if (results.every((result) => result.status === 'rejected')) throw new Error('No storage destination accepted the submission');
+      setSubmitted(true);
+    } catch {
+      setSubmissionError(isArabic ? 'تعذر حفظ الطلب حالياً. حاول مرة أخرى أو تواصل مباشرة.' : isRussian ? 'Не удалось сохранить запрос. Попробуйте ещё раз или свяжитесь напрямую.' : 'We could not save your request right now. Please try again or contact us directly.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -621,7 +654,7 @@ function Home() {
         </div>
       </section>
 
-      <section id="reviews" className="border-b border-border bg-card">
+      <section id="reviews" className={`border-b border-border bg-card ${SHOW_DEMO_REVIEWS ? '' : 'hidden'}`} aria-hidden={!SHOW_DEMO_REVIEWS}>
         <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
           <div className="reveal-on-scroll flex flex-col justify-between gap-8 md:flex-row md:items-end">
             <div>
@@ -762,12 +795,14 @@ function Home() {
               <>
                   <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'محادثة أولى مفيدة' : isRussian ? 'ПЕРВЫЙ ПОЛЕЗНЫЙ РАЗГОВОР' : 'A USEFUL FIRST CONVERSATION'}</span>
                   <h2 id="consultation-title" className="display mt-5 max-w-[440px] text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? 'ما الذي تحاول ربطه أو تطويره؟' : isRussian ? 'Что вы хотите связать или развить?' : 'What are you trying to connect or grow?'}</h2>
-                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'هذه تجربة عرض فقط. لا يتم إرسال أي بيانات إلى خادم حالياً.' : isRussian ? 'Это демонстрационная форма. Данные пока не отправляются на сервер.' : 'This form is a presentation interaction only. Nothing is sent to a backend yet.'}</p>
-                <form onSubmit={handleConsultationSubmit} className="mt-8 space-y-4">
+                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ طلبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
+                  <form onSubmit={handleConsultationSubmit} className="mt-8 space-y-4">
+                    <input type="hidden" name="formType" value="consultation" />
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'الاسم' : isRussian ? 'ВАШЕ ИМЯ' : 'YOUR NAME'}</span><input required name="name" className="w-full border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'الاسم' : isRussian ? 'Имя' : 'Name'} data-testid="input-consultation-name" /></label>
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'وسيلة التواصل' : isRussian ? 'КАНАЛ СВЯЗИ' : 'CONTACT CHANNEL'}</span><input required name="contact" className="w-full border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'البريد الإلكتروني أو واتساب' : isRussian ? 'Email или WhatsApp' : 'Email or WhatsApp'} data-testid="input-consultation-contact" /></label>
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'السؤال' : isRussian ? 'ВОПРОС' : 'THE QUESTION'}</span><textarea required name="question" rows={4} className="w-full resize-none border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'اكتب نبذة عن الفرصة أو النظام...' : isRussian ? 'Несколько слов о возможности или системе...' : 'A few words about the opportunity or system...'} data-testid="input-consultation-question" /></label>
-                    <button type="submit" className="group flex w-full items-center justify-center gap-3 bg-primary px-4 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-colors hover:bg-accent" data-testid="button-submit-consultation">{isArabic ? 'تابع المحادثة' : isRussian ? 'Продолжить разговор' : 'Keep the conversation moving'} <Send size={15} className="transition-transform group-hover:translate-x-1" /></button>
+                    {submissionError && <p role="alert" className="text-sm leading-6 text-destructive">{submissionError}</p>}
+                    <button type="submit" disabled={submitting} className="group flex w-full items-center justify-center gap-3 bg-primary px-4 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-colors hover:bg-accent disabled:cursor-wait disabled:opacity-60" data-testid="button-submit-consultation">{submitting ? (isArabic ? 'جارٍ الحفظ...' : isRussian ? 'Сохранение...' : 'Saving...') : isArabic ? 'تابع المحادثة' : isRussian ? 'Продолжить разговор' : 'Keep the conversation moving'} <Send size={15} className="transition-transform group-hover:translate-x-1" /></button>
                 </form>
               </>
             ) : (
