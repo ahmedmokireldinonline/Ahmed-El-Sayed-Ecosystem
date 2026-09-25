@@ -1,0 +1,1 @@
+- [Social content sourcing](social-content-sourcing.md) — never publish personal channel links, video catalogs, metrics, or partnerships without confirmed original assets.
