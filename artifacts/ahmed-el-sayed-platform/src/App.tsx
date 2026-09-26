@@ -106,6 +106,21 @@ const socialChannels = [
   { name: 'TikTok', ar: 'تيك توك', ru: 'TikTok', icon: Music2, detail: 'Short-form education', arDetail: 'تعليم سريع', ruDetail: 'Короткое образовательное видео', href: (import.meta.env.VITE_TIKTOK_URL as string | undefined) || `https://www.tiktok.com/@${PRIMARY_HANDLE}` },
 ];
 
+const archiveCards = [
+  { image: '/archive-dashboard.jpg', label: 'لوحة بيانات', detail: 'Dashboard / data view', tone: 'wide' },
+  { image: '/archive-big-database.jpg', label: 'منتج بيانات', detail: 'Big database / lead intelligence', tone: 'square' },
+  { image: '/archive-shopify-growth.jpg', label: 'نمو التجارة', detail: 'Shopify / growth workflow', tone: 'square' },
+  { image: '/archive-tools-stack.jpg', label: 'أدوات التسويق', detail: 'Tools / campaign stack', tone: 'wide' },
+  { image: '/archive-whatsapp-api.jpg', label: 'واتساب وAPI', detail: 'WhatsApp / automation', tone: 'wide' },
+  { image: '/archive-crm-dashboard.jpg', label: 'تشغيل CRM', detail: 'CRM / pipeline operations', tone: 'wide' },
+  { image: '/archive-data-seller.jpg', label: 'بيع البيانات', detail: 'Data product / offer', tone: 'wide' },
+  { image: '/archive-lead-extraction.jpg', label: 'استخراج العملاء', detail: 'Lead extraction / research', tone: 'tall' },
+  { image: '/archive-automation-diagram.jpg', label: 'خريطة الأتمتة', detail: 'Automation map', tone: 'wide' },
+  { image: '/archive-openai-workflow.jpg', label: 'سير شغل ذكي', detail: 'AI / messaging workflow', tone: 'tall' },
+  { image: '/archive-whatsapp-plans.jpg', label: 'خطط المراسلة', detail: 'Messaging plans', tone: 'square' },
+  { image: '/archive-chatbot-system.jpg', label: 'نظام محادثة', detail: 'Chatbot / business system', tone: 'wide' },
+];
+
 const videoCatalogUrl = import.meta.env.VITE_VIDEO_CATALOG_URL as string | undefined;
 
 function Home() {
@@ -557,47 +572,32 @@ function Home() {
             </div>
           </div>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
-            <div className="grid gap-3 sm:grid-cols-[1.4fr_.6fr]">
-              <figure className="overflow-hidden border border-border bg-card sm:col-span-2">
-                <img src="/ahmed-brand-header.jpg" alt="Ahmed El Sayed marketing and AI automation header banner" className="pointer-events-none block h-auto w-full select-none" draggable="false" loading="lazy" />
-              </figure>
-              <figure className="overflow-hidden border border-border bg-card">
-                <img src="/ahmed-brand-square.jpg" alt="Ahmed El Sayed square social profile artwork" className="pointer-events-none block aspect-[238/218] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
-              </figure>
-              <div className="grid gap-3">
-                <figure className="overflow-hidden border border-border bg-card">
-                  <img src="/ahmed-brand-story.jpg" alt="Ahmed El Sayed vertical social story artwork" className="pointer-events-none block aspect-[172/218] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
-                </figure>
-                <figure className="overflow-hidden border border-border bg-card">
-                  <img src="/ahmed-brand-cover.jpg" alt="Ahmed El Sayed social cover artwork" className="pointer-events-none block aspect-[442/145] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
-                </figure>
-              </div>
-            </div>
+            <figure className="overflow-hidden border border-border bg-card shadow-[0_20px_55px_hsl(var(--primary)/.08)]">
+              <img src="/ahmed-brand-header.jpg" alt="البانر الرسمي لأحمد السيد عن التسويق والأتمتة" className="pointer-events-none block h-auto w-full select-none" draggable="false" loading="lazy" />
+            </figure>
             <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'هوية بصرية معتمدة' : isRussian ? 'УТВЕРЖДЁННАЯ ВИЗУАЛЬНАЯ ИДЕНТИЧНОСТЬ' : 'APPROVED VISUAL IDENTITY'}</span>
-              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>التسويق والنمو<br /><span className="text-secondary">والأتمتة.</span></> : isRussian ? <>Маркетинг, рост<br /><span className="text-secondary">и автоматизация.</span></> : <>Marketing, growth<br /><span className="text-secondary">& automation.</span></>}</h3>
-              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'مجموعة الهوية التي أرسلتها تُستخدم كمرجع رسمي لصورة العلامة، مع الحفاظ على بيانات التواصل كما وردت في المادة الأصلية.' : isRussian ? 'Предоставленный бренд-кит используется как официальный визуальный ориентир с сохранением контактных данных из исходного материала.' : 'The brand kit you supplied is now the official visual reference, preserving the contact details shown in the original asset.'}</p>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'بانر واحد / استخدام واحد' : isRussian ? 'ОДИН БАННЕР / ОДНО ИСПОЛЬЗОВАНИЕ' : 'ONE BANNER / ONE USE'}</span>
+              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>المحتوى الحقيقي<br /><span className="text-secondary">من شغلك.</span></> : isRussian ? <>Реальный контент<br /><span className="text-secondary">из вашей работы.</span></> : <>Real content<br /><span className="text-secondary">from your work.</span></>}</h3>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'استخدمنا البانر مرة واحدة فقط، وباقي المساحة مبنية من لقطات ومواد مختلفة من أرشيفك عشان الصفحة تبقى حية من غير تكرار.' : isRussian ? 'Баннер используется один раз, а остальная страница построена из разных материалов вашего архива без повторений.' : 'The banner appears once; the rest of the page uses distinct archive material without repetition.'}</p>
             </div>
           </div>
-          <div className="mt-16 border-t border-border pt-12">
+          <div id="work-archive" className="mt-16 border-t border-border pt-12">
             <div className="reveal-on-scroll flex flex-col justify-between gap-5 md:flex-row md:items-end">
               <div>
-                <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'قوالب السوشيال' : isRussian ? 'ШАБЛОНЫ ДЛЯ СОЦСЕТЕЙ' : 'SOCIAL TEMPLATES'}</span>
-                <h3 className="display mt-4 text-4xl font-extrabold tracking-[-.06em] text-primary">{isArabic ? 'نظام محتوى جاهز للتوسّع.' : isRussian ? 'Контентная система, готовая к масштабированию.' : 'A content system ready to scale.'}</h3>
+                <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'أرشيف الشغل الحقيقي' : isRussian ? 'АРХИВ РЕАЛЬНОЙ РАБОТЫ' : 'WORK ARCHIVE'}</span>
+                <h3 className="display mt-4 max-w-[720px] text-4xl font-extrabold tracking-[-.06em] text-primary sm:text-5xl">{isArabic ? 'كل صورة مرة واحدة. كل واحدة لها مكان.' : isRussian ? 'Каждый визуал один раз. У каждого своё место.' : 'Every visual once. Every one with a role.'}</h3>
               </div>
-              <span className="text-sm text-muted-foreground">{isArabic ? 'معاينة أولية / سيتم استبدالها بموادك' : isRussian ? 'Предпросмотр / замените своими материалами' : 'Preview set / replace with your assets'}</span>
+              <span className="text-sm text-muted-foreground">{isArabic ? 'لقطات أصلية من ملفاتك' : isRussian ? 'Оригиналы из ваших материалов' : 'Originals from your Drive'}</span>
             </div>
-            <div className="mt-8 grid gap-4 md:grid-cols-3">
-              {[
-                { label: isArabic ? 'إعلان' : isRussian ? 'АНОНС' : 'ANNOUNCEMENT', title: isArabic ? 'إطلاق فكرة جديدة' : isRussian ? 'Запуск новой идеи' : 'Launch a new idea', className: 'template-sand' },
-                { label: isArabic ? 'تعليمي' : isRussian ? 'ОБУЧЕНИЕ' : 'EDUCATIONAL', title: isArabic ? 'كاروسيل يشرح النظام' : isRussian ? 'Карусель, объясняющая систему' : 'Carousel that explains the system', className: 'template-navy' },
-                { label: isArabic ? 'فيديو' : isRussian ? 'ОБЛОЖКА ВИДЕО' : 'VIDEO COVER', title: isArabic ? 'كتالوج الفيديوهات' : isRussian ? 'Каталог видео' : 'Video catalog', className: 'template-gold' },
-              ].map((template) => (
-                <article key={template.label} className={`reveal-on-scroll social-template ${template.className}`}>
-                  <span className="mono text-[9px] tracking-[.18em] opacity-70">{template.label}</span>
-                  <span className="display mt-16 max-w-[180px] text-2xl font-extrabold leading-[.95] tracking-[-.05em]">{template.title}</span>
-                   <span className="mt-auto flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.12em]"><Play size={13} /> {isArabic ? 'قالب قابل للتعديل' : isRussian ? 'Редактируемый шаблон' : 'Editable template'}</span>
-                </article>
+            <div className="mt-8 grid auto-rows-[105px] grid-cols-2 gap-3 sm:grid-cols-4 lg:auto-rows-[120px]">
+              {archiveCards.map((card, index) => (
+                <figure key={card.image} className={`group relative overflow-hidden border border-border bg-card reveal-on-scroll ${card.tone === 'wide' ? 'col-span-2 row-span-2' : card.tone === 'tall' ? 'row-span-3' : 'row-span-2'}`}>
+                  <img src={card.image} alt={card.label} className="pointer-events-none h-full w-full select-none object-cover transition-transform duration-700 group-hover:scale-[1.04]" draggable="false" loading="lazy" />
+                  <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-primary/90 via-primary/55 to-transparent px-4 pb-3 pt-10 text-primary-foreground">
+                    <span className="text-sm font-bold">{isArabic ? card.label : card.detail}</span>
+                    <span className="mono text-[9px] tracking-[.15em] text-secondary">0{index + 1}</span>
+                  </figcaption>
+                </figure>
               ))}
             </div>
             <div className="mt-8 flex flex-col gap-4 border border-dashed border-border p-5 sm:flex-row sm:items-center sm:justify-between">
@@ -605,13 +605,7 @@ function Home() {
                 <span className="mono text-[9px] tracking-[.16em] text-secondary">{isArabic ? 'كتالوج الفيديو' : isRussian ? 'КАТАЛОГ ВИДЕО' : 'VIDEO CATALOG'}</span>
                 <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается оригинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
               </div>
-              {videoCatalogUrl ? (
-                <a href={videoCatalogUrl} target="_blank" rel="noreferrer" className="group flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary" data-testid="link-video-catalog">
-                  {isArabic ? 'افتح الكتالوج' : isRussian ? 'Открыть каталог' : 'Open catalog'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
-                </a>
-              ) : (
-                <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'لسه بيتجهز' : isRussian ? 'В ПОДГОТОВКЕ' : 'IN PREPARATION'}</span>
-              )}
+              {videoCatalogUrl ? <a href={videoCatalogUrl} target="_blank" rel="noreferrer" className="group flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary" data-testid="link-video-catalog">{isArabic ? 'افتح الكتالوج' : isRussian ? 'Открыть каталог' : 'Open catalog'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></a> : <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'لسه بيتجهز' : isRussian ? 'В ПОДГОТОВКЕ' : 'IN PREPARATION'}</span>}
             </div>
           </div>
         </div>
