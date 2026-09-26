@@ -583,9 +583,26 @@ function Home() {
               })}
             </div>
           </div>
-          <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.25fr_.75fr] lg:items-center">
-            <div className="overflow-hidden border border-border bg-card">
-              <img src="/ahmed-brand-kit.jpg" alt="Ahmed El Sayed brand kit showing marketing and AI automation identity assets" className="block aspect-[2.5/1] w-full object-cover" loading="lazy" />
+          <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
+            <div className="grid gap-3 sm:grid-cols-[1.4fr_.6fr]">
+              <figure className="overflow-hidden border border-border bg-card sm:col-span-2">
+                <img src="/ahmed-brand-header.jpg" alt="Ahmed El Sayed marketing and AI automation header banner" className="block aspect-[1280/294] w-full object-cover" loading="lazy" />
+                <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">HEADER / PERSONAL BRAND</figcaption>
+              </figure>
+              <figure className="overflow-hidden border border-border bg-card">
+                <img src="/ahmed-brand-square.jpg" alt="Ahmed El Sayed square social profile artwork" className="block aspect-square w-full object-cover" loading="lazy" />
+                <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">SQUARE / PROFILE</figcaption>
+              </figure>
+              <div className="grid gap-3">
+                <figure className="overflow-hidden border border-border bg-card">
+                  <img src="/ahmed-brand-story.jpg" alt="Ahmed El Sayed vertical social story artwork" className="block aspect-[172/218] w-full object-cover" loading="lazy" />
+                  <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">STORY / VERTICAL</figcaption>
+                </figure>
+                <figure className="overflow-hidden border border-border bg-card">
+                  <img src="/ahmed-brand-cover.jpg" alt="Ahmed El Sayed social cover artwork" className="block aspect-[442/145] w-full object-cover" loading="lazy" />
+                  <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">COVER / CHANNEL</figcaption>
+                </figure>
+              </div>
             </div>
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'هوية بصرية معتمدة' : isRussian ? 'УТВЕРЖДЁННАЯ ВИЗУАЛЬНАЯ ИДЕНТИЧНОСТЬ' : 'APPROVED VISUAL IDENTITY'}</span>
