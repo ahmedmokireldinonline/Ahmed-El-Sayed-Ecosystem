@@ -335,6 +335,7 @@ function Home() {
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[560px] lg:justify-self-end">
+            <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed" className="absolute inset-[15%] z-0 h-[70%] w-[70%] rounded-[2rem] object-cover object-center opacity-95 shadow-[0_25px_70px_hsl(var(--primary)/.18)]" />
             <div className="absolute inset-[8%] rounded-full border border-secondary/30" />
             <div className="absolute inset-[20%] rounded-full border border-accent/35" />
             <div className="network-orbit absolute inset-[8%] rounded-full border border-dashed border-secondary/40">
@@ -582,6 +583,16 @@ function Home() {
               })}
             </div>
           </div>
+          <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.25fr_.75fr] lg:items-center">
+            <div className="overflow-hidden border border-border bg-card">
+              <img src="/ahmed-brand-kit.jpg" alt="Ahmed El Sayed brand kit showing marketing and AI automation identity assets" className="block aspect-[2.5/1] w-full object-cover" loading="lazy" />
+            </div>
+            <div>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'هوية بصرية معتمدة' : isRussian ? 'УТВЕРЖДЁННАЯ ВИЗУАЛЬНАЯ ИДЕНТИЧНОСТЬ' : 'APPROVED VISUAL IDENTITY'}</span>
+              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>التسويق والنمو<br /><span className="text-secondary">والأتمتة.</span></> : isRussian ? <>Маркетинг, рост<br /><span className="text-secondary">и автоматизация.</span></> : <>Marketing, growth<br /><span className="text-secondary">& automation.</span></>}</h3>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'مجموعة الهوية التي أرسلتها تُستخدم كمرجع رسمي لصورة العلامة، مع الحفاظ على بيانات التواصل كما وردت في المادة الأصلية.' : isRussian ? 'Предоставленный бренд-кит используется как официальный визуальный ориентир с сохранением контактных данных из исходного материала.' : 'The brand kit you supplied is now the official visual reference, preserving the contact details shown in the original asset.'}</p>
+            </div>
+          </div>
           <div className="mt-16 border-t border-border pt-12">
             <div className="reveal-on-scroll flex flex-col justify-between gap-5 md:flex-row md:items-end">
               <div>
@@ -645,6 +656,28 @@ function Home() {
                   <p className="mt-2 text-xs leading-5 text-muted-foreground">{focus}</p>
                 </article>
               ))}
+            </div>
+          </div>
+          <div className="mt-14 grid gap-8 border-t border-border pt-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
+            <div className="overflow-hidden border border-border bg-card">
+              <img src="/wpfunnels-offer.jpg" alt="WPFunnels lifetime license offer supplied by Ahmed El Sayed" className="block aspect-[2/1] w-full object-cover" loading="lazy" />
+            </div>
+            <div>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'منتج رقمي / عرض مقدم' : isRussian ? 'ЦИФРОВОЙ ПРОДУКТ / ПРЕДЛОЖЕНИЕ' : 'DIGITAL PRODUCT / FEATURED OFFER'}</span>
+              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>منتجات تساعدك على بناء<br /><span className="text-secondary">مسار البيع.</span></> : isRussian ? <>Продукты для построения<br /><span className="text-secondary">воронки продаж.</span></> : <>Products that help build<br /><span className="text-secondary">the sales funnel.</span></>}</h3>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'عرض WPFunnels المقدم من المواد التي أرسلتها. تفاصيل السعر والترخيص والتحويل تُراجع قبل النشر النهائي.' : isRussian ? 'Предложение WPFunnels из предоставленного вами материала. Цена, лицензия и передача должны быть проверены перед публикацией.' : 'A WPFunnels offer from the material you supplied. Price, license, and transfer details should be verified before final publication.'}</p>
+              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">{isArabic ? 'اطلب التفاصيل' : isRussian ? 'Запросить детали' : 'Request details'} <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
+            </div>
+          </div>
+          <div className="mt-10 grid gap-8 border-t border-border pt-10 md:grid-cols-[.9fr_1.1fr] md:items-center">
+            <div className="overflow-hidden border border-border bg-card">
+              <img src="/lead-generation-tool.jpg" alt="Ultra Facebook Lead Generation tool supplied by Ahmed El Sayed" className="block aspect-[4/3] w-full object-cover" loading="lazy" />
+            </div>
+            <div>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'منتج بيانات / توليد عملاء محتملين' : isRussian ? 'ПРОДУКТ ДАННЫХ / ГЕНЕРАЦИЯ ЛИДОВ' : 'DATA PRODUCT / LEAD GENERATION'}</span>
+              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>الوصول إلى البيانات<br /><span className="text-secondary">بشكل عملي.</span></> : isRussian ? <>Практический доступ<br /><span className="text-secondary">к данным.</span></> : <>Practical access<br /><span className="text-secondary">to lead data.</span></>}</h3>
+              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'لقطة من أداة Ultra Facebook Lead Generation التي أرسلتها. ستُستخدم لتوضيح منتج البيانات وآلية البحث، مع مراجعة الترخيص والاستخدام قبل النشر التجاري.' : isRussian ? 'Скриншот Ultra Facebook Lead Generation из предоставленных материалов. Он показывает продукт данных и поиск; лицензия и использование должны быть проверены перед коммерческой публикацией.' : 'A screenshot of the Ultra Facebook Lead Generation tool you supplied. It illustrates the data product and search workflow; licensing and usage should be verified before commercial publication.'}</p>
+              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 border border-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary hover:border-secondary">{isArabic ? 'ناقش منتج البيانات' : isRussian ? 'Обсудить продукт данных' : 'Discuss the data product'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
             </div>
           </div>
           <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span>{isArabic ? 'شعارات العملاء / سيتم إدراجها بعد استلام الملفات المعتمدة' : isRussian ? 'Логотипы клиентов / добавим после получения утверждённых файлов' : 'Client logos / added after approved files are supplied'}</span><button type="button" onClick={openConsultation} className="group flex items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary">{isArabic ? 'أرسل بيانات شركتك' : isRussian ? 'Отправить данные компании' : 'Add your company'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button></div>
@@ -727,8 +760,12 @@ function Home() {
       </section>
 
       <section id="about" className="border-b border-border bg-background">
-        <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[.6fr_1.4fr] lg:px-12 lg:py-28">
+        <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[.55fr_1.45fr] lg:px-12 lg:py-28">
           <div className="reveal-on-scroll">
+            <div className="relative overflow-hidden border border-border bg-card p-3">
+              <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed in a professional portrait" className="aspect-square w-full object-cover object-center" loading="lazy" />
+              <div className="absolute bottom-6 left-6 bg-primary px-3 py-2 text-primary-foreground"><span className="mono text-[9px] tracking-[.16em]">AHMED EL SAYED</span></div>
+            </div>
             <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '08 / التوقيع' : isRussian ? '08 / ПОДПИСЬ' : '08 / THE SIGNATURE'}</span>
             <div className="mt-8 h-px w-20 bg-secondary" />
           </div>
