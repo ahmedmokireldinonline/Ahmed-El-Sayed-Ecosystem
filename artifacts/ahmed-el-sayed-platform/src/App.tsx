@@ -121,6 +121,15 @@ const archiveCards = [
   { image: '/archive-chatbot-system.jpg', label: 'نظام محادثة', detail: 'Chatbot / business system', tone: 'wide' },
 ];
 
+const productCatalog = [
+  { image: '/wpfunnels-offer.jpg', name: 'WPFunnels Lifetime License', arName: 'ترخيص WPFunnels مدى الحياة', description: 'بناء مسارات بيع وCheckout وUpsell لمواقع WordPress وWooCommerce.', price: '$249 USD', priceNote: 'السعر الظاهر في المادة المرفقة', tag: 'ترخيص جاهز' },
+  { image: '/lead-generation-tool.jpg', name: 'Ultra Facebook Lead Generation', arName: 'أداة استخراج عملاء من فيسبوك', description: 'أداة بحث وتجميع تساعدك تنظم بيانات العملاء المحتملين قبل المتابعة.', price: 'حسب الباقة', priceNote: 'يتحدد حسب الاستخدام والترخيص', tag: 'منتج بيانات' },
+  { image: '/archive-big-database.jpg', name: 'Big Database CSV', arName: 'حزمة Big Database CSV', description: 'حزمة بيانات كبيرة للاستخدام في البحث وبناء قوائم الاستهداف، بعد تحديد السوق المطلوب.', price: 'اطلب التسعيرة', priceNote: 'حسب الدولة والحجم ونوع البيانات', tag: 'بيانات' },
+  { image: '/archive-whatsapp-api.jpg', name: 'WhatsApp Automation Suite', arName: 'باقة أتمتة واتساب', description: 'تصميم متابعة ورسائل وعمليات تسليم بين واتساب والفريق، حسب السيناريو.', price: 'حسب النطاق', priceNote: 'تسعير بعد فهم الـworkflow', tag: 'أتمتة' },
+  { image: '/archive-crm-dashboard.jpg', name: 'CRM & Pipeline Setup', arName: 'تجهيز CRM ومسار متابعة', description: 'ترتيب مراحل العميل، الحقول، المتابعة، والتقارير في نظام واضح للفريق.', price: 'اطلب عرض سعر', priceNote: 'يتحدد حسب الأدوات وعدد المستخدمين', tag: 'تشغيل' },
+  { image: '/archive-chatbot-system.jpg', name: 'Chatbot Business System', arName: 'نظام شات بوت للشغل', description: 'تحويل الأسئلة المتكررة وجمع البيانات إلى رحلة محادثة قابلة للقياس.', price: 'حسب السيناريو', priceNote: 'بعد مراجعة القنوات والرسائل', tag: 'نظام' },
+];
+
 const videoCatalogUrl = import.meta.env.VITE_VIDEO_CATALOG_URL as string | undefined;
 
 function Home() {
@@ -136,6 +145,7 @@ function Home() {
     }
   });
   const [consultationOpen, setConsultationOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState('');
@@ -205,9 +215,10 @@ function Home() {
     return () => observer.disconnect();
   }, [language]);
 
-  const openConsultation = () => {
+  const openConsultation = (product = '') => {
     setSubmitted(false);
     setSubmissionError('');
+    setSelectedProduct(product);
     setConsultationOpen(true);
   };
 
@@ -260,7 +271,7 @@ function Home() {
                 </button>
               ))}
             </div>
-            <button type="button" onClick={openConsultation} className="group flex items-center gap-2 bg-primary px-4 py-2.5 text-[10px] font-bold uppercase tracking-[.13em] text-primary-foreground transition-all hover:bg-accent" data-testid="button-header-consultation">
+            <button type="button" onClick={() => openConsultation()} className="group flex items-center gap-2 bg-primary px-4 py-2.5 text-[10px] font-bold uppercase tracking-[.13em] text-primary-foreground transition-all hover:bg-accent" data-testid="button-header-consultation">
               {isArabic ? 'ابدأ محادثة' : isRussian ? 'Начать разговор' : 'Start a conversation'} <ArrowUpRight size={14} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </button>
           </div>
@@ -287,7 +298,7 @@ function Home() {
                   <button key={item.code} type="button" onClick={() => setLanguage(item.code as 'EN' | 'AR' | 'RU')} className={`border px-2.5 py-1.5 text-[10px] font-bold tracking-[.12em] ${language === item.code ? 'border-secondary bg-secondary text-primary' : 'border-border text-muted-foreground'}`} data-testid={`button-mobile-language-${item.code.toLowerCase()}`}>{item.label}</button>
                 ))}
               </div>
-              <button type="button" onClick={openConsultation} className="bg-primary px-3 py-2 text-[10px] font-bold uppercase tracking-[.11em] text-primary-foreground" data-testid="button-mobile-consultation">{isArabic ? 'ابدأ محادثة' : isRussian ? 'Начать разговор' : 'Start a conversation'}</button>
+              <button type="button" onClick={() => openConsultation()} className="bg-primary px-3 py-2 text-[10px] font-bold uppercase tracking-[.11em] text-primary-foreground" data-testid="button-mobile-consultation">{isArabic ? 'ابدأ محادثة' : isRussian ? 'Начать разговор' : 'Start a conversation'}</button>
             </div>
           </div>
         )}
@@ -313,7 +324,7 @@ function Home() {
               {isArabic ? 'بنحوّل اللي شافك لعميل محتمل، والبيانات لمنتج، والشغل المتكرر لأتمتة، والخبرة لكورس تقدر تطبقه.' : isRussian ? 'Превращаем внимание в спрос, данные в продукт, повторяющиеся задачи в автоматизацию, а опыт в практические курсы.' : 'Turn attention into demand, data into a product, repeated work into automation, and experience into practical courses.'}
             </p>
             <div className="reveal reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
-              <button type="button" onClick={openConsultation} className="group flex items-center justify-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-all hover:bg-accent" data-testid="button-hero-consultation">
+              <button type="button" onClick={() => openConsultation()} className="group flex items-center justify-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-all hover:bg-accent" data-testid="button-hero-consultation">
                 {isArabic ? 'خلّينا نبني نظامك' : isRussian ? 'Запросить систему роста' : 'Request a growth system'} <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
               <a href="#ecosystem" className="group flex items-center justify-center gap-3 border border-primary/20 px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary transition-colors hover:border-secondary" data-testid="link-hero-ecosystem">
@@ -613,54 +624,36 @@ function Home() {
 
       <section id="clients" className="border-b border-border bg-background">
         <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
-          <div className="grid gap-12 lg:grid-cols-[.8fr_1.2fr]">
+          <div className="flex flex-col justify-between gap-8 border-b border-border pb-12 lg:flex-row lg:items-end">
             <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '06 / العملاء والأسواق' : isRussian ? '06 / КЛИЕНТЫ И РЫНКИ' : '06 / CLIENTS & MARKETS'}</span>
-              <h2 className="display mt-5 max-w-[520px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>شراكات<br /><span className="text-secondary">عربية أولاً.</span></> : isRussian ? <>Партнёры<br /><span className="text-secondary">с арабским фокусом.</span></> : <>Built for<br /><span className="text-secondary">Arab markets.</span></>}</h2>
-              <p className="mt-7 max-w-[390px] text-sm leading-7 text-muted-foreground">{isArabic ? 'قسم مخصص لعرض الشركات والعملاء الذين سيتم تزويد أسمائهم أو شعاراتهم لاحقاً. لا نعرض أي شعار غير مؤكد.' : isRussian ? 'Раздел для компаний и клиентов, чьи названия и логотипы будут добавлены после получения материалов. Неподтверждённые логотипы не используются.' : 'A dedicated place for client and company logos once you provide the approved names and assets. No unverified logos are shown.'}</p>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / المنتجات والعروض' : isRussian ? '07 / ПРОДУКТЫ И ПРЕДЛОЖЕНИЯ' : '07 / PRODUCTS & OFFERS'}</span>
+              <h2 className="display mt-5 max-w-[760px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>منتجات جاهزة<br /><span className="text-secondary">للطلب والتشغيل.</span></> : isRussian ? <>Готовые продукты<br /><span className="text-secondary">для заказа и запуска.</span></> : <>Products ready<br /><span className="text-secondary">to order and run.</span></>}</h2>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              {[
-                ['🇪🇬', 'Egypt', 'Marketing / data products'],
-                ['🇸🇦', 'Saudi Arabia', 'Funnels / automation'],
-                ['🇦🇪', 'United Arab Emirates', 'Growth systems / CRM'],
-                ['🇶🇦', 'Qatar', 'Lead intelligence / courses'],
-                ['🇰🇼', 'Kuwait', 'Campaign operations'],
-                ['🇧🇭', 'Bahrain', 'Digital workflows'],
-                ['🇯🇴', 'Jordan', 'Training / implementation'],
-                ['🇲🇦', 'Morocco', 'Data / acquisition'],
-              ].map(([flag, country, focus]) => (
-                <article key={country} className="group border border-border bg-card p-5 transition-colors hover:border-secondary">
-                  <div className="flex items-center justify-between"><span className="text-3xl" aria-hidden="true">{flag}</span><span className="mono text-[9px] tracking-[.14em] text-secondary">MARKET</span></div>
-                  <h3 className="display mt-8 text-2xl font-extrabold tracking-[-.04em] text-primary">{country}</h3>
-                  <p className="mt-2 text-xs leading-5 text-muted-foreground">{focus}</p>
-                </article>
-              ))}
-            </div>
+            <p className="max-w-[360px] text-sm leading-7 text-muted-foreground">{isArabic ? 'اختار المنتج، شوف السعر أو طريقة التسعير، واضغط اطلب المنتج. الطلب بيتحول مباشرة لنموذج متابعة باسم المنتج.' : isRussian ? 'Выберите продукт, посмотрите цену или модель расчёта и отправьте заказ. Запрос попадёт в форму с названием продукта.' : 'Choose a product, review its price model, and send an order request. The selected product is carried into the follow-up form.'}</p>
           </div>
-          <div className="mt-14 grid gap-8 border-t border-border pt-10 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
-            <div className="overflow-hidden border border-border bg-card">
-              <img src="/wpfunnels-offer.jpg" alt="WPFunnels lifetime license offer supplied by Ahmed El Sayed" className="block aspect-[2/1] w-full object-cover" loading="lazy" />
-            </div>
-            <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'منتج رقمي / عرض مقدم' : isRussian ? 'ЦИФРОВОЙ ПРОДУКТ / ПРЕДЛОЖЕНИЕ' : 'DIGITAL PRODUCT / FEATURED OFFER'}</span>
-              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>منتجات تساعدك على بناء<br /><span className="text-secondary">مسار البيع.</span></> : isRussian ? <>Продукты для построения<br /><span className="text-secondary">воронки продаж.</span></> : <>Products that help build<br /><span className="text-secondary">the sales funnel.</span></>}</h3>
-              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'عرض WPFunnels المقدم من المواد التي أرسلتها. تفاصيل السعر والترخيص والتحويل تُراجع قبل النشر النهائي.' : isRussian ? 'Предложение WPFunnels из предоставленного вами материала. Цена, лицензия и передача должны быть проверены перед публикацией.' : 'A WPFunnels offer from the material you supplied. Price, license, and transfer details should be verified before final publication.'}</p>
-              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">{isArabic ? 'اطلب التفاصيل' : isRussian ? 'Запросить детали' : 'Request details'} <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
-            </div>
+          <div className="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {productCatalog.map((product, index) => (
+              <article key={product.name} className="reveal-on-scroll group flex flex-col overflow-hidden border border-border bg-card transition-all duration-500 hover:-translate-y-1 hover:border-secondary hover:shadow-[0_18px_45px_hsl(var(--primary)/.1)]">
+                <div className="relative overflow-hidden border-b border-border bg-background">
+                  <img src={product.image} alt={product.arName} className="block aspect-[16/10] w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]" loading="lazy" draggable="false" />
+                  <span className="absolute left-3 top-3 bg-primary px-2.5 py-1.5 text-[10px] font-bold text-primary-foreground">0{index + 1} / {product.tag}</span>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="display text-2xl font-extrabold leading-none tracking-[-.05em] text-primary">{isArabic ? product.arName : product.name}</h3>
+                  <p className="mt-4 min-h-[66px] text-sm leading-6 text-muted-foreground">{product.description}</p>
+                  <div className="mt-6 border-t border-border pt-5">
+                    <span className="mono text-[9px] tracking-[.16em] text-secondary">{isArabic ? 'السعر' : isRussian ? 'ЦЕНА' : 'PRICE'}</span>
+                    <div className="mt-1 flex flex-wrap items-baseline justify-between gap-2"><strong className="display text-2xl font-extrabold tracking-[-.04em] text-primary">{product.price}</strong><span className="text-[10px] text-muted-foreground">{product.priceNote}</span></div>
+                  </div>
+                  <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                    <button type="button" onClick={() => openConsultation(product.arName)} className="group/btn flex items-center justify-center gap-2 bg-primary px-3 py-3.5 text-[11px] font-bold uppercase tracking-[.1em] text-primary-foreground transition-colors hover:bg-accent">{isArabic ? 'اطلب المنتج' : isRussian ? 'Заказать' : 'Order'} <Send size={14} /></button>
+                    <button type="button" onClick={() => openConsultation(product.arName)} className="flex items-center justify-center gap-2 border border-primary px-3 py-3.5 text-[11px] font-bold uppercase tracking-[.1em] text-primary transition-colors hover:border-secondary hover:text-secondary">{isArabic ? 'اسأل عن التفاصيل' : isRussian ? 'Подробнее' : 'Ask details'} <ArrowUpRight size={14} /></button>
+                  </div>
+                </div>
+              </article>
+            ))}
           </div>
-          <div className="mt-10 grid gap-8 border-t border-border pt-10 md:grid-cols-[.9fr_1.1fr] md:items-center">
-            <div className="overflow-hidden border border-border bg-card">
-              <img src="/lead-generation-tool.jpg" alt="Ultra Facebook Lead Generation tool supplied by Ahmed El Sayed" className="block aspect-[4/3] w-full object-cover" loading="lazy" />
-            </div>
-            <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'منتج بيانات / توليد عملاء محتملين' : isRussian ? 'ПРОДУКТ ДАННЫХ / ГЕНЕРАЦИЯ ЛИДОВ' : 'DATA PRODUCT / LEAD GENERATION'}</span>
-              <h3 className="display mt-4 text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? <>الوصول إلى البيانات<br /><span className="text-secondary">بشكل عملي.</span></> : isRussian ? <>Практический доступ<br /><span className="text-secondary">к данным.</span></> : <>Practical access<br /><span className="text-secondary">to lead data.</span></>}</h3>
-              <p className="mt-5 text-sm leading-7 text-muted-foreground">{isArabic ? 'لقطة من أداة Ultra Facebook Lead Generation التي أرسلتها. ستُستخدم لتوضيح منتج البيانات وآلية البحث، مع مراجعة الترخيص والاستخدام قبل النشر التجاري.' : isRussian ? 'Скриншот Ultra Facebook Lead Generation из предоставленных материалов. Он показывает продукт данных и поиск; лицензия и использование должны быть проверены перед коммерческой публикацией.' : 'A screenshot of the Ultra Facebook Lead Generation tool you supplied. It illustrates the data product and search workflow; licensing and usage should be verified before commercial publication.'}</p>
-              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 border border-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary hover:border-secondary">{isArabic ? 'ناقش منتج البيانات' : isRussian ? 'Обсудить продукт данных' : 'Discuss the data product'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
-            </div>
-          </div>
-          <div className="mt-12 flex flex-col gap-4 border-t border-border pt-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span>{isArabic ? 'شعارات العملاء / سيتم إدراجها بعد استلام الملفات المعتمدة' : isRussian ? 'Логотипы клиентов / добавим после получения утверждённых файлов' : 'Client logos / added after approved files are supplied'}</span><button type="button" onClick={openConsultation} className="group flex items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary">{isArabic ? 'أرسل بيانات شركتك' : isRussian ? 'Отправить данные компании' : 'Add your company'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button></div>
+          <div className="mt-14 flex flex-col gap-4 border-t border-border pt-7 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between"><span>{isArabic ? 'الشعارات والعملاء المعتمدين هيتضافوا بعد استلام الملفات الأصلية.' : isRussian ? 'Утверждённые логотипы и клиенты будут добавлены после получения оригинальных материалов.' : 'Approved client logos will be added after the original files are supplied.'}</span><button type="button" onClick={() => openConsultation('طلب منتج أو عرض مخصص')} className="group flex items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary">{isArabic ? 'اطلب عرض مخصص' : isRussian ? 'Запросить индивидуальное предложение' : 'Request a custom offer'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" /></button></div>
         </div>
       </section>
 
@@ -674,7 +667,7 @@ function Home() {
             <div className="border border-secondary/40 bg-background p-7 sm:p-9">
               <span className="mono text-[10px] tracking-[.16em] text-secondary">{isArabic ? 'لسه بنجمع المادة الأصلية' : isRussian ? 'СБИРАЕМ ОРИГИНАЛЬНЫЕ МАТЕРИАЛЫ' : 'ORIGINAL MATERIALS NEEDED'}</span>
               <p className="mt-5 text-base leading-8 text-primary">{isArabic ? 'مش هنحط أسماء أو صور أو نجوم من عندنا. أول ما تبعت نص التقييم، اسم صاحبه، بلده، ومصدره، هننزّله هنا زي ما هو وبشكل محترم.' : isRussian ? 'Мы не будем придумывать имена, фотографии или оценки. После получения текста, имени, страны и источника отзыв будет опубликован здесь прозрачно.' : 'We will not invent names, photos, or star ratings. Send the original text, name, country, and source, and we will publish it here transparently.'}</p>
-              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">{isArabic ? 'ابعت التقييمات' : isRussian ? 'Отправить отзывы' : 'Send the reviews'} <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
+              <button type="button" onClick={() => openConsultation()} className="group mt-7 flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">{isArabic ? 'ابعت التقييمات' : isRussian ? 'Отправить отзывы' : 'Send the reviews'} <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
             </div>
           </div>
         </div>
@@ -710,7 +703,7 @@ function Home() {
             <p className="mt-7 max-w-[470px] text-sm leading-6 text-primary/70">{isArabic ? 'أخبرنا بما تحاول ربطه أو توضيحه أو تطويره. الخطوة الأولى محادثة مفيدة — وليست التزاماً.' : isRussian ? 'Расскажите, что вы хотите связать, прояснить или развить. Первый шаг — полезный разговор, а не обязательство.' : 'Tell us what you are trying to connect, clarify, or grow. The first step is a useful conversation — not a commitment.'}</p>
           </div>
           <div className="reveal-on-scroll flex flex-col gap-3 sm:flex-row md:flex-col">
-            <button type="button" onClick={openConsultation} className="group flex items-center justify-between gap-8 bg-primary px-5 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-colors hover:bg-accent" data-testid="button-connect-consultation">
+            <button type="button" onClick={() => openConsultation()} className="group flex items-center justify-between gap-8 bg-primary px-5 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-colors hover:bg-accent" data-testid="button-connect-consultation">
               {isArabic ? 'اطلب استشارة' : isRussian ? 'Запросить консультацию' : 'Request a consultation'} <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
             </button>
             {WHATSAPP_NUMBER ? (
@@ -718,7 +711,7 @@ function Home() {
                 <span className="flex items-center gap-2"><MessageCircle size={15} /> {isArabic ? 'تواصل عبر واتساب' : isRussian ? 'Связаться в WhatsApp' : 'WhatsApp contact'}</span><ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </a>
             ) : (
-              <button type="button" onClick={openConsultation} className="group flex items-center justify-between gap-8 border border-primary/30 px-5 py-4 text-left text-xs font-bold uppercase tracking-[.12em] transition-colors hover:border-primary" data-testid="button-connect-whatsapp-fallback">
+              <button type="button" onClick={() => openConsultation()} className="group flex items-center justify-between gap-8 border border-primary/30 px-5 py-4 text-left text-xs font-bold uppercase tracking-[.12em] transition-colors hover:border-primary" data-testid="button-connect-whatsapp-fallback">
                 <span className="flex items-center gap-2"><MessageCircle size={15} /> {isArabic ? 'اطلب محادثة' : isRussian ? 'Запросить разговор' : 'Request a conversation'}</span><ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
             )}
@@ -751,8 +744,10 @@ function Home() {
                   <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'محادثة أولى مفيدة' : isRussian ? 'ПЕРВЫЙ ПОЛЕЗНЫЙ РАЗГОВОР' : 'A USEFUL FIRST CONVERSATION'}</span>
                   <h2 id="consultation-title" className="display mt-5 max-w-[440px] text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? 'ما الذي تحاول ربطه أو تطويره؟' : isRussian ? 'Что вы хотите связать или развить?' : 'What are you trying to connect or grow?'}</h2>
                   <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ طلبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
+                  {selectedProduct && <div className="mt-5 border border-secondary/50 bg-secondary/10 px-4 py-3 text-sm text-primary"><span className="mono block text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'المنتج المطلوب' : isRussian ? 'ВЫБРАННЫЙ ПРОДУКТ' : 'SELECTED PRODUCT'}</span><strong className="mt-1 block">{selectedProduct}</strong></div>}
                   <form onSubmit={handleConsultationSubmit} className="mt-8 space-y-4">
                     <input type="hidden" name="formType" value="consultation" />
+                    <input type="hidden" name="product" value={selectedProduct} />
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'الاسم' : isRussian ? 'ВАШЕ ИМЯ' : 'YOUR NAME'}</span><input required name="name" className="w-full border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'الاسم' : isRussian ? 'Имя' : 'Name'} data-testid="input-consultation-name" /></label>
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'وسيلة التواصل' : isRussian ? 'КАНАЛ СВЯЗИ' : 'CONTACT CHANNEL'}</span><input required name="contact" className="w-full border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'البريد الإلكتروني أو واتساب' : isRussian ? 'Email или WhatsApp' : 'Email or WhatsApp'} data-testid="input-consultation-contact" /></label>
                     <label className="block"><span className="mono mb-2 block text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'السؤال' : isRussian ? 'ВОПРОС' : 'THE QUESTION'}</span><textarea required name="question" rows={4} className="w-full resize-none border border-border bg-card px-3 py-3 text-sm outline-none transition-colors focus:border-secondary" placeholder={isArabic ? 'اكتب نبذة عن الفرصة أو النظام...' : isRussian ? 'Несколько слов о возможности или системе...' : 'A few words about the opportunity or system...'} data-testid="input-consultation-question" /></label>
