@@ -1,5 +1,5 @@
 import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, ChevronLeft, ChevronRight, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Pause, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, BarChart3, BookOpen, Bot, Check, Code2, Compass, Database, Globe2, Instagram, Layers3, Linkedin, LineChart, Menu, MessageCircle, Music2, Play, Send, Sparkles, Video, Workflow, X, Youtube } from 'lucide-react';
 import { RiDatabase2Fill, RiLinkedinFill, RiOpenaiFill, RiSlackFill, RiWebhookFill } from 'react-icons/ri';
 import { SiBuffer, SiFacebook, SiFigma, SiGoogleads, SiGoogleanalytics, SiGooglesearchconsole, SiHootsuite, SiHotjar, SiHubspot, SiMailchimp, SiMake, SiMeta, SiN8N, SiNotion, SiSemrush, SiShopify, SiTiktok, SiWhatsapp, SiWordpress, SiZapier } from 'react-icons/si';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ const queryClient = new QueryClient();
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined;
 const whatsappHref = WHATSAPP_NUMBER ? `https://wa.me/${WHATSAPP_NUMBER.replace(/\D/g, '')}` : '#connect';
 const PRIMARY_HANDLE = 'ahmedmokireldin';
+const OFFICIAL_SITE_URL = 'https://ahmedmokireldin.online';
 const GOOGLE_SHEETS_WEBHOOK_URL = import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL as string | undefined;
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
@@ -40,12 +41,12 @@ async function submitLead(values: Record<string, FormDataEntryValue>) {
 }
 
 const navItems = [
-  { label: 'Services', ar: 'الخدمات', href: '#ecosystem' },
+  { label: 'Services', ar: 'الخدمات', href: '/services' },
   { label: 'Systems', ar: 'الأنظمة', href: '#systems' },
   { label: 'Courses', ar: 'الكورسات', href: '/courses' },
   { label: 'Clients', ar: 'العملاء', href: '#clients' },
   { label: 'Reviews', ar: 'التقييمات', href: '#reviews' },
-  { label: 'About', ar: 'عن أحمد', href: '#about' },
+  { label: 'About', ar: 'عن أحمد', href: '/about' },
 ];
 
 const pillars = [
@@ -107,26 +108,6 @@ const socialChannels = [
 
 const videoCatalogUrl = import.meta.env.VITE_VIDEO_CATALOG_URL as string | undefined;
 
-const reviewCopy = [
-  { en: 'A verified client quote will appear here once the original testimonial is supplied.', ar: 'سيظهر هنا تقييم موثق بعد تزويد النص الأصلي من العميل.', ru: 'Здесь появится подтверждённая цитата после получения оригинала от клиента.' },
-  { en: 'This card is ready for the client result, service delivered, and source link.', ar: 'هذه البطاقة جاهزة لنتيجة العميل والخدمة ورابط المصدر.', ru: 'Карточка готова для результата клиента, услуги и ссылки на источник.' },
-  { en: 'We keep the proof specific: what changed, who said it, and where it came from.', ar: 'نحافظ على مصداقية الدليل: ماذا تغير، ومن قاله، وما مصدره.', ru: 'Мы сохраняем доказательство конкретным: что изменилось, кто сказал и откуда это взято.' },
-];
-
-const reviewAuthors = [
-  ['Client quote 01', '🇪🇬', 'Egypt'],
-  ['Client quote 02', '🇦🇪', 'United Arab Emirates'],
-  ['Client quote 03', '🇸🇦', 'Saudi Arabia'],
-  ['Client quote 04', '🇶🇦', 'Qatar'],
-  ['Client quote 05', '🇯🇴', 'Jordan'],
-  ['Client quote 06', '🇰🇼', 'Kuwait'],
-  ['Client quote 07', '🇧🇭', 'Bahrain'],
-  ['Client quote 08', '🇲🇦', 'Morocco'],
-  ['Client quote 09', '🇹🇳', 'Tunisia'],
-].map(([name, flag, country], index) => ({ id: `review-slot-${index + 1}`, name, flag, country, copyIndex: index % reviewCopy.length }));
-
-const reviewSlides = Array.from({ length: Math.ceil(reviewAuthors.length / 3) }, (_, index) => reviewAuthors.slice(index * 3, index * 3 + 3));
-
 function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [language, setLanguage] = useState<'EN' | 'AR' | 'RU'>(() => {
@@ -134,17 +115,15 @@ function Home() {
     if (requestedLanguage === 'AR' || requestedLanguage === 'RU') return requestedLanguage;
     try {
       const savedLanguage = window.localStorage.getItem('ahmed-platform-language')?.toUpperCase();
-      return savedLanguage === 'AR' || savedLanguage === 'RU' ? savedLanguage : 'EN';
+      return savedLanguage === 'AR' || savedLanguage === 'RU' ? savedLanguage : 'AR';
     } catch {
-      return 'EN';
+      return 'AR';
     }
   });
   const [consultationOpen, setConsultationOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState('');
-  const [reviewSlide, setReviewSlide] = useState(0);
-  const [reviewsPaused, setReviewsPaused] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const previouslyFocusedRef = useRef<HTMLElement | null>(null);
   const isArabic = language === 'AR';
@@ -211,14 +190,6 @@ function Home() {
     return () => observer.disconnect();
   }, [language]);
 
-  useEffect(() => {
-    if (reviewsPaused) return;
-    const interval = window.setInterval(() => {
-      setReviewSlide((current) => (current + 1) % reviewSlides.length);
-    }, 5200);
-    return () => window.clearInterval(interval);
-  }, [reviewsPaused]);
-
   const openConsultation = () => {
     setSubmitted(false);
     setSubmissionError('');
@@ -263,6 +234,7 @@ function Home() {
             ))}
             <a href="/courses" className="text-[11px] font-bold uppercase tracking-[.14em] text-secondary transition-colors hover:text-primary">{isArabic ? 'الكورسات' : isRussian ? 'Курсы' : 'Courses'}</a>
             <a href="/register" className="text-[11px] font-bold uppercase tracking-[.14em] text-muted-foreground transition-colors hover:text-primary">{isArabic ? 'التسجيل' : isRussian ? 'Регистрация' : 'Register'}</a>
+            <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="text-[11px] font-bold uppercase tracking-[.14em] text-secondary transition-colors hover:text-primary">{isArabic ? 'الموقع الرسمي' : isRussian ? 'Официальный сайт' : 'Official site'}</a>
           </nav>
 
           <div className="hidden items-center gap-4 lg:flex">
@@ -292,6 +264,7 @@ function Home() {
               ))}
               <a href="/courses" onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-secondary">{isArabic ? 'الكورسات' : isRussian ? 'Курсы' : 'Courses'}<ArrowUpRight size={14} /></a>
               <a href="/register" onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-primary">{isArabic ? 'التسجيل' : isRussian ? 'Регистрация' : 'Register'}<ArrowUpRight size={14} /></a>
+              <a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)} className="flex items-center justify-between border-b border-border pb-3 text-xs font-bold uppercase tracking-[.13em] text-secondary">{isArabic ? 'الموقع الرسمي' : isRussian ? 'Официальный сайт' : 'Official site'}<ArrowUpRight size={14} /></a>
             </nav>
             <div className="mt-5 flex items-center justify-between">
               <div className="flex gap-2">
@@ -310,11 +283,11 @@ function Home() {
           <div className="relative z-10">
             <div className="reveal mb-8 flex items-center gap-3">
               <span className="h-px w-10 bg-secondary" />
-              <span className="mono text-[10px] font-medium tracking-[.2em] text-secondary">{isArabic ? 'منصة رقمية استراتيجية' : isRussian ? 'СТРАТЕГИЧЕСКАЯ ЦИФРОВАЯ ПЛАТФОРМА' : 'A STRATEGIC DIGITAL PLATFORM'}</span>
+              <span className="mono text-[10px] font-medium tracking-[.2em] text-secondary">{isArabic ? 'تسويق وبيانات وأتمتة من مكان واحد' : isRussian ? 'СТРАТЕГИЧЕСКАЯ ЦИФРОВАЯ ПЛАТФОРМА' : 'A STRATEGIC DIGITAL PLATFORM'}</span>
             </div>
             <h1 className="hero-title display reveal reveal-delay-1 max-w-full text-[clamp(3.2rem,8vw,7.9rem)] font-extrabold leading-[.88] text-primary">
               {isArabic ? (
-                <>نبني <span className="text-accent">التسويق.</span><br />نبيع البيانات.<br /><span className="text-secondary">نؤتمت النمو.</span><br />ونعلّم.</>
+                <>نظبط <span className="text-accent">التسويق.</span><br />نبيع البيانات.<br /><span className="text-secondary">نأتمت الشغل.</span><br />ونعلّمك.</>
               ) : isRussian ? (
                 <>Маркетинг.<br /><span className="text-accent">Данные.</span><br /><span className="text-secondary">Автоматизация.</span><br />Обучение.</>
               ) : (
@@ -322,14 +295,14 @@ function Home() {
               )}
             </h1>
             <p className="reveal reveal-delay-2 mt-9 max-w-[510px] text-[15px] leading-7 text-muted-foreground">
-              {isArabic ? 'نحوّل الانتباه إلى طلب، والبيانات إلى منتج، والعمل المتكرر إلى أتمتة، والخبرة إلى كورسات قابلة للتطبيق.' : isRussian ? 'Превращаем внимание в спрос, данные в продукт, повторяющиеся задачи в автоматизацию, а опыт в практические курсы.' : 'Turn attention into demand, data into a product, repeated work into automation, and experience into practical courses.'}
+              {isArabic ? 'بنحوّل اللي شافك لعميل محتمل، والبيانات لمنتج، والشغل المتكرر لأتمتة، والخبرة لكورس تقدر تطبقه.' : isRussian ? 'Превращаем внимание в спрос, данные в продукт, повторяющиеся задачи в автоматизацию, а опыт в практические курсы.' : 'Turn attention into demand, data into a product, repeated work into automation, and experience into practical courses.'}
             </p>
             <div className="reveal reveal-delay-3 mt-9 flex flex-col gap-3 sm:flex-row">
               <button type="button" onClick={openConsultation} className="group flex items-center justify-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground transition-all hover:bg-accent" data-testid="button-hero-consultation">
-                {isArabic ? 'اطلب نظام نمو' : isRussian ? 'Запросить систему роста' : 'Request a growth system'} <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                {isArabic ? 'خلّينا نبني نظامك' : isRussian ? 'Запросить систему роста' : 'Request a growth system'} <ArrowUpRight size={16} className="transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </button>
               <a href="#ecosystem" className="group flex items-center justify-center gap-3 border border-primary/20 px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary transition-colors hover:border-secondary" data-testid="link-hero-ecosystem">
-                {isArabic ? 'استكشف المنظومة' : isRussian ? 'Изучить экосистему' : 'Explore the ecosystem'} <ArrowDownRight size={16} className="transition-transform group-hover:translate-y-1" />
+                {isArabic ? 'شوف بنشتغل إزاي' : isRussian ? 'Изучить экосистему' : 'Explore the ecosystem'} <ArrowDownRight size={16} className="transition-transform group-hover:translate-y-1" />
               </a>
             </div>
           </div>
@@ -386,8 +359,8 @@ function Home() {
           <div className="grid gap-14 lg:grid-cols-[.75fr_1.25fr]">
             <div className="reveal-on-scroll">
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '01 / المنظومة' : isRussian ? '01 / ЭКОСИСТЕМА' : '01 / THE ECOSYSTEM'}</span>
-              <h2 className="display mt-6 max-w-[430px] text-5xl font-extrabold leading-[.93] tracking-[-.06em] sm:text-6xl">{isArabic ? <>رؤية واحدة.<br /><span className="text-secondary">محركات متعددة.</span></> : isRussian ? <>Одна перспектива.<br /><span className="text-secondary">Много двигателей.</span></> : <>One perspective.<br /><span className="text-secondary">Many engines.</span></>}</h2>
-              <p className="mt-7 max-w-[360px] text-sm leading-7 text-primary-foreground/65">{isArabic ? 'العمل يتحرك بين التسويق والبيانات والأتمتة والتعليم، حيث تحتاج كل خطوة تجارية إلى رسالة ومسار ونظام متابعة.' : isRussian ? 'Работа движется между маркетингом, данными, автоматизацией и обучением, где каждому коммерческому шагу нужны сообщение, путь и follow-up.' : 'The work moves between marketing, data, automation, and education, where every commercial step needs a message, a path, and reliable follow-up.'}</p>
+              <h2 className="display mt-6 max-w-[430px] text-5xl font-extrabold leading-[.93] tracking-[-.06em] sm:text-6xl">{isArabic ? <>بصّة واحدة.<br /><span className="text-secondary">كذا حل.</span></> : isRussian ? <>Одна перспектива.<br /><span className="text-secondary">Много двигателей.</span></> : <>One perspective.<br /><span className="text-secondary">Many engines.</span></>}</h2>
+              <p className="mt-7 max-w-[360px] text-sm leading-7 text-primary-foreground/65">{isArabic ? 'بنظبط التسويق والبيانات والأتمتة والتعليم مع بعض، عشان كل خطوة في شغلك تبقى واضحة وليها متابعة.' : isRussian ? 'Работа движется между маркетингом, данными, автоматизацией и обучением, где каждому коммерческому шагу нужны сообщение, путь и follow-up.' : 'The work moves between marketing, data, automation, and education, where every commercial step needs a message, a path, and reliable follow-up.'}</p>
               <div className="mt-10 flex items-center gap-3 border-t border-primary-foreground/15 pt-5">
                 <span className="h-2 w-2 rounded-full bg-secondary" />
                 <span className="mono text-[9px] tracking-[.14em] text-primary-foreground/55">{isArabic ? 'إمكانات / قابلة للتخصيص حسب السياق' : isRussian ? 'ВОЗМОЖНОСТИ / НАСТРАИВАЮТСЯ ПОД КОНТЕКСТ' : 'CAPABILITIES / CONFIGURABLE TO CONTEXT'}</span>
@@ -417,9 +390,9 @@ function Home() {
           <div className="flex flex-col justify-between gap-7 md:flex-row md:items-end">
             <div className="reveal-on-scroll">
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '02 / أنظمة النمو' : isRussian ? '02 / СИСТЕМЫ РОСТА' : '02 / GROWTH SYSTEMS'}</span>
-              <h2 className="display mt-5 max-w-[660px] text-5xl font-extrabold leading-[.95] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>استراتيجية<br /><span className="text-accent">تصل إلى أرض الواقع.</span></> : isRussian ? <>Стратегия, которая<br /><span className="text-accent">работает в реальности.</span></> : <>Strategy that can<br /><span className="text-accent">touch the ground.</span></>}</h2>
+              <h2 className="display mt-5 max-w-[660px] text-5xl font-extrabold leading-[.95] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>خطة واضحة<br /><span className="text-accent">تشتغل على أرض الواقع.</span></> : isRussian ? <>Стратегия, которая<br /><span className="text-accent">работает в реальности.</span></> : <>Strategy that can<br /><span className="text-accent">touch the ground.</span></>}</h2>
             </div>
-            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'النظام المفيد ليس عرضاً تقديمياً. إنه سلسلة من القرارات والأدوات والخطوات الواضحة المبنية لبيئة العمل الحقيقية.' : isRussian ? 'Полезная система — это не презентация. Это последовательность решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
+            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'مش كلام حلو وخلاص. بنرتب قرارات وأدوات وخطوات تقدر تشغلها في شغلك من بكرة.' : isRussian ? 'Полезная система — это не презентация. Это последовательность решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
           </div>
           <div className="mt-20 grid gap-px bg-border md:grid-cols-3">
             {systemSteps.map((step, index) => (
@@ -553,7 +526,7 @@ function Home() {
               <p className="mt-7 max-w-[370px] text-sm leading-7 text-muted-foreground">{isArabic ? 'مساحة منظمة لإضافة روابط السوشيال وكتالوج الفيديوهات وقوالب المحتوى عند تجهيز المواد الخاصة بك.' : isRussian ? 'Структурированное пространство для ваших ссылок, каталога видео и шаблонов контента после добавления оригинальных материалов.' : 'A structured place for your social links, video catalog, and content templates once your own materials are supplied.'}</p>
               <div className="mt-8 flex items-center gap-3 border-t border-border pt-5">
                 <Video size={17} className="text-secondary" />
-                <span className="mono text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'المواد القادمة / روابط وملفات أصلية' : isRussian ? 'ВХОДЯЩИЕ МАТЕРИАЛЫ / ОРИГИНАЛЬНЫЕ ССЫЛКИ И ФАЙЛЫ' : 'INCOMING ASSETS / ORIGINAL LINKS & FILES'}</span>
+                <span className="mono text-[9px] tracking-[.14em] text-muted-foreground">{isArabic ? 'المواد الجاية / ملفاتك الأصلية' : isRussian ? 'ВХОДЯЩИЕ МАТЕРИАЛЫ / ОРИГИНАЛЬНЫЕ ФАЙЛЫ' : 'INCOMING ASSETS / ORIGINAL FILES'}</span>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2">
@@ -564,10 +537,10 @@ function Home() {
                   <>
                     <div className="flex items-start justify-between">
                       <Icon size={22} className="text-secondary" strokeWidth={1.4} />
-                      <span className="mono text-[9px] tracking-[.16em] text-muted-foreground">{channel.href ? (isArabic ? 'رابط مباشر' : isRussian ? 'ПРЯМАЯ ССЫЛКА' : 'LIVE LINK') : (isArabic ? 'بانتظار الرابط' : isRussian ? 'ССЫЛКА ОЖИДАЕТСЯ' : 'LINK PENDING')}</span>
+                      <span className="mono text-[9px] tracking-[.16em] text-muted-foreground">{channel.href ? (isArabic ? 'القناة الرسمية' : isRussian ? 'ОФИЦИАЛЬНЫЙ КАНАЛ' : 'OFFICIAL CHANNEL') : (isArabic ? 'قريباً' : isRussian ? 'СКОРО' : 'COMING SOON')}</span>
                     </div>
                     <h3 className="display mt-14 text-2xl font-extrabold tracking-[-.04em] text-primary">{isArabic ? channel.ar : isRussian ? channel.ru : channel.name}</h3>
-                    <p className="mt-2 text-xs text-muted-foreground">{channel.href ? (isArabic ? 'افتح القناة' : isRussian ? 'Открыть канал' : 'Open channel') : (isArabic ? 'جاهز لإضافة الرابط' : isRussian ? 'Добавьте оригинальную ссылку' : 'Ready for your link')}</p>
+                    <p className="mt-2 text-xs text-muted-foreground">{channel.href ? (isArabic ? 'شوف المحتوى' : isRussian ? 'Смотреть контент' : 'View content') : (isArabic ? 'هنضيفه قريب' : isRussian ? 'Добавим позже' : 'Coming soon')}</p>
                     <p className="mt-5 text-[11px] uppercase tracking-[.08em] text-secondary">{isArabic ? channel.arDetail : isRussian ? channel.ruDetail : channel.detail}</p>
                   </>
                 );
@@ -586,21 +559,17 @@ function Home() {
           <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
             <div className="grid gap-3 sm:grid-cols-[1.4fr_.6fr]">
               <figure className="overflow-hidden border border-border bg-card sm:col-span-2">
-                <img src="/ahmed-brand-header.jpg" alt="Ahmed El Sayed marketing and AI automation header banner" className="block aspect-[1280/294] w-full object-cover" loading="lazy" />
-                <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">HEADER / PERSONAL BRAND</figcaption>
+                <img src="/ahmed-brand-header.jpg" alt="Ahmed El Sayed marketing and AI automation header banner" className="pointer-events-none block h-auto w-full select-none" draggable="false" loading="lazy" />
               </figure>
               <figure className="overflow-hidden border border-border bg-card">
-                <img src="/ahmed-brand-square.jpg" alt="Ahmed El Sayed square social profile artwork" className="block aspect-square w-full object-cover" loading="lazy" />
-                <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">SQUARE / PROFILE</figcaption>
+                <img src="/ahmed-brand-square.jpg" alt="Ahmed El Sayed square social profile artwork" className="pointer-events-none block aspect-[238/218] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
               </figure>
               <div className="grid gap-3">
                 <figure className="overflow-hidden border border-border bg-card">
-                  <img src="/ahmed-brand-story.jpg" alt="Ahmed El Sayed vertical social story artwork" className="block aspect-[172/218] w-full object-cover" loading="lazy" />
-                  <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">STORY / VERTICAL</figcaption>
+                  <img src="/ahmed-brand-story.jpg" alt="Ahmed El Sayed vertical social story artwork" className="pointer-events-none block aspect-[172/218] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
                 </figure>
                 <figure className="overflow-hidden border border-border bg-card">
-                  <img src="/ahmed-brand-cover.jpg" alt="Ahmed El Sayed social cover artwork" className="block aspect-[442/145] w-full object-cover" loading="lazy" />
-                  <figcaption className="border-t border-border px-4 py-2 font-mono text-[9px] tracking-[.14em] text-muted-foreground">COVER / CHANNEL</figcaption>
+                  <img src="/ahmed-brand-cover.jpg" alt="Ahmed El Sayed social cover artwork" className="pointer-events-none block aspect-[442/145] h-auto w-full select-none object-cover" draggable="false" loading="lazy" />
                 </figure>
               </div>
             </div>
@@ -634,14 +603,14 @@ function Home() {
             <div className="mt-8 flex flex-col gap-4 border border-dashed border-border p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="mono text-[9px] tracking-[.16em] text-secondary">{isArabic ? 'كتالوج الفيديو' : isRussian ? 'КАТАЛОГ ВИДЕО' : 'VIDEO CATALOG'}</span>
-                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي متاح للفتح.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'بانتظار رابط الكتالوج الأصلي أو ملفات الفيديو.' : isRussian ? 'Ожидается оригинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается оригинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
               </div>
               {videoCatalogUrl ? (
                 <a href={videoCatalogUrl} target="_blank" rel="noreferrer" className="group flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary" data-testid="link-video-catalog">
                   {isArabic ? 'افتح الكتالوج' : isRussian ? 'Открыть каталог' : 'Open catalog'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" />
                 </a>
               ) : (
-                <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'رابط غير مضاف' : isRussian ? 'ССЫЛКА НЕ ДОБАВЛЕНА' : 'LINK NOT ADDED'}</span>
+                <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'لسه بيتجهز' : isRussian ? 'В ПОДГОТОВКЕ' : 'IN PREPARATION'}</span>
               )}
             </div>
           </div>
@@ -703,75 +672,16 @@ function Home() {
 
       <section id="reviews" className="border-b border-border bg-card">
         <div className="mx-auto max-w-[1360px] px-5 py-24 sm:px-8 lg:px-12 lg:py-32">
-          <div className="reveal-on-scroll flex flex-col justify-between gap-8 md:flex-row md:items-end">
+          <div className="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
             <div>
-              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / تقييمات العملاء' : isRussian ? '07 / ОТЗЫВЫ КЛИЕНТОВ' : '07 / CLIENT REVIEWS'}</span>
-              <h2 className="display mt-5 max-w-[700px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">
-                {isArabic ? <>دليل من<br /><span className="text-accent">السوق الحقيقي.</span></> : isRussian ? <>Доказательства<br /><span className="text-accent">из реального рынка.</span></> : <>Proof from<br /><span className="text-accent">the real market.</span></>}
-              </h2>
+              <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / تقييمات حقيقية' : isRussian ? '07 / ОТЗЫВЫ КЛИЕНТОВ' : '07 / VERIFIED REVIEWS'}</span>
+              <h2 className="display mt-5 max-w-[650px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>كلام العملاء<br /><span className="text-accent">من غير فبركة.</span></> : isRussian ? <>Отзывы<br /><span className="text-accent">без выдумок.</span></> : <>Client proof<br /><span className="text-accent">without fiction.</span></>}</h2>
             </div>
-            <div className="max-w-[360px]">
-              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'أعدنا القسم إلى مكانه، لكننا لن نخترع أسماء أو صوراً أو نتائج. كل بطاقة تحمل علم الدولة وستُملأ بالتقييم الأصلي ورابط مصدره عند تزويد المواد.' : isRussian ? 'Раздел возвращён, но мы не будем выдумывать имена, фотографии или результаты. Каждая карточка содержит флаг страны и будет заполнена оригинальным отзывом и ссылкой на источник.' : 'The section is back, but we will not invent names, photos, or outcomes. Every card carries a country flag and is ready for the original quote and source link.'}</p>
-              <span className="mono mt-5 inline-flex border border-secondary/50 px-2.5 py-1.5 text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'جاهز للتقييمات الموثقة' : isRussian ? 'ГОТОВО ДЛЯ ПОДТВЕРЖДЁННЫХ ОТЗЫВОВ' : 'READY FOR VERIFIED REVIEWS'}</span>
+            <div className="border border-secondary/40 bg-background p-7 sm:p-9">
+              <span className="mono text-[10px] tracking-[.16em] text-secondary">{isArabic ? 'لسه بنجمع المادة الأصلية' : isRussian ? 'СБИРАЕМ ОРИГИНАЛЬНЫЕ МАТЕРИАЛЫ' : 'ORIGINAL MATERIALS NEEDED'}</span>
+              <p className="mt-5 text-base leading-8 text-primary">{isArabic ? 'مش هنحط أسماء أو صور أو نجوم من عندنا. أول ما تبعت نص التقييم، اسم صاحبه، بلده، ومصدره، هننزّله هنا زي ما هو وبشكل محترم.' : isRussian ? 'Мы не будем придумывать имена, фотографии или оценки. После получения текста, имени, страны и источника отзыв будет опубликован здесь прозрачно.' : 'We will not invent names, photos, or star ratings. Send the original text, name, country, and source, and we will publish it here transparently.'}</p>
+              <button type="button" onClick={openConsultation} className="group mt-7 flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">{isArabic ? 'ابعت التقييمات' : isRussian ? 'Отправить отзывы' : 'Send the reviews'} <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></button>
             </div>
-          </div>
-
-          <div
-            className="mt-14 overflow-hidden"
-            onMouseEnter={() => setReviewsPaused(true)}
-            onMouseLeave={() => setReviewsPaused(false)}
-            onFocus={() => setReviewsPaused(true)}
-            onBlur={(event) => {
-              if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setReviewsPaused(false);
-            }}
-          >
-            <div className="flex transition-transform duration-700 ease-out" style={{ transform: `translateX(-${reviewSlide * 100}%)` }}>
-              {reviewSlides.map((slide, slideIndex) => (
-                <div key={`review-slide-${slideIndex}`} className="grid min-w-full grid-cols-1 gap-4 md:grid-cols-3" aria-hidden={reviewSlide !== slideIndex}>
-                  {slide.map((review) => {
-                    const copy = reviewCopy[review.copyIndex];
-                    return (
-                      <article key={review.id} className="group flex min-h-[285px] flex-col border border-border bg-background p-6 transition-all duration-300 hover:-translate-y-1 hover:border-secondary hover:shadow-[0_16px_35px_hsl(var(--primary)/.08)]">
-                        <div className="flex items-start justify-between gap-4">
-                          <div className="flex items-center gap-3">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full border border-secondary/50 bg-secondary/10 text-2xl" aria-label={`${review.country} flag`}>{review.flag}</div>
-                            <div>
-                              <h3 className="text-sm font-bold text-primary">{review.name}</h3>
-                            <p className="mt-1 flex items-center gap-2 text-[11px] text-muted-foreground"><span aria-hidden="true">{review.flag}</span>{review.country}</p>
-                            </div>
-                          </div>
-                          <span className="mono shrink-0 text-[9px] tracking-[.12em] text-secondary">PENDING SOURCE</span>
-                        </div>
-                        <div className="mt-7 flex items-center gap-1 text-secondary" aria-label={isArabic ? 'تقييم تجريبي من خمس نجوم' : isRussian ? 'Демонстрационная оценка пять из пяти' : 'Demo rating five out of five'}>
-                          {Array.from({ length: 5 }).map((_, index) => <span key={index} className="text-sm" aria-hidden="true">★</span>)}
-                        </div>
-                        <blockquote className="mt-4 text-[15px] leading-7 text-primary">{isArabic ? copy.ar : isRussian ? copy.ru : copy.en}</blockquote>
-                        <div className="mt-auto flex items-center justify-between border-t border-border pt-5">
-                          <span className="mono text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'بانتظار النص الأصلي' : isRussian ? 'ОЖИДАЕТСЯ ОРИГИНАЛ' : 'ORIGINAL QUOTE PENDING'}</span>
-                          <span className="h-px w-8 bg-secondary transition-all duration-300 group-hover:w-16" />
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-8 flex flex-col gap-5 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-2">
-              <button type="button" onClick={() => setReviewSlide((current) => (current - 1 + reviewSlides.length) % reviewSlides.length)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={isArabic ? 'التقييمات السابقة' : isRussian ? 'Предыдущие отзывы' : 'Previous reviews'} data-testid="button-reviews-previous"><ChevronLeft size={17} /></button>
-              <button type="button" onClick={() => setReviewSlide((current) => (current + 1) % reviewSlides.length)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={isArabic ? 'التقييمات التالية' : isRussian ? 'Следующие отзывы' : 'Next reviews'} data-testid="button-reviews-next"><ChevronRight size={17} /></button>
-              <button type="button" onClick={() => setReviewsPaused((paused) => !paused)} className="flex h-10 w-10 items-center justify-center border border-border text-primary transition-colors hover:border-secondary hover:text-secondary" aria-label={reviewsPaused ? (isArabic ? 'تشغيل الحركة' : isRussian ? 'Запустить слайд-шоу' : 'Play slideshow') : (isArabic ? 'إيقاف الحركة' : isRussian ? 'Поставить слайд-шоу на паузу' : 'Pause slideshow')} data-testid="button-reviews-toggle">
-                {reviewsPaused ? <Play size={15} /> : <Pause size={15} />}
-              </button>
-            </div>
-            <div className="flex items-center gap-2" aria-label={isArabic ? 'اختيار شريحة التقييمات' : isRussian ? 'Выбор слайда отзывов' : 'Review slide selector'}>
-              {reviewSlides.map((_, index) => (
-                <button key={`review-dot-${index}`} type="button" onClick={() => setReviewSlide(index)} className={`inline-flex h-11 min-w-11 items-center justify-center transition-all after:block after:h-1.5 ${reviewSlide === index ? 'after:w-8 after:bg-secondary' : 'after:w-3 after:bg-border hover:after:bg-secondary/60'}`} aria-label={`${isArabic ? 'الشريحة' : isRussian ? 'Слайд' : 'Slide'} ${index + 1}`} aria-current={reviewSlide === index ? 'true' : undefined} data-testid={`button-reviews-slide-${index + 1}`} />
-              ))}
-            </div>
-            <span className="mono text-[9px] tracking-[.14em] text-muted-foreground">{reviewsPaused ? (isArabic ? 'متوقف مؤقتاً' : isRussian ? 'ПАУЗА' : 'PAUSED') : (isArabic ? 'تشغيل تلقائي / 12 شرائح' : isRussian ? 'АВТОПРОКРУТКА / 12 СЛАЙДОВ' : 'AUTO PLAY / 12 SLIDES')}</span>
           </div>
         </div>
       </section>
@@ -878,11 +788,23 @@ const courses = [
 ];
 
 function PageShell({ children }: { children: ReactNode }) {
-  return <main className="min-h-[100dvh] bg-background text-primary"><header className="border-b border-border bg-background"><div className="mx-auto flex max-w-[1180px] items-center justify-between px-5 py-5 sm:px-8"><a href="/" className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center border border-secondary bg-primary text-secondary"><span className="display text-lg font-extrabold">A</span></span><span className="text-[13px] font-extrabold tracking-[.18em]">AHMED EL SAYED</span></a><nav className="flex items-center gap-5 text-[11px] font-bold uppercase tracking-[.13em]"><a href="/courses" className="text-secondary">Courses</a><a href="/register" className="text-muted-foreground hover:text-primary">Register</a></nav></div></header>{children}<footer className="border-t border-border bg-primary px-5 py-8 text-[11px] text-primary-foreground/60 sm:px-8"><div className="mx-auto flex max-w-[1180px] justify-between"><span>AHMED EL SAYED</span><a href="/">Back to platform</a></div></footer></main>;
+  return <main className="min-h-[100dvh] bg-background text-primary"><header className="border-b border-border bg-background"><div className="mx-auto flex max-w-[1180px] flex-wrap items-center justify-between gap-4 px-5 py-5 sm:px-8"><a href="/" className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center border border-secondary bg-primary text-secondary"><span className="display text-lg font-extrabold">A</span></span><span className="text-[13px] font-extrabold tracking-[.18em]">AHMED EL SAYED</span></a><nav className="flex flex-wrap items-center gap-4 text-[11px] font-bold uppercase tracking-[.13em]"><a href="/services" className="text-muted-foreground hover:text-primary">الخدمات</a><a href="/data-products" className="text-muted-foreground hover:text-primary">البيانات</a><a href="/automation" className="text-muted-foreground hover:text-primary">الأتمتة</a><a href="/courses" className="text-secondary">الكورسات</a><a href="/register" className="text-muted-foreground hover:text-primary">التسجيل</a><a href={OFFICIAL_SITE_URL} target="_blank" rel="noreferrer" className="text-secondary">الموقع الرسمي</a></nav></div></header>{children}<footer className="border-t border-border bg-primary px-5 py-8 text-[11px] text-primary-foreground/60 sm:px-8"><div className="mx-auto flex max-w-[1180px] flex-wrap justify-between gap-3"><span>AHMED EL SAYED</span><a href="/" className="hover:text-primary-foreground">الرجوع للمنصة</a></div></footer></main>;
+}
+
+const servicePages = {
+  services: { eyebrow: 'الخدمات', title: <>خلّي التسويق<br /><span className="text-secondary">يشتغل بجد.</span></>, intro: 'لو عندك عرض كويس بس الناس مش فاهمة قيمته، بنرتب الرسالة والمسار والمتابعة عشان الاهتمام يتحول لفرص حقيقية.', items: ['تحديد العرض والجمهور', 'بناء صفحات ومسارات تحويل', 'تجهيز متابعة على واتساب وCRM', 'قياس النتايج وتحسينها'] },
+  data: { eyebrow: 'منتجات البيانات', title: <>بيانات أنضف.<br /><span className="text-secondary">قرارات أسرع.</span></>, intro: 'بننظم بيانات العملاء المحتملين في منتجات مفهومة تساعدك تستهدف الصح وتقلل الوقت الضايع في البحث العشوائي.', items: ['تجميع وتنظيم البيانات', 'تقسيم الجمهور حسب الهدف', 'مراجعة الجودة والاستخدام', 'تسليم ملفات جاهزة للتشغيل'] },
+  automation: { eyebrow: 'الأتمتة', title: <>خلّي المتابعة<br /><span className="text-secondary">تمشي لوحدها.</span></>, intro: 'بنربط النماذج وواتساب والإيميل وCRM في سير شغل واضح، مع نقطة تسليم للإنسان وقت ما الموضوع يحتاجه.', items: ['رسم خطوات الشغل', 'ربط الأدوات والـwebhooks', 'رسائل ومتابعات آلية', 'لوحة قياس وتشغيل'] },
+  about: { eyebrow: 'عن أحمد', title: <>خبرة عملية<br /><span className="text-secondary">مش كلام تنظير.</span></>, intro: 'أحمد السيد بيشتغل في التسويق وبيع منتجات البيانات والأتمتة والتعليم العملي، وبيحوّل التحدي التجاري لنظام مفهوم قابل للتشغيل.', items: ['Marketing & growth', 'Lead generation & data products', 'CRM وWhatsApp automation', 'كورسات عملية للفرق والأفراد'] },
+} as const;
+
+function ServicePage({ page }: { page: keyof typeof servicePages }) {
+  const content = servicePages[page];
+  return <PageShell><section className="mx-auto max-w-[1180px] px-5 pb-20 pt-20 sm:px-8 sm:pt-28"><span className="mono text-[10px] tracking-[.2em] text-secondary">{content.eyebrow}</span><h1 className="display mt-5 max-w-[780px] text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">{content.title}</h1><p className="mt-8 max-w-[650px] text-base leading-8 text-muted-foreground">{content.intro}</p><div className="mt-14 grid gap-px bg-border sm:grid-cols-2 lg:grid-cols-4">{content.items.map((item, index) => <article key={item} className="bg-background p-6"><span className="mono text-[10px] text-secondary">0{index + 1}</span><h2 className="display mt-12 text-2xl font-extrabold tracking-[-.04em]">{item}</h2><span className="mt-8 block h-px w-10 bg-secondary" /></article>)}</div><div className="mt-14 flex flex-col gap-4 border-t border-border pt-7 sm:flex-row sm:items-center sm:justify-between"><p className="max-w-[520px] text-sm leading-7 text-muted-foreground">الصفحة دي معمولة كهيكل نكمله بالتفاصيل، الأسعار، الحالات، والأسئلة الشائعة بعد ما نثبت المحتوى النهائي.</p><a href="/register" className="group flex items-center gap-3 bg-primary px-5 py-3.5 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">ابدأ بسؤالك <ArrowUpRight size={15} className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></a></div></section></PageShell>;
 }
 
 function CoursesPage() {
-  return <PageShell><section className="mx-auto max-w-[1180px] px-5 pb-16 pt-20 sm:px-8 sm:pt-28"><span className="mono text-[10px] tracking-[.2em] text-secondary">LEARNING PATH / مسار التعلم</span><h1 className="display mt-5 max-w-[780px] text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">Learn the mechanism.<br /><span className="text-secondary">Build the system.</span></h1><p className="mt-8 max-w-[620px] text-base leading-7 text-muted-foreground">الكورسات هنا ليست مكتبة وعود؛ كل مسار يحول فكرة أو مشكلة حقيقية إلى نظام قابل للتشغيل والقياس.</p><div className="mt-14 grid gap-5 lg:grid-cols-3">{courses.map((course, index) => <article key={course.slug} className="flex flex-col border border-border bg-card p-6"><span className="mono text-[10px] tracking-[.18em] text-secondary">0{index + 1} / {course.type.toUpperCase()}</span><h2 className="display mt-8 text-3xl font-extrabold leading-none tracking-[-.05em]">{course.title}<span className="mt-2 block text-base font-medium tracking-normal text-muted-foreground">{course.arTitle}</span></h2><p className="mt-5 text-sm leading-6 text-muted-foreground">{course.description}<br />{course.arDescription}</p><ul className="mt-6 space-y-3 border-t border-border pt-5 text-sm">{course.modules.map((module) => <li key={module} className="flex gap-2"><Check size={15} className="mt-0.5 shrink-0 text-secondary" />{module}</li>)}</ul><a href={`/register?course=${course.slug}`} className="mt-8 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">Register interest <ArrowUpRight size={15} /></a></article>)}</div></section></PageShell>;
+  return <PageShell><section className="mx-auto max-w-[1180px] px-5 pb-16 pt-20 sm:px-8 sm:pt-28"><span className="mono text-[10px] tracking-[.2em] text-secondary">مسار التعلم / LEARNING PATH</span><h1 className="display mt-5 max-w-[780px] text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">اتعلم الصح.<br /><span className="text-secondary">وابني نظامك.</span></h1><p className="mt-8 max-w-[620px] text-base leading-8 text-muted-foreground">الكورسات دي مش مكتبة كلام. كل مسار بيحوّل مشكلة حقيقية عندك لخطوات ونظام تقدر تشغله وتقيسه.</p><div className="mt-14 grid gap-5 lg:grid-cols-3">{courses.map((course, index) => <article key={course.slug} className="flex flex-col border border-border bg-card p-6"><span className="mono text-[10px] tracking-[.18em] text-secondary">0{index + 1} / {course.arType}</span><h2 className="display mt-8 text-3xl font-extrabold leading-none tracking-[-.05em]">{course.arTitle}<span className="mt-2 block text-base font-medium tracking-normal text-muted-foreground">{course.title}</span></h2><p className="mt-5 text-sm leading-7 text-muted-foreground">{course.arDescription}</p><ul className="mt-6 space-y-3 border-t border-border pt-5 text-sm">{course.modules.map((module) => <li key={module} className="flex gap-2"><Check size={15} className="mt-0.5 shrink-0 text-secondary" />{module}</li>)}</ul><a href={`/register?course=${course.slug}`} className="mt-8 flex items-center justify-between bg-primary px-4 py-3 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground hover:bg-accent">سجّل اهتمامك <ArrowUpRight size={15} /></a></article>)}</div></section></PageShell>;
 }
 
 function RegisterPage() {
@@ -896,7 +818,7 @@ function RegisterPage() {
     setError('');
     try { await submitLead(Object.fromEntries(new FormData(event.currentTarget).entries())); setSubmitted(true); } catch { setError('تعذر حفظ التسجيل حالياً. تحقق من إعدادات الربط وحاول مرة أخرى.'); } finally { setSubmitting(false); }
   };
-  return <PageShell><section className="mx-auto grid max-w-[1180px] gap-12 px-5 pb-20 pt-20 sm:px-8 sm:pt-28 lg:grid-cols-[.9fr_1.1fr]"><div><span className="mono text-[10px] tracking-[.2em] text-secondary">REGISTRATION / التسجيل</span><h1 className="display mt-5 text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">Choose the next<br /><span className="text-secondary">useful step.</span></h1><p className="mt-8 max-w-[460px] text-base leading-7 text-muted-foreground">سجّل اهتمامك بالكورس أو الورشة. ستصل البيانات إلى فريق المتابعة وقائمة البريد التسويقية عند تفعيل الربط.</p><div className="mt-10 border-l-2 border-secondary pl-5 text-sm leading-6 text-muted-foreground">لا يوجد دفع في هذه المرحلة. التسجيل هنا هو طلب معلومات أو حجز أولوية.</div></div><div className="border border-border bg-card p-6 sm:p-9">{submitted ? <div className="py-10"><div className="flex h-12 w-12 items-center justify-center bg-secondary text-primary"><Check size={23} /></div><h2 className="display mt-7 text-4xl font-extrabold leading-none tracking-[-.06em]">تم استلام التسجيل.</h2><p className="mt-4 text-sm leading-6 text-muted-foreground">سنرسل لك الخطوة التالية على وسيلة التواصل التي أدخلتها.</p><a href="/courses" className="mt-8 inline-flex border border-primary px-5 py-3 text-xs font-bold uppercase tracking-[.12em]">Browse courses</a></div> : <form onSubmit={handleSubmit} className="space-y-5"><input type="hidden" name="formType" value="course_registration" /><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">COURSE / الكورس</span><select name="course" value={course} onChange={(event) => setCourse(event.target.value)} className="w-full border border-border bg-background px-3 py-3 text-sm"><option value="marketing-funnels">Marketing & Funnels / التسويق ومسارات التحويل</option><option value="data-products">Data Products / منتجات البيانات</option><option value="automation-ops">Automation Operations / تشغيل الأتمتة</option></select></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">NAME / الاسم</span><input required name="name" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">EMAIL / البريد الإلكتروني</span><input required type="email" name="email" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">WHATSAPP / واتساب</span><input name="contact" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">GOAL / الهدف</span><textarea name="message" rows={4} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm" placeholder="What do you want to be able to do after the course?" /></label>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}<button disabled={submitting} className="flex w-full items-center justify-center gap-3 bg-primary px-4 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground disabled:opacity-60">{submitting ? 'Saving...' : 'Register interest / سجّل اهتمامك'} <Send size={15} /></button></form>}</div></section></PageShell>;
+  return <PageShell><section className="mx-auto grid max-w-[1180px] gap-12 px-5 pb-20 pt-20 sm:px-8 sm:pt-28 lg:grid-cols-[.9fr_1.1fr]"><div><span className="mono text-[10px] tracking-[.2em] text-secondary">التسجيل / REGISTRATION</span><h1 className="display mt-5 text-6xl font-extrabold leading-[.9] tracking-[-.07em] sm:text-8xl">اختار خطوتك<br /><span className="text-secondary">الجاية.</span></h1><p className="mt-8 max-w-[460px] text-base leading-8 text-muted-foreground">سجّل اهتمامك بالكورس أو الورشة، وفريق المتابعة هيرجعلك بالتفاصيل على وسيلة التواصل اللي تكتبها.</p><div className="mt-10 border-l-2 border-secondary pl-5 text-sm leading-7 text-muted-foreground">مفيش دفع دلوقتي. ده تسجيل اهتمام وطلب معلومات بس.</div></div><div className="border border-border bg-card p-6 sm:p-9">{submitted ? <div className="py-10"><div className="flex h-12 w-12 items-center justify-center bg-secondary text-primary"><Check size={23} /></div><h2 className="display mt-7 text-4xl font-extrabold leading-none tracking-[-.06em]">تمام، استلمنا بياناتك.</h2><p className="mt-4 text-sm leading-7 text-muted-foreground">هنبعتلك الخطوة الجاية على وسيلة التواصل اللي كتبتها.</p><a href="/courses" className="mt-8 inline-flex border border-primary px-5 py-3 text-xs font-bold uppercase tracking-[.12em]">شوف الكورسات</a></div> : <form onSubmit={handleSubmit} className="space-y-5"><input type="hidden" name="formType" value="course_registration" /><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">الكورس</span><select name="course" value={course} onChange={(event) => setCourse(event.target.value)} className="w-full border border-border bg-background px-3 py-3 text-sm"><option value="marketing-funnels">التسويق ومسارات التحويل</option><option value="data-products">منتجات البيانات</option><option value="automation-ops">تشغيل الأتمتة</option></select></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">الاسم</span><input required name="name" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">الإيميل</span><input required type="email" name="email" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">واتساب</span><input name="contact" className="w-full border border-border bg-background px-3 py-3 text-sm" /></label><label className="block"><span className="mono mb-2 block text-[10px] tracking-[.14em] text-muted-foreground">إيه اللي عايز توصله؟</span><textarea name="message" rows={4} className="w-full resize-none border border-border bg-background px-3 py-3 text-sm" placeholder="اكتب الهدف أو المشكلة اللي عايز تشتغل عليها..." /></label>{error && <p role="alert" className="text-sm text-destructive">{error}</p>}<button disabled={submitting} className="flex w-full items-center justify-center gap-3 bg-primary px-4 py-4 text-xs font-bold uppercase tracking-[.12em] text-primary-foreground disabled:opacity-60">{submitting ? 'بنحفظ البيانات...' : 'سجّل اهتمامك'} <Send size={15} /></button></form>}</div></section></PageShell>;
 }
 
 function Router() {
@@ -904,6 +826,10 @@ function Router() {
     <RoutedErrorBoundary>
       <Switch>
         <WouterRoute path="/" component={Home} />
+        <WouterRoute path="/services"><ServicePage page="services" /></WouterRoute>
+        <WouterRoute path="/data-products"><ServicePage page="data" /></WouterRoute>
+        <WouterRoute path="/automation"><ServicePage page="automation" /></WouterRoute>
+        <WouterRoute path="/about"><ServicePage page="about" /></WouterRoute>
         <WouterRoute path="/courses" component={CoursesPage} />
         <WouterRoute path="/register" component={RegisterPage} />
         <WouterRoute component={NotFound} />
