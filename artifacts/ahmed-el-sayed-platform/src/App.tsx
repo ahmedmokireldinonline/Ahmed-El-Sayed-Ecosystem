@@ -318,11 +318,11 @@ function Home() {
             <div className="network-orbit-reverse absolute inset-[20%] rounded-full border border-dashed border-accent/35">
               <span className="absolute right-[14%] top-[7%] h-2 w-2 rounded-full bg-secondary" />
             </div>
-            <div className="absolute inset-[31%] flex items-center justify-center rounded-full bg-primary shadow-[0_25px_70px_hsl(var(--primary)/.22)]">
-              <div className="text-center">
-                <span className="mono block text-[9px] tracking-[.22em] text-secondary">{isArabic ? 'نقطة' : isRussian ? 'ТОЧКА' : 'THE CONNECTING'}</span>
-                <span className="display mt-2 block text-3xl font-extrabold tracking-[-.07em] text-primary-foreground">{isArabic ? 'الربط' : isRussian ? 'СВЯЗИ' : 'POINT'}</span>
-                <span className="mx-auto mt-3 block h-px w-9 bg-secondary" />
+            <div className="absolute bottom-[8%] left-[8%] z-10 flex items-center gap-3 border border-secondary/50 bg-background/90 px-3 py-2 shadow-[0_12px_28px_hsl(var(--primary)/.12)] backdrop-blur-sm">
+              <span className="h-2 w-2 rounded-full bg-secondary" />
+              <div>
+                <span className="mono block text-[8px] tracking-[.18em] text-secondary">{isArabic ? 'نظام شغال' : isRussian ? 'РАБОЧАЯ СИСТЕМА' : 'WORKING SYSTEM'}</span>
+                <span className="mt-0.5 block text-[11px] font-bold text-primary">{isArabic ? 'تسويق • بيانات • أتمتة' : isRussian ? 'Маркетинг • данные • автоматизация' : 'Marketing • data • automation'}</span>
               </div>
             </div>
             <div className="network-line absolute left-[1%] top-[41%] flex items-center gap-2 bg-background px-2 py-1">
