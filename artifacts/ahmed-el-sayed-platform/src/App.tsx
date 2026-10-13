@@ -63,7 +63,7 @@ const systemSteps = [
 ];
 
 const knowledgeItems = [
-  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحتمل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
+  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحت����ل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
   { type: 'SYSTEM NOTE', arType: 'ملاحظة نظام', ruType: 'СИСТЕМНАЯ ЗАМЕТКА', title: 'Where automation should stop and people should start', ar: 'أين تتوقف الأتمتة ويبدأ دور الإنسان', ru: 'Где заканчивается автоматизация и начинается человек', icon: Workflow },
   { type: 'PERSPECTIVE', arType: 'رؤية', ruType: 'ПЕРСПЕКТИВА', title: 'Opportunity is a system of connected decisions', ar: 'الفرصة منظومة من القرارات المترابطة', ru: 'Возможность — это система связанных решений', icon: Globe2 },
 ];
@@ -119,6 +119,7 @@ const archiveCards = [
   { image: '/archive-openai-workflow.jpg', label: 'سير شغل ذكي', detail: 'AI / messaging workflow', tone: 'tall' },
   { image: '/archive-whatsapp-plans.jpg', label: 'خطط المراسلة', detail: 'Messaging plans', tone: 'square' },
   { image: '/archive-chatbot-system.jpg', label: 'نظام محادثة', detail: 'Chatbot / business system', tone: 'wide' },
+  { image: '/ahmed-candid.jpg', label: 'من خلف الكواليس', detail: 'Behind the scenes / strategy', tone: 'wide' },
 ];
 
 const productCatalog = [
@@ -334,7 +335,20 @@ function Home() {
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[560px] lg:justify-self-end">
-            <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed" className="absolute inset-[15%] z-0 h-[70%] w-[70%] rounded-[2rem] object-cover object-center opacity-95 shadow-[0_25px_70px_hsl(var(--primary)/.18)]" />
+            <div className="absolute inset-[7%] overflow-hidden rounded-[2rem] bg-primary shadow-[0_25px_70px_hsl(var(--primary)/.18)]">
+              <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'صورة أحمد السيد المهنية' : 'Ahmed El Sayed professional portrait'} className="h-full w-full object-cover object-[50%_30%] opacity-95" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/75 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-primary-foreground" dir="ltr">
+                <div>
+                  <span className="mono block text-[9px] tracking-[.22em] text-secondary">AHMED EL SAYED</span>
+                  <span className="mt-1 block text-sm font-bold">{isArabic ? 'تسويق نمو • أتمتة • تدريب' : 'Growth marketing • automation • training'}</span>
+                </div>
+                <span className="border border-secondary/60 px-2 py-1 text-[9px] font-bold uppercase tracking-[.14em] text-secondary">{isArabic ? 'نبني ونعلّم' : 'Build & teach'}</span>
+              </div>
+            </div>
+            <div className="absolute bottom-[12%] right-[2%] z-10 hidden w-[25%] overflow-hidden border-4 border-background bg-primary shadow-xl sm:block">
+              <img src="/ahmed-candid.jpg" alt={isArabic ? 'أحمد السيد أثناء التفكير في الاستراتيجية' : 'Ahmed El Sayed thinking through strategy'} className="aspect-[4/5] w-full object-cover object-[72%_42%]" loading="eager" />
+            </div>
             <div className="absolute inset-[8%] rounded-full border border-secondary/30" />
             <div className="absolute inset-[20%] rounded-full border border-accent/35" />
             <div className="network-orbit absolute inset-[8%] rounded-full border border-dashed border-secondary/40">
@@ -366,6 +380,30 @@ function Home() {
             <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 500 500" fill="none" aria-hidden="true">
               <path d="M55 250H180M320 195L430 130M115 370L190 320M315 340L400 390" stroke="hsl(var(--secondary) / .42)" strokeDasharray="3 8" />
             </svg>
+          </div>
+        </div>
+        <div className="border-t border-border bg-card">
+          <div className="mx-auto grid max-w-[1360px] gap-px bg-border px-5 sm:px-8 md:grid-cols-2 lg:px-12">
+            <a href="#clients" className="group bg-card px-5 py-7 transition-colors hover:bg-primary hover:text-primary-foreground sm:px-8" data-testid="link-path-clients">
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <span className="mono text-[9px] tracking-[.2em] text-secondary">01 / {isArabic ? 'للعملاء' : isRussian ? 'ДЛЯ КЛИЕНТОВ' : 'FOR CLIENTS'}</span>
+                  <h2 className="mt-3 text-xl font-extrabold tracking-tight">{isArabic ? 'حوّل النمو إلى نظام يمكن قياسه' : isRussian ? 'Превратите рост в систему' : 'Turn growth into a working system'}</h2>
+                  <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground group-hover:text-primary-foreground/75">{isArabic ? 'استراتيجية، مسارات تحويل، CRM وأتمتة متابعة تساعد فريقك على تحويل الاهتمام إلى فرص.' : 'Strategy, funnels, CRM, and follow-up automation that turn attention into qualified opportunities.'}</p>
+                </div>
+                <ArrowUpRight className="mt-1 shrink-0 text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" size={20} />
+              </div>
+            </a>
+            <a href="/courses" className="group bg-card px-5 py-7 transition-colors hover:bg-primary hover:text-primary-foreground sm:px-8" data-testid="link-path-trainees">
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <span className="mono text-[9px] tracking-[.2em] text-secondary">02 / {isArabic ? 'للمتدربين' : isRussian ? 'ДЛЯ УЧАЩИХСЯ' : 'FOR TRAINEES'}</span>
+                  <h2 className="mt-3 text-xl font-extrabold tracking-tight">{isArabic ? 'تعلّم ببناء شيء حقيقي' : isRussian ? 'Учитесь через реальные проекты' : 'Learn by building something real'}</h2>
+                  <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground group-hover:text-primary-foreground/75">{isArabic ? 'كورسات عملية في التسويق والبيانات والأتمتة، مصممة لتنتقل من المشاهدة إلى التطبيق.' : 'Practical courses in marketing, data, and automation designed to move from watching to doing.'}</p>
+                </div>
+                <ArrowUpRight className="mt-1 shrink-0 text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" size={20} />
+              </div>
+            </a>
           </div>
         </div>
         <div className="border-t border-border">
@@ -418,7 +456,7 @@ function Home() {
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '02 / أنظمة النمو' : isRussian ? '02 / СИСТЕМЫ РОСТА' : '02 / GROWTH SYSTEMS'}</span>
               <h2 className="display mt-5 max-w-[660px] text-5xl font-extrabold leading-[.95] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>خطة واضحة<br /><span className="text-accent">تشتغل على أرض الواقع.</span></> : isRussian ? <>Стратегия, которая<br /><span className="text-accent">работает в реальности.</span></> : <>Strategy that can<br /><span className="text-accent">touch the ground.</span></>}</h2>
             </div>
-            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'مش كلام حلو وخلاص. بنرتب قرارات وأدوات وخطوات تقدر تشغلها في شغلك من بكرة.' : isRussian ? 'Полезная система — это не презентация. Это последовательность решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
+            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'مش كلام حلو وخلاص. بنرتب قرارات وأدوات وخطوات تقدر تشغلها في شغلك من بكرة.' : isRussian ? 'Полезная система — это не презентация. Это последователь��ость решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
           </div>
           <div className="mt-20 grid gap-px bg-border md:grid-cols-3">
             {systemSteps.map((step, index) => (
@@ -584,7 +622,7 @@ function Home() {
           </div>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
             <figure className="overflow-hidden border border-border bg-card shadow-[0_20px_55px_hsl(var(--primary)/.08)]">
-              <img src="/ahmed-brand-header.jpg" alt="البانر الرسمي لأحمد السيد عن التسويق والأتمتة" className="pointer-events-none block h-auto w-full select-none" draggable="false" loading="lazy" />
+              <img src="/ahmed-brand-collage.png" alt={isArabic ? 'كولاج بصري لهوية أحمد السيد في التسويق والأتمتة' : 'Ahmed El Sayed marketing and automation brand collage'} className="pointer-events-none block aspect-[2.05/1] h-auto w-full object-cover object-[50%_8%] select-none" draggable="false" loading="lazy" />
             </figure>
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'بانر واحد / استخدام واحد' : isRussian ? 'ОДИН БАННЕР / ОДНО ИСПОЛЬЗОВАНИЕ' : 'ONE BANNER / ONE USE'}</span>
@@ -614,7 +652,7 @@ function Home() {
             <div className="mt-8 flex flex-col gap-4 border border-dashed border-border p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="mono text-[9px] tracking-[.16em] text-secondary">{isArabic ? 'كتالوج الفيديو' : isRussian ? 'КАТАЛОГ ВИДЕО' : 'VIDEO CATALOG'}</span>
-                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается оригинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается о��игинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
               </div>
               {videoCatalogUrl ? <a href={videoCatalogUrl} target="_blank" rel="noreferrer" className="group flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary" data-testid="link-video-catalog">{isArabic ? 'افتح الكتالوج' : isRussian ? 'Открыть каталог' : 'Open catalog'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></a> : <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'لسه بيتجهز' : isRussian ? 'В ПОДГОТОВКЕ' : 'IN PREPARATION'}</span>}
             </div>
@@ -627,7 +665,7 @@ function Home() {
           <div className="flex flex-col justify-between gap-8 border-b border-border pb-12 lg:flex-row lg:items-end">
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / المنتجات والعروض' : isRussian ? '07 / ПРОДУКТЫ И ПРЕДЛОЖЕНИЯ' : '07 / PRODUCTS & OFFERS'}</span>
-              <h2 className="display mt-5 max-w-[760px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>منتجات جاهزة<br /><span className="text-secondary">للطلب والتشغيل.</span></> : isRussian ? <>Готовые продукты<br /><span className="text-secondary">для заказа и запуска.</span></> : <>Products ready<br /><span className="text-secondary">to order and run.</span></>}</h2>
+              <h2 className="display mt-5 max-w-[760px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>منتجات جاهزة<br /><span className="text-secondary">للطلب والتشغيل.</span></> : isRussian ? <>Г��товые продукты<br /><span className="text-secondary">для заказа и запуска.</span></> : <>Products ready<br /><span className="text-secondary">to order and run.</span></>}</h2>
             </div>
             <p className="max-w-[360px] text-sm leading-7 text-muted-foreground">{isArabic ? 'اختار المنتج، شوف السعر أو طريقة التسعير، واضغط اطلب المنتج. الطلب بيتحول مباشرة لنموذج متابعة باسم المنتج.' : isRussian ? 'Выберите продукт, посмотрите цену или модель расчёта и отправьте заказ. Запрос попадёт в форму с названием продукта.' : 'Choose a product, review its price model, and send an order request. The selected product is carried into the follow-up form.'}</p>
           </div>
@@ -677,7 +715,7 @@ function Home() {
         <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[.55fr_1.45fr] lg:px-12 lg:py-28">
           <div className="reveal-on-scroll">
             <div className="relative overflow-hidden border border-border bg-card p-3">
-              <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed in a professional portrait" className="aspect-square w-full object-cover object-center" loading="lazy" />
+              <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'أحمد السيد في صورة مهنية' : 'Ahmed El Sayed in a professional portrait'} className="aspect-square w-full object-cover object-[50%_28%]" loading="lazy" />
               <div className="absolute bottom-6 left-6 bg-primary px-3 py-2 text-primary-foreground"><span className="mono text-[9px] tracking-[.16em]">AHMED EL SAYED</span></div>
             </div>
             <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '08 / التوقيع' : isRussian ? '08 / ПОДПИСЬ' : '08 / THE SIGNATURE'}</span>
@@ -688,7 +726,7 @@ function Home() {
               {isArabic ? <>“نحوّل الانتباه إلى طلب، والبيانات إلى منتج، والعمل المتكرر إلى <span className="text-secondary">أتمتة.</span>”</> : isRussian ? <>«Превращаем внимание в спрос, данные в продукт, а повторяющуюся работу — в <span className="text-secondary">автоматизацию.»</span></> : <>“Turn attention into demand, data into products, and repeated work into <span className="text-secondary">automation.</span>”</>}
             </blockquote>
             <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
-              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'يعمل أحمد السيد في تقاطع التسويق وبيع منتجات البيانات والأتمتة والتعليم العملي، مع تركيز على تحويل الاهتمام إلى نتائج قابلة للمتابعة.' : isRussian ? 'Ахмед Эль-Сайед работает на пересечении маркетинга, продуктов данных, автоматизации и практического обучения, превращая внимание в измеримый follow-up.' : 'Ahmed El Sayed works across marketing, data products, automation, and practical education, with a focus on turning attention into measurable follow-up.'}</p>
+              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'يعمل أحمد السيد في تقاطع التسويق وبيع منتجات البيانات والأتمتة والتعليم العملي، مع تركيز على تحويل الاهتمام إلى نتائج قابلة للمتابعة.' : isRussian ? 'Ахмед Эль-Сайед работает на пересечении маркетинга, продуктов данны��, автоматизации и практического обучения, превращая внимание в измеримый follow-up.' : 'Ahmed El Sayed works across marketing, data products, automation, and practical education, with a focus on turning attention into measurable follow-up.'}</p>
               <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'كل خدمة تبدأ من احتياج واضح: حملة ومسار تحويل، حزمة بيانات، سير عمل مؤتمت، أو كورس يساعد الفريق على تنفيذ النظام بنفسه.' : isRussian ? 'Каждая услуга начинается с понятной задачи: кампания и воронка, пакет данных, автоматизированный workflow или курс, который помогает команде запустить систему самостоятельно.' : 'Each service starts with a clear need: a campaign and funnel, a data package, an automated workflow, or a course that helps a team operate the system itself.'}</p>
             </div>
           </div>
@@ -743,7 +781,7 @@ function Home() {
               <>
                   <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'محادثة أولى مفيدة' : isRussian ? 'ПЕРВЫЙ ПОЛЕЗНЫЙ РАЗГОВОР' : 'A USEFUL FIRST CONVERSATION'}</span>
                   <h2 id="consultation-title" className="display mt-5 max-w-[440px] text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? 'ما الذي تحاول ربطه أو تطويره؟' : isRussian ? 'Что вы хотите связать или развить?' : 'What are you trying to connect or grow?'}</h2>
-                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ طلبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
+                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ ��لبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
                   {selectedProduct && <div className="mt-5 border border-secondary/50 bg-secondary/10 px-4 py-3 text-sm text-primary"><span className="mono block text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'المنتج المطلوب' : isRussian ? 'ВЫБРАННЫЙ ПРОДУКТ' : 'SELECTED PRODUCT'}</span><strong className="mt-1 block">{selectedProduct}</strong></div>}
                   <form onSubmit={handleConsultationSubmit} className="mt-8 space-y-4">
                     <input type="hidden" name="formType" value="consultation" />
