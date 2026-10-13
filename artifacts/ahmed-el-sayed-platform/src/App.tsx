@@ -63,7 +63,7 @@ const systemSteps = [
 ];
 
 const knowledgeItems = [
-  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحتمل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
+  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحت��ل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
   { type: 'SYSTEM NOTE', arType: 'ملاحظة نظام', ruType: 'СИСТЕМНАЯ ЗАМЕТКА', title: 'Where automation should stop and people should start', ar: 'أين تتوقف الأتمتة ويبدأ دور الإنسان', ru: 'Где заканчивается автоматизация и начинается человек', icon: Workflow },
   { type: 'PERSPECTIVE', arType: 'رؤية', ruType: 'ПЕРСПЕКТИВА', title: 'Opportunity is a system of connected decisions', ar: 'الفرصة منظومة من القرارات المترابطة', ru: 'Возможность — это система связанных решений', icon: Globe2 },
 ];
@@ -119,6 +119,7 @@ const archiveCards = [
   { image: '/archive-openai-workflow.jpg', label: 'سير شغل ذكي', detail: 'AI / messaging workflow', tone: 'tall' },
   { image: '/archive-whatsapp-plans.jpg', label: 'خطط المراسلة', detail: 'Messaging plans', tone: 'square' },
   { image: '/archive-chatbot-system.jpg', label: 'نظام محادثة', detail: 'Chatbot / business system', tone: 'wide' },
+  { image: '/ahmed-candid.jpg', label: 'من خلف الكواليس', detail: 'Behind the scenes / strategy', tone: 'wide' },
 ];
 
 const productCatalog = [
@@ -334,7 +335,7 @@ function Home() {
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[560px] lg:justify-self-end">
-            <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed" className="absolute inset-[15%] z-0 h-[70%] w-[70%] rounded-[2rem] object-cover object-center opacity-95 shadow-[0_25px_70px_hsl(var(--primary)/.18)]" />
+            <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'صورة أحمد السيد المهنية' : 'Ahmed El Sayed professional portrait'} className="absolute inset-[11%] z-0 h-[78%] w-[78%] rounded-[2rem] object-cover object-[52%_34%] opacity-95 shadow-[0_25px_70px_hsl(var(--primary)/.18)]" />
             <div className="absolute inset-[8%] rounded-full border border-secondary/30" />
             <div className="absolute inset-[20%] rounded-full border border-accent/35" />
             <div className="network-orbit absolute inset-[8%] rounded-full border border-dashed border-secondary/40">
@@ -584,7 +585,7 @@ function Home() {
           </div>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
             <figure className="overflow-hidden border border-border bg-card shadow-[0_20px_55px_hsl(var(--primary)/.08)]">
-              <img src="/ahmed-brand-header.jpg" alt="البانر الرسمي لأحمد السيد عن التسويق والأتمتة" className="pointer-events-none block h-auto w-full select-none" draggable="false" loading="lazy" />
+              <img src="/ahmed-brand-collage.png" alt={isArabic ? 'كولاج بصري لهوية أحمد السيد في التسويق والأتمتة' : 'Ahmed El Sayed marketing and automation brand collage'} className="pointer-events-none block aspect-[2.05/1] h-auto w-full object-cover object-top select-none" draggable="false" loading="lazy" />
             </figure>
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'بانر واحد / استخدام واحد' : isRussian ? 'ОДИН БАННЕР / ОДНО ИСПОЛЬЗОВАНИЕ' : 'ONE BANNER / ONE USE'}</span>
@@ -677,7 +678,7 @@ function Home() {
         <div className="mx-auto grid max-w-[1360px] gap-10 px-5 py-24 sm:px-8 lg:grid-cols-[.55fr_1.45fr] lg:px-12 lg:py-28">
           <div className="reveal-on-scroll">
             <div className="relative overflow-hidden border border-border bg-card p-3">
-              <img src="/ahmed-el-sayed-portrait.jpg" alt="Ahmed El Sayed in a professional portrait" className="aspect-square w-full object-cover object-center" loading="lazy" />
+              <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'أحمد السيد في صورة مهنية' : 'Ahmed El Sayed in a professional portrait'} className="aspect-square w-full object-cover object-[50%_28%]" loading="lazy" />
               <div className="absolute bottom-6 left-6 bg-primary px-3 py-2 text-primary-foreground"><span className="mono text-[9px] tracking-[.16em]">AHMED EL SAYED</span></div>
             </div>
             <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '08 / التوقيع' : isRussian ? '08 / ПОДПИСЬ' : '08 / THE SIGNATURE'}</span>
@@ -688,7 +689,7 @@ function Home() {
               {isArabic ? <>“نحوّل الانتباه إلى طلب، والبيانات إلى منتج، والعمل المتكرر إلى <span className="text-secondary">أتمتة.</span>”</> : isRussian ? <>«Превращаем внимание в спрос, данные в продукт, а повторяющуюся работу — в <span className="text-secondary">автоматизацию.»</span></> : <>“Turn attention into demand, data into products, and repeated work into <span className="text-secondary">automation.</span>”</>}
             </blockquote>
             <div className="mt-10 grid gap-8 border-t border-border pt-8 sm:grid-cols-2">
-              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'يعمل أحمد السيد في تقاطع التسويق وبيع منتجات البيانات والأتمتة والتعليم العملي، مع تركيز على تحويل الاهتمام إلى نتائج قابلة للمتابعة.' : isRussian ? 'Ахмед Эль-Сайед работает на пересечении маркетинга, продуктов данных, автоматизации и практического обучения, превращая внимание в измеримый follow-up.' : 'Ahmed El Sayed works across marketing, data products, automation, and practical education, with a focus on turning attention into measurable follow-up.'}</p>
+              <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'يعمل أحمد السيد في تقاطع التسويق وبيع منتجات البيانات والأتمتة والتعليم العملي، مع تركيز على تحويل الاهتمام إلى نتائج قابلة للمتابعة.' : isRussian ? 'Ахмед Эль-Сайед работает на пересечении маркетинга, продуктов данны��, автоматизации и практического обучения, превращая внимание в измеримый follow-up.' : 'Ahmed El Sayed works across marketing, data products, automation, and practical education, with a focus on turning attention into measurable follow-up.'}</p>
               <p className="text-sm leading-7 text-muted-foreground">{isArabic ? 'كل خدمة تبدأ من احتياج واضح: حملة ومسار تحويل، حزمة بيانات، سير عمل مؤتمت، أو كورس يساعد الفريق على تنفيذ النظام بنفسه.' : isRussian ? 'Каждая услуга начинается с понятной задачи: кампания и воронка, пакет данных, автоматизированный workflow или курс, который помогает команде запустить систему самостоятельно.' : 'Each service starts with a clear need: a campaign and funnel, a data package, an automated workflow, or a course that helps a team operate the system itself.'}</p>
             </div>
           </div>
