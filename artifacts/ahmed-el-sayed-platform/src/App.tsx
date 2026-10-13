@@ -382,6 +382,30 @@ function Home() {
             </svg>
           </div>
         </div>
+        <div className="border-t border-border bg-card">
+          <div className="mx-auto grid max-w-[1360px] gap-px bg-border px-5 sm:px-8 md:grid-cols-2 lg:px-12">
+            <a href="#clients" className="group bg-card px-5 py-7 transition-colors hover:bg-primary hover:text-primary-foreground sm:px-8" data-testid="link-path-clients">
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <span className="mono text-[9px] tracking-[.2em] text-secondary">01 / {isArabic ? 'للعملاء' : isRussian ? 'ДЛЯ КЛИЕНТОВ' : 'FOR CLIENTS'}</span>
+                  <h2 className="mt-3 text-xl font-extrabold tracking-tight">{isArabic ? 'حوّل النمو إلى نظام يمكن قياسه' : isRussian ? 'Превратите рост в систему' : 'Turn growth into a working system'}</h2>
+                  <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground group-hover:text-primary-foreground/75">{isArabic ? 'استراتيجية، مسارات تحويل، CRM وأتمتة متابعة تساعد فريقك على تحويل الاهتمام إلى فرص.' : 'Strategy, funnels, CRM, and follow-up automation that turn attention into qualified opportunities.'}</p>
+                </div>
+                <ArrowUpRight className="mt-1 shrink-0 text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" size={20} />
+              </div>
+            </a>
+            <a href="/courses" className="group bg-card px-5 py-7 transition-colors hover:bg-primary hover:text-primary-foreground sm:px-8" data-testid="link-path-trainees">
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <span className="mono text-[9px] tracking-[.2em] text-secondary">02 / {isArabic ? 'للمتدربين' : isRussian ? 'ДЛЯ УЧАЩИХСЯ' : 'FOR TRAINEES'}</span>
+                  <h2 className="mt-3 text-xl font-extrabold tracking-tight">{isArabic ? 'تعلّم ببناء شيء حقيقي' : isRussian ? 'Учитесь через реальные проекты' : 'Learn by building something real'}</h2>
+                  <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground group-hover:text-primary-foreground/75">{isArabic ? 'كورسات عملية في التسويق والبيانات والأتمتة، مصممة لتنتقل من المشاهدة إلى التطبيق.' : 'Practical courses in marketing, data, and automation designed to move from watching to doing.'}</p>
+                </div>
+                <ArrowUpRight className="mt-1 shrink-0 text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" size={20} />
+              </div>
+            </a>
+          </div>
+        </div>
         <div className="border-t border-border">
           <div className="mx-auto grid max-w-[1360px] grid-cols-2 px-5 sm:px-8 md:grid-cols-4 lg:px-12">
             {['Marketing', 'Data products', 'Automation', 'Courses'].map((item, index) => (
@@ -628,7 +652,7 @@ function Home() {
             <div className="mt-8 flex flex-col gap-4 border border-dashed border-border p-5 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="mono text-[9px] tracking-[.16em] text-secondary">{isArabic ? 'كتالوج الفيديو' : isRussian ? 'КАТАЛОГ ВИДЕО' : 'VIDEO CATALOG'}</span>
-                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается оригинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{videoCatalogUrl ? (isArabic ? 'الكتالوج الأصلي جاهز للمشاهدة.' : isRussian ? 'Оригинальный каталог доступен для просмотра.' : 'The original catalog is ready to open.') : (isArabic ? 'لسه مستنيين الكتالوج أو ملفات الفيديو الأصلية.' : isRussian ? 'Ожидается о��игинальная ссылка или файлы видео.' : 'Waiting for the original catalog link or video files.')}</p>
               </div>
               {videoCatalogUrl ? <a href={videoCatalogUrl} target="_blank" rel="noreferrer" className="group flex shrink-0 items-center gap-2 text-xs font-bold uppercase tracking-[.12em] text-primary" data-testid="link-video-catalog">{isArabic ? 'افتح الكتالوج' : isRussian ? 'Открыть каталог' : 'Open catalog'} <ArrowUpRight size={15} className="text-secondary transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></a> : <span className="mono shrink-0 text-[9px] tracking-[.12em] text-muted-foreground">{isArabic ? 'لسه بيتجهز' : isRussian ? 'В ПОДГОТОВКЕ' : 'IN PREPARATION'}</span>}
             </div>
