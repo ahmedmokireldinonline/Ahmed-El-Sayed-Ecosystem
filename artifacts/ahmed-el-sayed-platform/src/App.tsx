@@ -63,7 +63,7 @@ const systemSteps = [
 ];
 
 const knowledgeItems = [
-  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحت��ل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
+  { type: 'FIELD NOTE', arType: 'ملاحظة ميدانية', ruType: 'ЗАМЕТКА С ПОЛЯ', title: 'The difference between a lead and a conversation', ar: 'الفرق بين العميل المحت����ل والمحادثة', ru: 'Разница между лидом и разговором', icon: MessageCircle },
   { type: 'SYSTEM NOTE', arType: 'ملاحظة نظام', ruType: 'СИСТЕМНАЯ ЗАМЕТКА', title: 'Where automation should stop and people should start', ar: 'أين تتوقف الأتمتة ويبدأ دور الإنسان', ru: 'Где заканчивается автоматизация и начинается человек', icon: Workflow },
   { type: 'PERSPECTIVE', arType: 'رؤية', ruType: 'ПЕРСПЕКТИВА', title: 'Opportunity is a system of connected decisions', ar: 'الفرصة منظومة من القرارات المترابطة', ru: 'Возможность — это система связанных решений', icon: Globe2 },
 ];
@@ -335,7 +335,20 @@ function Home() {
           </div>
 
           <div className="relative mx-auto aspect-square w-full max-w-[560px] lg:justify-self-end">
-            <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'صورة أحمد السيد المهنية' : 'Ahmed El Sayed professional portrait'} className="absolute inset-[11%] z-0 h-[78%] w-[78%] rounded-[2rem] object-cover object-[52%_34%] opacity-95 shadow-[0_25px_70px_hsl(var(--primary)/.18)]" />
+            <div className="absolute inset-[7%] overflow-hidden rounded-[2rem] bg-primary shadow-[0_25px_70px_hsl(var(--primary)/.18)]">
+              <img src="/ahmed-portrait-editorial.jpg" alt={isArabic ? 'صورة أحمد السيد المهنية' : 'Ahmed El Sayed professional portrait'} className="h-full w-full object-cover object-[50%_30%] opacity-95" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/75 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4 text-primary-foreground" dir="ltr">
+                <div>
+                  <span className="mono block text-[9px] tracking-[.22em] text-secondary">AHMED EL SAYED</span>
+                  <span className="mt-1 block text-sm font-bold">{isArabic ? 'تسويق نمو • أتمتة • تدريب' : 'Growth marketing • automation • training'}</span>
+                </div>
+                <span className="border border-secondary/60 px-2 py-1 text-[9px] font-bold uppercase tracking-[.14em] text-secondary">{isArabic ? 'نبني ونعلّم' : 'Build & teach'}</span>
+              </div>
+            </div>
+            <div className="absolute bottom-[12%] right-[2%] z-10 hidden w-[25%] overflow-hidden border-4 border-background bg-primary shadow-xl sm:block">
+              <img src="/ahmed-candid.jpg" alt={isArabic ? 'أحمد السيد أثناء التفكير في الاستراتيجية' : 'Ahmed El Sayed thinking through strategy'} className="aspect-[4/5] w-full object-cover object-[72%_42%]" loading="eager" />
+            </div>
             <div className="absolute inset-[8%] rounded-full border border-secondary/30" />
             <div className="absolute inset-[20%] rounded-full border border-accent/35" />
             <div className="network-orbit absolute inset-[8%] rounded-full border border-dashed border-secondary/40">
@@ -419,7 +432,7 @@ function Home() {
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '02 / أنظمة النمو' : isRussian ? '02 / СИСТЕМЫ РОСТА' : '02 / GROWTH SYSTEMS'}</span>
               <h2 className="display mt-5 max-w-[660px] text-5xl font-extrabold leading-[.95] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>خطة واضحة<br /><span className="text-accent">تشتغل على أرض الواقع.</span></> : isRussian ? <>Стратегия, которая<br /><span className="text-accent">работает в реальности.</span></> : <>Strategy that can<br /><span className="text-accent">touch the ground.</span></>}</h2>
             </div>
-            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'مش كلام حلو وخلاص. بنرتب قرارات وأدوات وخطوات تقدر تشغلها في شغلك من بكرة.' : isRussian ? 'Полезная система — это не презентация. Это последовательность решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
+            <p className="reveal-on-scroll max-w-[305px] text-sm leading-6 text-muted-foreground">{isArabic ? 'مش كلام حلو وخلاص. بنرتب قرارات وأدوات وخطوات تقدر تشغلها في شغلك من بكرة.' : isRussian ? 'Полезная система — это не презентация. Это последователь��ость решений, инструментов и действий для реальной рабочей среды.' : 'A useful system is not a slide deck. It is a sequence of clear decisions, tools, and actions built for the real operating environment.'}</p>
           </div>
           <div className="mt-20 grid gap-px bg-border md:grid-cols-3">
             {systemSteps.map((step, index) => (
@@ -585,7 +598,7 @@ function Home() {
           </div>
           <div className="mt-16 grid gap-8 border-t border-border pt-12 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
             <figure className="overflow-hidden border border-border bg-card shadow-[0_20px_55px_hsl(var(--primary)/.08)]">
-              <img src="/ahmed-brand-collage.png" alt={isArabic ? 'كولاج بصري لهوية أحمد السيد في التسويق والأتمتة' : 'Ahmed El Sayed marketing and automation brand collage'} className="pointer-events-none block aspect-[2.05/1] h-auto w-full object-cover object-top select-none" draggable="false" loading="lazy" />
+              <img src="/ahmed-brand-collage.png" alt={isArabic ? 'كولاج بصري لهوية أحمد السيد في التسويق والأتمتة' : 'Ahmed El Sayed marketing and automation brand collage'} className="pointer-events-none block aspect-[2.05/1] h-auto w-full object-cover object-[50%_8%] select-none" draggable="false" loading="lazy" />
             </figure>
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'بانر واحد / استخدام واحد' : isRussian ? 'ОДИН БАННЕР / ОДНО ИСПОЛЬЗОВАНИЕ' : 'ONE BANNER / ONE USE'}</span>
@@ -628,7 +641,7 @@ function Home() {
           <div className="flex flex-col justify-between gap-8 border-b border-border pb-12 lg:flex-row lg:items-end">
             <div>
               <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? '07 / المنتجات والعروض' : isRussian ? '07 / ПРОДУКТЫ И ПРЕДЛОЖЕНИЯ' : '07 / PRODUCTS & OFFERS'}</span>
-              <h2 className="display mt-5 max-w-[760px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>منتجات جاهزة<br /><span className="text-secondary">للطلب والتشغيل.</span></> : isRussian ? <>Готовые продукты<br /><span className="text-secondary">для заказа и запуска.</span></> : <>Products ready<br /><span className="text-secondary">to order and run.</span></>}</h2>
+              <h2 className="display mt-5 max-w-[760px] text-5xl font-extrabold leading-[.92] tracking-[-.06em] text-primary sm:text-7xl">{isArabic ? <>منتجات جاهزة<br /><span className="text-secondary">للطلب والتشغيل.</span></> : isRussian ? <>Г��товые продукты<br /><span className="text-secondary">для заказа и запуска.</span></> : <>Products ready<br /><span className="text-secondary">to order and run.</span></>}</h2>
             </div>
             <p className="max-w-[360px] text-sm leading-7 text-muted-foreground">{isArabic ? 'اختار المنتج، شوف السعر أو طريقة التسعير، واضغط اطلب المنتج. الطلب بيتحول مباشرة لنموذج متابعة باسم المنتج.' : isRussian ? 'Выберите продукт, посмотрите цену или модель расчёта и отправьте заказ. Запрос попадёт в форму с названием продукта.' : 'Choose a product, review its price model, and send an order request. The selected product is carried into the follow-up form.'}</p>
           </div>
@@ -744,7 +757,7 @@ function Home() {
               <>
                   <span className="mono text-[10px] tracking-[.2em] text-secondary">{isArabic ? 'محادثة أولى مفيدة' : isRussian ? 'ПЕРВЫЙ ПОЛЕЗНЫЙ РАЗГОВОР' : 'A USEFUL FIRST CONVERSATION'}</span>
                   <h2 id="consultation-title" className="display mt-5 max-w-[440px] text-4xl font-extrabold leading-[.95] tracking-[-.06em] text-primary">{isArabic ? 'ما الذي تحاول ربطه أو تطويره؟' : isRussian ? 'Что вы хотите связать или развить?' : 'What are you trying to connect or grow?'}</h2>
-                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ طلبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
+                  <p className="mt-4 max-w-[440px] text-sm leading-6 text-muted-foreground">{isArabic ? 'سيتم حفظ ��لبك في مساحة المتابعة الخاصة بالمشروع.' : isRussian ? 'Ваш запрос будет сохранён в рабочем пространстве проекта.' : 'Your request will be saved to the project follow-up workspace.'}</p>
                   {selectedProduct && <div className="mt-5 border border-secondary/50 bg-secondary/10 px-4 py-3 text-sm text-primary"><span className="mono block text-[9px] tracking-[.14em] text-secondary">{isArabic ? 'المنتج المطلوب' : isRussian ? 'ВЫБРАННЫЙ ПРОДУКТ' : 'SELECTED PRODUCT'}</span><strong className="mt-1 block">{selectedProduct}</strong></div>}
                   <form onSubmit={handleConsultationSubmit} className="mt-8 space-y-4">
                     <input type="hidden" name="formType" value="consultation" />
